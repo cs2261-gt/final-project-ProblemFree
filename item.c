@@ -6,8 +6,6 @@
 #include "room.h"
 #include "item.h"
 
-ITEM itemlist [WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS];
-
 // Init Item Stats
 void initItems() {
     ITEM greatsword =   {.id = GREATSWORD,  .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
@@ -45,6 +43,11 @@ void initItems() {
     ITEM archwizardstaff =  {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
     ITEM royal =            {.id = ROYAL,           .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 3, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
     ITEM legendary =        {.id = LEGENDARY,       .intelligenceEff = 4, .dexterityEff = 4, .strengthEff = 4, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
+
+    itemlist = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists,
+                chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros,
+                healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae,
+                revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
 }
 
 // Randomizers

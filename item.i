@@ -1423,8 +1423,6 @@ int bosses [4] = {BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
 
 
 extern CHARACTER enemyList [16 + 4];
-enemyList = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
-
 
 
 
@@ -1443,16 +1441,13 @@ void drawPlayer();
 int damageChar(CHARACTER target, int charType);
 int healChar (CHARACTER target, int charType);
 void buffChar (CHARACTER target, int stat, int scale, int charType);
-
-void pickupItem(ITEM object);
-void dropItem(ITEM object);
 # 6 "item.c" 2
 # 1 "room.h" 1
 typedef struct room {
     int roomType;
     int adjective;
 
-    ITEM items [10];
+    ITEM object;
     CHARACTER enemy;
     int trap;
 
@@ -1571,10 +1566,6 @@ int rares [7] = {REVIVALORB, DRAGONHEART, VORPALBLADE, ARTEMISBOW, ARCHWIZARDSTA
 
 
 extern ITEM itemlist [10 + 9 + 6 + 7];
-itemlist = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists,
-            chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros,
-                healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae,
-                revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
 
 
 void initItems();
@@ -1590,8 +1581,6 @@ int randomArmor();
 int randomCommon();
 int randomRare();
 # 8 "item.c" 2
-
-ITEM itemlist [10 + 9 + 6 + 7];
 
 
 void initItems() {
@@ -1630,6 +1619,11 @@ void initItems() {
     ITEM archwizardstaff = {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
     ITEM royal = {.id = ROYAL, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 3, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
     ITEM legendary = {.id = LEGENDARY, .intelligenceEff = 4, .dexterityEff = 4, .strengthEff = 4, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
+
+    itemlist = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists,
+                chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros,
+                healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae,
+                revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
 }
 
 

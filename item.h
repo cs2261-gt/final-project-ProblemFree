@@ -80,10 +80,6 @@ int rares [RAREOPTIONS] = {REVIVALORB, DRAGONHEART, VORPALBLADE, ARTEMISBOW, ARC
 
 // Master array of instantiated items
 extern ITEM itemlist [WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS];
-itemlist  = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists,
-            chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros,
-                healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae,
-                revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
 
 // PROTOTYPES
 void initItems();

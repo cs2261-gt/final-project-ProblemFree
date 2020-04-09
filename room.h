@@ -2,7 +2,7 @@ typedef struct room {
     int roomType;
     int adjective;
 
-    ITEM items [10];
+    ITEM object;
     CHARACTER enemy;
     int trap;
 

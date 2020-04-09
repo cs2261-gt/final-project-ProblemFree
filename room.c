@@ -119,17 +119,17 @@ void initDungeon() {
 
 // Mange population of rooms
 void placeCommon(int i) {
-    dungeon[i].item[0] = randomCommon();
+    dungeon[i].object = randomCommon();
     dungeon[i].searchSuccess = 8 + ((rand() % 6) + 1);
 }
 
 void placeRare(int i) {
-    dungeon[i].item[0] = randomRare();
+    dungeon[i].object = randomRare();
     dungeon[i].searchSuccess = 12 + ((rand() % 6) + 1);
 }
 
 void placeAny(int i) {
-    dungeon[i].item[0] = randomAll();
+    dungeon[i].object = randomAll();
     dungeon[i].searchSuccess = 10 + ((rand() % 6) + 1);
 }
 

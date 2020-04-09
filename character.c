@@ -6,12 +6,15 @@
 #include "room.h"
 #include "character.h"
 
+void pickupItem(ITEM object);
+void dropItem(ITEM object);
+
 CHARACTER player;
 
 CHARACTER enemylist;
 
 void initPlayer() {
-    player.playerclass = WIZARD;
+    player.playerclass = MAGE;
 
     player.weapon = fists;
     player.armor = travelers;
@@ -29,9 +32,6 @@ void initPlayer() {
 void updatePlayer() {
 
 }
-
-// {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE, 
-// BEHOLDER, DRAGON, WIZARD, MINDFLAYER}
 
 void initEnemies() {
     CHARACTER abomination =     {.enemyid = ABOMINATION,    .hpMax = 25, .hpCurr = .hpMax, .dmg = 10, .dmgtype = PHYSICAL, .intelligence = 8, .dexterity = 12, .strength = 16, .ac = 12, .tilerow = 0, .tilecol = 0};
@@ -55,6 +55,8 @@ void initEnemies() {
     CHARACTER dragon =          {.enemyid = DRAGON,         .hpMax = 80, .hpCurr = .hpMax, .dmg = 20, .dmgtype = MAGICAL, .intelligence = 20, .dexterity = 20, .strength = 20, .ac = 20, .tilerow = 0, .tilecol = 0};
     CHARACTER wizard =          {.enemyid = WIZARD,         .hpMax = 50, .hpCurr = .hpMax, .dmg = 12, .dmgtype = MAGICAL, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 15, .tilerow = 0, .tilecol = 0};
     CHARACTER mindflayer =      {.enemyid = MINDFLAYER,     .hpMax = 60, .hpCurr = .hpMax, .dmg = 12, .dmgtype = MAGICAL, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 13, .tilerow = 0, .tilecol = 0};
+    
+    enemyList = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
 }
 
 int damageChar(CHARACTER target);
