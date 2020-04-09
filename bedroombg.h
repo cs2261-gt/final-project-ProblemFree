@@ -3,13 +3,13 @@
 
 //======================================================================
 //
-//	bedroombg, 240x160@8, 
+//	bedroombg, 256x256@4, 
 //	+ palette 256 entries, not compressed
 //	+ 17 tiles (t|f|p reduced) not compressed
-//	+ regular map (flat), not compressed, 30x20 
-//	Total size: 512 + 1088 + 1200 = 2800
+//	+ regular map (in SBBs), not compressed, 32x32 
+//	Total size: 512 + 544 + 2048 = 3104
 //
-//	Time-stamp: 2020-04-08, 19:06:13
+//	Time-stamp: 2020-04-08, 21:33:43
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,11 +18,11 @@
 #ifndef GRIT_BEDROOMBG_H
 #define GRIT_BEDROOMBG_H
 
-#define bedroombgTilesLen 1088
-extern const unsigned short bedroombgTiles[544];
+#define bedroombgTilesLen 544
+extern const unsigned short bedroombgTiles[272];
 
-#define bedroombgMapLen 1200
-extern const unsigned short bedroombgMap[600];
+#define bedroombgMapLen 2048
+extern const unsigned short bedroombgMap[1024];
 
 #define bedroombgPalLen 512
 extern const unsigned short bedroombgPal[256];

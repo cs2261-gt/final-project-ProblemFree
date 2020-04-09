@@ -25,8 +25,7 @@
 #include "entrancebg.h"
 #include "bossroombg.h"
 
-
-
+ROOM dungeon[DUNGEONSIZE];
 
 // PRIMARY ROOM FUNCTIONS
 
@@ -50,15 +49,15 @@ void initDungeon() {
     dungeon[DUNGEONSIZE - 1].roomType = BOSSROOM;
     dungeon[DUNGEONSIZE - 1].adjective = BOSS;
     
-    int decider = (rand() % BOSSOPTIONS) + MOBOPTIONS;
-    dungeon[DUNGEONSIZE - 1].enemy = enemyList[decider];
+    // decider = (rand() % BOSSOPTIONS) + MOBOPTIONS;
+    // dungeon[DUNGEONSIZE - 1].enemy = enemyList[decider];
 
     // Create dungeon room order without duplicates.
     int count = 0;
     int roomTypes [DUNGEONSIZE - 2];
 
     while(count < DUNGEONSIZE - 2) {
-        int decider = rand() % 16;
+        decider = rand() % 16;
         int found = 0;
 
         for (int i = 0; i < DUNGEONSIZE - 2; i++) {
@@ -73,74 +72,74 @@ void initDungeon() {
         }
     }
 
-    for (int i = 0; i < DUNGEONSIZE - 2) {
+    for (int i = 0; i < DUNGEONSIZE - 2; i++) {
         dungeon[i + 1].roomType = roomTypes[i];
     }
 
     // Populate Dungeon rooms
 
-    for (int i = 1; i < DUNGEONSIZE - 1; i++) {
-        int decider = rand() % 100;
+    // for (int i = 1; i < DUNGEONSIZE - 1; i++) {
+    //     decider = rand() % 100;
 
-        if (decider < 10) {
-            dungeon[i].adjective = EMPTY;
-        } else if (decider < 30) {
-            dungeon[i].adjective = MONSTER;
-        } else if (decider < 50) {
-            dungeon[i].adjective = TRAP;
-        } else if (decider < 70) {
-            dungeon[i].adjective = GUARDED;
-        } else if (decider < 95) {
-            dungeon[i].adjective = TREASURE;
-        } else {
-            dungeon[i].adjective = RARETREASURE;
-        }
+    //     if (decider < 10) {
+    //         dungeon[i].adjective = EMPTY;
+    //     } else if (decider < 30) {
+    //         dungeon[i].adjective = MONSTER;
+    //     } else if (decider < 50) {
+    //         dungeon[i].adjective = TRAP;
+    //     } else if (decider < 70) {
+    //         dungeon[i].adjective = GUARDED;
+    //     } else if (decider < 95) {
+    //         dungeon[i].adjective = TREASURE;
+    //     } else {
+    //         dungeon[i].adjective = RARETREASURE;
+    //     }
 
-        if (dungeon[i].adjective == MONSTER) {
-            placeEnemy(i);
-        } else if (dungeon[i].adjective == TRAP) {
-            placeTrap(i);
-        } else if (dungeon[i].adjective == GUARDED) {
-            placeEnemy(i);
-            placeAny(i);
-        } else if (dungeon[i].adjective == TREASURE) {
-            placeCommon(i);
-        } else if (dungeon[i].adjective == RARETREASURE) {
-            placeRare(i);
-        }
+    //     if (dungeon[i].adjective == MONSTER) {
+    //         placeEnemy(i);
+    //     } else if (dungeon[i].adjective == TRAP) {
+    //         placeTrap(i);
+    //     } else if (dungeon[i].adjective == GUARDED) {
+    //         placeEnemy(i);
+    //         placeAny(i);
+    //     } else if (dungeon[i].adjective == TREASURE) {
+    //         placeCommon(i);
+    //     } else if (dungeon[i].adjective == RARETREASURE) {
+    //         placeRare(i);
+    //     }
 
-        if (dungeon[i].roomType == TREASURE) {
-            dungeon[i].adjective = RARETREASURE;
-            dungeon[i].item[0] = randomRare();
-            dungeon[i].searchSuccess = 0;
-        }
-    }
+    //     if (dungeon[i].roomType == TREASURE) {
+    //         dungeon[i].adjective = RARETREASURE;
+    //         dungeon[i].item[0] = randomRare();
+    //         dungeon[i].searchSuccess = 0;
+    //     }
+    // }
 }
 
 // Mange population of rooms
-void placeCommon(int i) {
-    dungeon[i].object = randomCommon();
-    dungeon[i].searchSuccess = 8 + ((rand() % 6) + 1);
-}
+// void placeCommon(int i) {
+//     dungeon[i].object = randomCommon();
+//     dungeon[i].searchSuccess = 8 + ((rand() % 6) + 1);
+// }
 
-void placeRare(int i) {
-    dungeon[i].object = randomRare();
-    dungeon[i].searchSuccess = 12 + ((rand() % 6) + 1);
-}
+// void placeRare(int i) {
+//     dungeon[i].object = randomRare();
+//     dungeon[i].searchSuccess = 12 + ((rand() % 6) + 1);
+// }
 
-void placeAny(int i) {
-    dungeon[i].object = randomAll();
-    dungeon[i].searchSuccess = 10 + ((rand() % 6) + 1);
-}
+// void placeAny(int i) {
+//     dungeon[i].object = randomAll();
+//     dungeon[i].searchSuccess = 10 + ((rand() % 6) + 1);
+// }
 
-void placeTrap(int i) {
-    dungeon[i].trap = ((rand() % 2) == 0 ? PHYSICAL : MAGICAL)
-    dungeon[i].trapSuccess = 10 + ((rand() % 4) + 1);
-}
+// void placeTrap(int i) {
+//     dungeon[i].trap = ((rand() % 2) == 0 ? PHYSICAL : MAGICAL)
+//     dungeon[i].trapSuccess = 10 + ((rand() % 4) + 1);
+// }
 
-void placeEnemy(int i) {
-    dungeon[i].enemy = enemyList[rand() % MOBOPTIONS];
-}
+// void placeEnemy(int i) {
+//     dungeon[i].enemy = enemyList[rand() % MOBOPTIONS];
+// }
 
 // {ALCHEMYLAB, ATRIUM, BEDROOM, BREWERY, CIRCLES, CHESS, TELEPORTER, CRYSTAL, LIBRARY, MENAGERIE, TREASURY, GOLEMFAB, DINING, OBSERBVATORY, PRISON, GARDEN, ENTRANCE, BOSSROOM}
 
@@ -247,10 +246,10 @@ void drawRoom() {
 }
 
 // Checks
-int checkSearch() {
+// int checkSearch() {
 
-}
+// }
 
-int checkTrap() {
+// int checkTrap() {
 
-}
+// }

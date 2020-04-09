@@ -13,9 +13,9 @@ typedef struct character {
     int dmg;
     int dmgtype;
 
-    ITEM weapon;
-    ITEM armor;
-    ITEM backpack [10];
+    // ITEM weapon;
+    // ITEM armor;
+    // ITEM backpack [10];
 
     int tilerow;
     int tilecol;
@@ -55,7 +55,7 @@ extern CHARACTER vampire;
 extern CHARACTER zombie;
 
 #define MOBOPTIONS 16
-int mobs [MOBOPTIONS] = {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE};
+// int mobs [MOBOPTIONS] = {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE};
 
 // Possible Bosses
 extern CHARACTER beholder;
@@ -64,7 +64,7 @@ extern CHARACTER wizard;
 extern CHARACTER mindflayer;
 
 #define BOSSOPTIONS 4
-int bosses [BOSSOPTIONS] = {BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
+// int bosses [BOSSOPTIONS] = {BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
 
 // Master Monster List
 extern CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS];
@@ -83,8 +83,11 @@ void initPlayer();
 void updatePlayer();
 void drawPlayer();
 
-int damageChar(CHARACTER target, int charType);
-int healChar (CHARACTER target, int charType);
-void buffChar (CHARACTER target, int stat, int scale, int charType);
+// int damageChar(CHARACTER target, int charType);
+// int healChar (CHARACTER target, int charType);
+// void buffChar (CHARACTER target, int stat, int scale, int charType);
+
+// void pickupItem(ITEM object);
+// void dropItem(ITEM object);
 
 

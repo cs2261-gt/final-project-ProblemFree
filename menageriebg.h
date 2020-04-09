@@ -3,13 +3,13 @@
 
 //======================================================================
 //
-//	menageriebg, 240x160@8, 
+//	menageriebg, 256x256@4, 
 //	+ palette 256 entries, not compressed
 //	+ 20 tiles (t|f|p reduced) not compressed
-//	+ regular map (flat), not compressed, 30x20 
-//	Total size: 512 + 1280 + 1200 = 2992
+//	+ regular map (in SBBs), not compressed, 32x32 
+//	Total size: 512 + 640 + 2048 = 3200
 //
-//	Time-stamp: 2020-04-08, 19:13:22
+//	Time-stamp: 2020-04-08, 21:36:21
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,11 +18,11 @@
 #ifndef GRIT_MENAGERIEBG_H
 #define GRIT_MENAGERIEBG_H
 
-#define menageriebgTilesLen 1280
-extern const unsigned short menageriebgTiles[640];
+#define menageriebgTilesLen 640
+extern const unsigned short menageriebgTiles[320];
 
-#define menageriebgMapLen 1200
-extern const unsigned short menageriebgMap[600];
+#define menageriebgMapLen 2048
+extern const unsigned short menageriebgMap[1024];
 
 #define menageriebgPalLen 512
 extern const unsigned short menageriebgPal[256];

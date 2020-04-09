@@ -2,13 +2,19 @@ typedef struct room {
     int roomType;
     int adjective;
 
-    ITEM object;
-    CHARACTER enemy;
-    int trap;
+    // ITEM object;
+    // CHARACTER enemy;
+    // int trap;
 
-    int searchSuccess;
-    int trapSuccess;
+    // int searchSuccess;
+    // int trapSuccess;
 } ROOM;
+
+// Constants
+#define DUNGEONSIZE 12
+
+extern ROOM dungeon[DUNGEONSIZE];
+
 
 // Possible Rooms
 enum{ALCHEMYLAB, ATRIUM, BEDROOM, BREWERY, CIRCLES, CHESS, TELEPORTER, CRYSTAL, LIBRARY, MENAGERIE, TREASURY, GOLEMFAB, DINING, OBSERVATORY, PRISON, GARDEN, ENTRANCE, BOSSROOM};
@@ -35,5 +41,5 @@ void drawRoom();
 void nextRoom();
 void prevRoom();
 
-int checkSearch();
-int checkTrap();
+// int checkSearch();
+// int checkTrap();

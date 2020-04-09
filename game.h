@@ -1,10 +1,6 @@
-// Constants
-#define DUNGEONSIZE 12
-
 // Variables
 extern int seed;
 extern int currRoom;
-extern ROOM dungeon [DUNGEONSIZE];
 
 // Custom Game Colors
 #define NUMCOLORS 7

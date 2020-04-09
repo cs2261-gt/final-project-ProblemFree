@@ -29,8 +29,9 @@ void win();
 void goToLose();
 void lose();
 
+
 // States
-enum {START, CHARCREATE, ROOMS, BACKPACK, GAME, PAUSE, WIN, LOSE};
+enum {START, CHARCREATE, GAME, PAUSE, WIN, LOSE};
 int state;
 
 // Button Variables
@@ -150,8 +151,8 @@ void goToCharCreation() {
 
 // Run Character Creation Screen
 void charCreation() {
-    updatePlayer();
-    drawPlayer();
+    // updatePlayer();
+    // drawPlayer();
 
     //Wait for vertical blank and flip the page
     waitForVBlank();
@@ -180,8 +181,8 @@ void goToGame() {
 
 // Runs every frame of the game state
 void game() {
-    updateGame();
-    drawGame();
+    // updateGame();
+    // drawGame();
 
     //Wait for vertical blank and flip the page
     waitForVBlank();
@@ -200,7 +201,7 @@ void game() {
         currRoom--;
         goToGame();
     }
-    if (BUTTON_PRESSED(BUTTON_R && currRoom == 11)) {
+    if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom == 11) {
         goToWin();
     }
     

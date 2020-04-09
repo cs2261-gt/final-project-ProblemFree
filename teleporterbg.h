@@ -3,13 +3,13 @@
 
 //======================================================================
 //
-//	teleporterbg, 240x160@8, 
+//	teleporterbg, 256x256@4, 
 //	+ palette 256 entries, not compressed
 //	+ 22 tiles (t|f|p reduced) not compressed
-//	+ regular map (flat), not compressed, 30x20 
-//	Total size: 512 + 1408 + 1200 = 3120
+//	+ regular map (in SBBs), not compressed, 32x32 
+//	Total size: 512 + 704 + 2048 = 3264
 //
-//	Time-stamp: 2020-04-08, 19:10:23
+//	Time-stamp: 2020-04-08, 21:37:15
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,11 +18,11 @@
 #ifndef GRIT_TELEPORTERBG_H
 #define GRIT_TELEPORTERBG_H
 
-#define teleporterbgTilesLen 1408
-extern const unsigned short teleporterbgTiles[704];
+#define teleporterbgTilesLen 704
+extern const unsigned short teleporterbgTiles[352];
 
-#define teleporterbgMapLen 1200
-extern const unsigned short teleporterbgMap[600];
+#define teleporterbgMapLen 2048
+extern const unsigned short teleporterbgMap[1024];
 
 #define teleporterbgPalLen 512
 extern const unsigned short teleporterbgPal[256];

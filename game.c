@@ -12,14 +12,15 @@ OBJ_ATTR shadowOAM [128];
 // Variables
 int seed;
 int currRoom;
-ROOM dungeon[DUNGEONSIZE];
 
 // Initialize the game
 void init() {
+	srand(seed);
+	currRoom = 0;
 
-	initItems();
+	// initItems();
 	initPlayer();
-	initEnemies();
+	// initEnemies();
 	initDungeon();
 
     // Initialize the colors
@@ -31,17 +32,17 @@ void init() {
     }
 }
 
-// Updates the game each frame
-void updateGame() {
-	updatePlayer();
-	updateRoom();
-}
+// // Updates the game each frame
+// void updateGame() {
+// 	updatePlayer();
+// 	updateRoom();
+// }
 
-// Draws the game each frame
-void drawGame() {
-	drawPlayer();
-	drawRoom();
-}
+// // Draws the game each frame
+// void drawGame() {
+// 	drawPlayer();
+// 	drawRoom();
+// }
 
 
 

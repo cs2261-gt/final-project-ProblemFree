@@ -1334,12 +1334,8 @@ int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, i
 # 4 "item.c" 2
 # 1 "game.h" 1
 
-
-
-
 extern int seed;
 extern int currRoom;
-extern ROOM dungeon [12];
 
 
 
@@ -1368,9 +1364,9 @@ typedef struct character {
     int dmg;
     int dmgtype;
 
-    ITEM weapon;
-    ITEM armor;
-    ITEM backpack [10];
+
+
+
 
     int tilerow;
     int tilecol;
@@ -1410,7 +1406,7 @@ extern CHARACTER vampire;
 extern CHARACTER zombie;
 
 
-int mobs [16] = {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE};
+
 
 
 extern CHARACTER beholder;
@@ -1419,7 +1415,7 @@ extern CHARACTER wizard;
 extern CHARACTER mindflayer;
 
 
-int bosses [4] = {BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
+
 
 
 extern CHARACTER enemyList [16 + 4];
@@ -1437,23 +1433,25 @@ enum {PC, MOB};
 void initPlayer();
 void updatePlayer();
 void drawPlayer();
-
-int damageChar(CHARACTER target, int charType);
-int healChar (CHARACTER target, int charType);
-void buffChar (CHARACTER target, int stat, int scale, int charType);
 # 6 "item.c" 2
 # 1 "room.h" 1
 typedef struct room {
     int roomType;
     int adjective;
 
-    ITEM object;
-    CHARACTER enemy;
-    int trap;
 
-    int searchSuccess;
-    int trapSuccess;
+
+
+
+
+
 } ROOM;
+
+
+
+
+extern ROOM dungeon[12];
+
 
 
 enum{ALCHEMYLAB, ATRIUM, BEDROOM, BREWERY, CIRCLES, CHESS, TELEPORTER, CRYSTAL, LIBRARY, MENAGERIE, TREASURY, GOLEMFAB, DINING, OBSERVATORY, PRISON, GARDEN, ENTRANCE, BOSSROOM};
@@ -1479,9 +1477,6 @@ void drawRoom();
 
 void nextRoom();
 void prevRoom();
-
-int checkSearch();
-int checkTrap();
 # 7 "item.c" 2
 # 1 "item.h" 1
 typedef struct item {
@@ -1525,7 +1520,7 @@ extern ITEM sickle;
 extern ITEM fists;
 
 
-int weapons [10] = {GREATSWORD, LONGSWORD, SPEAR, BOW, DAGGER, MAGESTAFF, SPELLBOOK, TRIDENT, SICKLE, FISTS};
+
 
 
 extern ITEM chainmail;
@@ -1539,7 +1534,7 @@ extern ITEM travelers;
 extern ITEM heros;
 
 
-int armors [9] = {CHAINMAIL, LEATHER, MAGEARMOR, PLATE, GLADIATORS, THIEVES, MAGEROBES, TRAVELERS, HEROS};
+
 
 
 extern ITEM healthpotion;
@@ -1550,7 +1545,7 @@ extern ITEM smokeleaf;
 extern ITEM vitae;
 
 
-int commons [6] = {HEALTHPOTION, STONESCALE, MUTAGEN, CATSEYE, SMOKELEAF, VITAE};
+
 
 
 extern ITEM revivalorb;
@@ -1562,7 +1557,7 @@ extern ITEM royal;
 extern ITEM legendary;
 
 
-int rares [7] = {REVIVALORB, DRAGONHEART, VORPALBLADE, ARTEMISBOW, ARCHWIZARDSTAFF, ROYAL, LEGENDARY};
+
 
 
 extern ITEM itemlist [10 + 9 + 6 + 7];
@@ -1584,46 +1579,7 @@ int randomRare();
 
 
 void initItems() {
-    ITEM greatsword = {.id = GREATSWORD, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM longsword = {.id = LONGSWORD, .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM spear = {.id = SPEAR, .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM bow = {.id = BOW, .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM dagger = {.id = DAGGER, .intelligenceEff = 1, .dexterityEff = 2, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM magestaff = {.id = MAGESTAFF, .intelligenceEff = 2, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM spellbook = {.id = SPELLBOOK, .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM trident = {.id = TRIDENT, .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM sickle = {.id = SICKLE, .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM fists = {.id = FISTS, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-
-    ITEM chainmail = {.id = CHAINMAIL, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM leather = {.id = LEATHER, .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM magearmor = {.id = MAGEARMOR, .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM plate = {.id = PLATE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM gladiators = {.id = GLADIATORS, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 4, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM thieves = {.id = THIEVES, .intelligenceEff = 0, .dexterityEff = 4, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM magerobes = {.id = MAGEROBES, .intelligenceEff = 4, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM travelers = {.id = TRAVELERS, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM heros = {.id = HEROS, .intelligenceEff = 2, .dexterityEff = 2, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-
-    ITEM healthpotion = {.id = HEALTHPOTION, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HEAL, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM stonescale = {.id = STONESCALE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 1, .specialEff = ACBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM mutagen = {.id = MUTAGEN, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = STRBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM catseye = {.id = CATSEYE, .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = DEXBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM smokeleaf = {.id = SMOKELEAF, .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = INTBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM vitae = {.id = VITAE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HPBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-
-    ITEM revivalorb = {.id = REVIVALORB, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = REVIVE, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM dragonheart = {.id = DRAGONHEART, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = SUPERBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM vorpalblade = {.id = VORPALBLADE, .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM artemisbow = {.id = ARTEMISBOW, .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM archwizardstaff = {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM royal = {.id = ROYAL, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 3, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM legendary = {.id = LEGENDARY, .intelligenceEff = 4, .dexterityEff = 4, .strengthEff = 4, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
-
-    itemlist = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists,
-                chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros,
-                healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae,
-                revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
+# 51 "item.c"
 }
 
 
