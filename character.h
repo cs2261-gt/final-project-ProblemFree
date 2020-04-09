@@ -68,6 +68,7 @@ int bosses [BOSSOPTIONS] = {BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
 
 // Master Monster List
 extern CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS];
+enemyList = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
 
 
 

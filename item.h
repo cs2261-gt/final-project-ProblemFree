@@ -47,7 +47,7 @@ extern ITEM leather;
 extern ITEM magearmor;
 extern ITEM plate;
 extern ITEM gladiators;
-extern ITEM theives;
+extern ITEM thieves;
 extern ITEM magerobes;
 extern ITEM travelers;
 extern ITEM heros;
@@ -80,6 +80,10 @@ int rares [RAREOPTIONS] = {REVIVALORB, DRAGONHEART, VORPALBLADE, ARTEMISBOW, ARC
 
 // Master array of instantiated items
 extern ITEM itemlist [WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS];
+itemlist  = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists,
+            chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros,
+                healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae,
+                revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
 
 // PROTOTYPES
 void initItems();

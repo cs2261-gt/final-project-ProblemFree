@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "myLib.h"
-#include "game.h"
 #include "character.h"
 #include "item.h"
 #include "room.h"
+#include "game.h"
 
 // ShadowOAM
 OBJ_ATTR shadowOAM [128];
@@ -17,7 +17,10 @@ ROOM dungeon[DUNGEONSIZE];
 // Initialize the game
 void init() {
 
-	frameCount = 0;
+	initItems();
+	initPlayer();
+	initEnemies();
+	initDungeon();
 
     // Initialize the colors
     unsigned short colors[NUMCOLORS] = {BLACK, BLUE, GREEN, YELLOW, RED, WHITE, GRAY};

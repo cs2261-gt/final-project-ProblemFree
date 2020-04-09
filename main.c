@@ -6,6 +6,11 @@
 #include "item.h"
 #include "room.h"
 
+#include "start.h"
+#include "pause.h"
+#include "win.h"
+#include "lose.h"
+
 // Prototypes
 void initialize();
 
@@ -130,12 +135,12 @@ void start() {
 // Set up Character Creation Screen
 void goToCharCreation() {
 
-    DMANow(3, backgroundPal, PALETTE, 256);
-    DMANow(3, backgroundMap, &SCREENBLOCK[28], backgroundMapLen / 2);
-    DMANow(3, backgroundTiles, &CHARBLOCK[0], backgroundTilesLen / 2);
+    // DMANow(3, backgroundPal, PALETTE, 256);
+    // DMANow(3, backgroundMap, &SCREENBLOCK[28], backgroundMapLen / 2);
+    // DMANow(3, backgroundTiles, &CHARBLOCK[0], backgroundTilesLen / 2);
 
-    DMANow(3, spriteSheetPal, SPRITEPALETTE, 256);
-    DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
+    // DMANow(3, spriteSheetPal, SPRITEPALETTE, 256);
+    // DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
 
     hideSprites();
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE;
@@ -164,8 +169,8 @@ void goToGame() {
 
     loadRoomData(currRoom);
 
-    DMANow(3, spriteSheetPal, SPRITEPALETTE, 256);
-    DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
+    // DMANow(3, spriteSheetPal, SPRITEPALETTE, 256);
+    // DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
 
     hideSprites();
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE;

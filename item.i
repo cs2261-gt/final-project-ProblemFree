@@ -1,7 +1,7 @@
-# 1 "main.c"
+# 1 "item.c"
 # 1 "<built-in>"
 # 1 "<command-line>"
-# 1 "main.c"
+# 1 "item.c"
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdlib.h" 1 3
 # 10 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdlib.h" 3
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\machine\\ieeefp.h" 1 3
@@ -810,7 +810,7 @@ extern long double _strtold_r (struct _reent *, const char *restrict, char **res
 extern long double strtold (const char *restrict, char **restrict);
 # 336 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdlib.h" 3
 
-# 2 "main.c" 2
+# 2 "item.c" 2
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 1 3
 # 36 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 3
 # 1 "c:\\devkitpro\\devkitarm\\lib\\gcc\\arm-none-eabi\\9.1.0\\include\\stddef.h" 1 3 4
@@ -1221,7 +1221,7 @@ _putchar_unlocked(int _c)
 }
 # 797 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 3
 
-# 3 "main.c" 2
+# 3 "item.c" 2
 # 1 "myLib.h" 1
 
 
@@ -1331,7 +1331,7 @@ typedef struct{
 
 
 int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, int widthB, int heightB);
-# 4 "main.c" 2
+# 4 "item.c" 2
 # 1 "game.h" 1
 
 
@@ -1351,7 +1351,7 @@ extern unsigned short colors[7];
 void initGame();
 void updateGame();
 void drawGame();
-# 5 "main.c" 2
+# 5 "item.c" 2
 # 1 "character.h" 1
 typedef struct character {
     int playerclass;
@@ -1423,6 +1423,7 @@ int bosses [4] = {BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
 
 
 extern CHARACTER enemyList [16 + 4];
+enemyList = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
 
 
 
@@ -1445,7 +1446,48 @@ void buffChar (CHARACTER target, int stat, int scale, int charType);
 
 void pickupItem(ITEM object);
 void dropItem(ITEM object);
-# 6 "main.c" 2
+# 6 "item.c" 2
+# 1 "room.h" 1
+typedef struct room {
+    int roomType;
+    int adjective;
+
+    ITEM items [10];
+    CHARACTER enemy;
+    int trap;
+
+    int searchSuccess;
+    int trapSuccess;
+} ROOM;
+
+
+enum{ALCHEMYLAB, ATRIUM, BEDROOM, BREWERY, CIRCLES, CHESS, TELEPORTER, CRYSTAL, LIBRARY, MENAGERIE, TREASURY, GOLEMFAB, DINING, OBSERVATORY, PRISON, GARDEN, ENTRANCE, BOSSROOM};
+
+
+enum {EMPTY, MONSTER, TRAP, GUARDED, TREASURE, RARETREASURE, BOSS};
+
+
+
+
+void initDungeon();
+
+void placeCommon(int i);
+void placeRare(int i);
+void placeAny(int i);
+void placeTrap(int i);
+void placeEnemy(int i);
+
+void loadRoomData(int currentRoom);
+
+void updateRoom();
+void drawRoom();
+
+void nextRoom();
+void prevRoom();
+
+int checkSearch();
+int checkTrap();
+# 7 "item.c" 2
 # 1 "item.h" 1
 typedef struct item {
     int id;
@@ -1496,7 +1538,7 @@ extern ITEM leather;
 extern ITEM magearmor;
 extern ITEM plate;
 extern ITEM gladiators;
-extern ITEM theives;
+extern ITEM thieves;
 extern ITEM magerobes;
 extern ITEM travelers;
 extern ITEM heros;
@@ -1529,6 +1571,10 @@ int rares [7] = {REVIVALORB, DRAGONHEART, VORPALBLADE, ARTEMISBOW, ARCHWIZARDSTA
 
 
 extern ITEM itemlist [10 + 9 + 6 + 7];
+itemlist = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists,
+            chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros,
+                healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae,
+                revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
 
 
 void initItems();
@@ -1543,329 +1589,160 @@ int randomWeapon();
 int randomArmor();
 int randomCommon();
 int randomRare();
-# 7 "main.c" 2
-# 1 "room.h" 1
-typedef struct room {
-    int roomType;
-    int adjective;
+# 8 "item.c" 2
 
-    ITEM items [10];
-    CHARACTER enemy;
-    int trap;
-
-    int searchSuccess;
-    int trapSuccess;
-} ROOM;
+ITEM itemlist [10 + 9 + 6 + 7];
 
 
-enum{ALCHEMYLAB, ATRIUM, BEDROOM, BREWERY, CIRCLES, CHESS, TELEPORTER, CRYSTAL, LIBRARY, MENAGERIE, TREASURY, GOLEMFAB, DINING, OBSERBVATORY, PRISON, GARDEN, ENTRANCE, BOSSROOM};
+void initItems() {
+    ITEM greatsword = {.id = GREATSWORD, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM longsword = {.id = LONGSWORD, .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM spear = {.id = SPEAR, .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM bow = {.id = BOW, .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM dagger = {.id = DAGGER, .intelligenceEff = 1, .dexterityEff = 2, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM magestaff = {.id = MAGESTAFF, .intelligenceEff = 2, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM spellbook = {.id = SPELLBOOK, .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM trident = {.id = TRIDENT, .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM sickle = {.id = SICKLE, .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM fists = {.id = FISTS, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
 
+    ITEM chainmail = {.id = CHAINMAIL, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM leather = {.id = LEATHER, .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM magearmor = {.id = MAGEARMOR, .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM plate = {.id = PLATE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM gladiators = {.id = GLADIATORS, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 4, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM thieves = {.id = THIEVES, .intelligenceEff = 0, .dexterityEff = 4, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM magerobes = {.id = MAGEROBES, .intelligenceEff = 4, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM travelers = {.id = TRAVELERS, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM heros = {.id = HEROS, .intelligenceEff = 2, .dexterityEff = 2, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
 
-enum {EMPTY, MONSTER, TRAP, GUARDED, TREASURE, RARETREASURE, BOSS};
+    ITEM healthpotion = {.id = HEALTHPOTION, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HEAL, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM stonescale = {.id = STONESCALE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 1, .specialEff = ACBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM mutagen = {.id = MUTAGEN, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = STRBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM catseye = {.id = CATSEYE, .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = DEXBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM smokeleaf = {.id = SMOKELEAF, .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = INTBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM vitae = {.id = VITAE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HPBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
 
-
-
-
-void initDungeon();
-
-void placeCommon(int i);
-void placeRare(int i);
-void placeAny(int i);
-void placeTrap(int i);
-void placeEnemy(int i);
-
-void loadRoomData(int currentRoom);
-
-void updateRoom();
-void drawRoom();
-
-void nextRoom();
-void prevRoom();
-
-int checkSearch();
-int checkTrap();
-# 8 "main.c" 2
-
-
-void initialize();
-
-
-
-void goToStart();
-void start();
-void goToCharCreation();
-void charCreation();
-void goToGame();
-void game();
-void goToPause();
-void pause();
-void goToWin();
-void win();
-void goToLose();
-void lose();
-
-
-enum {START, CHARCREATE, ROOMS, BACKPACK, GAME, PAUSE, WIN, LOSE};
-int state;
-
-
-unsigned short buttons;
-unsigned short oldButtons;
-
-
-int seed;
-
-
-char buffer[41];
-
-int main() {
-
-    initialize();
-
-    while(1) {
-
-
-        oldButtons = buttons;
-        buttons = (*(volatile unsigned short *)0x04000130);
-
-
-        switch(state) {
-
-            case START:
-                start();
-                break;
-            case CHARCREATE:
-                charCreation();
-                break;
-            case GAME:
-                game();
-                break;
-            case PAUSE:
-                pause();
-                break;
-            case WIN:
-                win();
-                break;
-            case LOSE:
-                lose();
-                break;
-        }
- }
-    return 0;
+    ITEM revivalorb = {.id = REVIVALORB, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = REVIVE, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM dragonheart = {.id = DRAGONHEART, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = SUPERBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM vorpalblade = {.id = VORPALBLADE, .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM artemisbow = {.id = ARTEMISBOW, .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM archwizardstaff = {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM royal = {.id = ROYAL, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 3, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM legendary = {.id = LEGENDARY, .intelligenceEff = 4, .dexterityEff = 4, .strengthEff = 4, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
 }
 
 
-void initialize() {
+int randomNormal() {
+    int decider = rand() % 100;
 
-    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8);
-
-    (*(volatile unsigned short*)0x4000008) = ((0)<<2) | ((28)<<8) | (1<<14);
-
-    buttons = (*(volatile unsigned short *)0x04000130);
-
-    goToStart();
+    if (decider < 50) {
+        return randomCommon();
+    } else if (decider < 75) {
+        return randomArmor();
+    } else {
+        return randomWeapon();
+    }
 }
 
+int randomAll() {
+    int decider = rand() % 100;
 
-
-void goToStart() {
-
-    DMANow(3, startPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, startMap, &((screenblock *)0x6000000)[28], startMapLen / 2);
-    DMANow(3, startTiles, &((charblock *)0x6000000)[0], startTilesLen / 2);
-
-    hideSprites();
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
-
-
-    waitForVBlank();
-    flipPage();
-
-    state = START;
-
-
-    seed = 0;
-}
-
-
-void start() {
-
-    seed++;
-
-
-    waitForVBlank();
-
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-
-
-        srand(seed);
-
-
-        init();
-        goToCharCreation();
+    if (decider < 50) {
+        return randomCommon();
+    } else if (decider < 70) {
+        return randomArmor();
+    } else if (decider < 90) {
+        return randomWeapon();
+    } else {
+        return randomRare();
     }
 }
 
 
-void goToCharCreation() {
 
-    DMANow(3, backgroundPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, backgroundMap, &((screenblock *)0x6000000)[28], backgroundMapLen / 2);
-    DMANow(3, backgroundTiles, &((charblock *)0x6000000)[0], backgroundTilesLen / 2);
+int randomWeapon() {
+    int decider = rand() % 100;
 
-    DMANow(3, spriteSheetPal, ((unsigned short *)0x5000200), 256);
-    DMANow(3, spriteSheetTiles, &((charblock *)0x6000000)[4], spriteSheetTilesLen / 2);
-
-    hideSprites();
-    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8);
-
-    state = CHARCREATE;
-}
-
-
-void charCreation() {
-    updatePlayer();
-    drawPlayer();
-
-
-    waitForVBlank();
-    flipPage();
-    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
-
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
-        goToGame();
-
-}
-
-
-void goToGame() {
-
-    loadRoomData(currRoom);
-
-    DMANow(3, spriteSheetPal, ((unsigned short *)0x5000200), 256);
-    DMANow(3, spriteSheetTiles, &((charblock *)0x6000000)[4], spriteSheetTilesLen / 2);
-
-    hideSprites();
-    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8);
-
-    state = GAME;
-}
-
-
-void game() {
-    updateGame();
-    drawGame();
-
-
-    waitForVBlank();
-    flipPage();
-    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
-
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-        goToPause();
+    if (decider < 11) {
+        return GREATSWORD;
+    } else if (decider < 22) {
+        return LONGSWORD;
+    } else if (decider < 33) {
+        return SPEAR;
+    } else if (decider < 44) {
+        return BOW;
+    } else if (decider < 55) {
+        return DAGGER;
+    } else if (decider < 66) {
+        return MAGESTAFF;
+    } else if (decider < 77) {
+        return SPELLBOOK;
+    } else if (decider < 88) {
+        return TRIDENT;
+    } else {
+        return SICKLE;
     }
-    else if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4)))) && currRoom + 1 <= 11) {
-        currRoom++;
-        goToGame();
+}
+
+int randomArmor() {
+    int decider = rand() % 100;
+
+    if (decider < 15) {
+        return CHAINMAIL;
+    } else if (decider < 30) {
+        return LEATHER;
+    } else if (decider < 45) {
+        return MAGEARMOR;
+    } else if (decider < 55) {
+        return PLATE;
+    } else if (decider < 65) {
+        return GLADIATORS;
+    } else if (decider < 75) {
+        return THIEVES;
+    } else if (decider < 85) {
+        return MAGEROBES;
+    } else if (decider < 95) {
+        return TRAVELERS;
+    } else {
+        return HEROS;
     }
-    else if ((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5)))) && currRoom - 1 >= 0) {
-        currRoom--;
-        goToGame();
+}
+
+int randomCommon() {
+    int decider = rand() % 100;
+
+    if (decider < 50) {
+        return HEALTHPOTION;
+    } else if (decider < 60) {
+        return STONESCALE;
+    } else if (decider < 70) {
+        return MUTAGEN;
+    } else if (decider < 80) {
+        return CATSEYE;
+    } else if (decider < 90) {
+        return SMOKELEAF;
+    } else {
+        return VITAE;
     }
-    if ((!(~(oldButtons)&((1<<8) && currRoom == 11)) && (~buttons & ((1<<8) && currRoom == 11)))) {
-        goToWin();
+}
+
+int randomRare() {
+    int decider = rand() % 100;
+
+    if (decider < 25) {
+        return REVIVALORB;
+    } else if (decider < 50) {
+        return DRAGONHEART;
+    } else if (decider < 60) {
+        return VORPALBLADE;
+    } else if (decider < 70) {
+        return ARTEMISBOW;
+    } else if (decider < 80) {
+        return ARCHWIZARDSTAFF;
+    } else if (decider < 90) {
+        return ROYAL;
+    } else {
+        return LEGENDARY;
     }
-
-}
-
-
-void goToPause() {
-
-    DMANow(3, pausePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, pauseMap, &((screenblock *)0x6000000)[28], pauseMapLen / 2);
-    DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], pauseTilesLen / 2);
-
-    hideSprites();
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
-
-
-    waitForVBlank();
-    flipPage();
-
-
-    state = PAUSE;
-}
-
-
-void pause() {
-
-
-    waitForVBlank();
-
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
-        goToGame();
-    else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2)))))
-        goToStart();
-}
-
-
-void goToWin() {
-
-    DMANow(3, winPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, winMap, &((screenblock *)0x6000000)[28], winMapLen / 2);
-    DMANow(3, winTiles, &((charblock *)0x6000000)[0], winTilesLen / 2);
-
-    hideSprites();
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
-
-
-    waitForVBlank();
-    flipPage();
-
-
-    state = WIN;
-}
-
-
-void win() {
-
-
-    waitForVBlank();
-
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
-        goToStart();
-}
-
-
-void goToLose() {
-
-    DMANow(3, losePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, loseMap, &((screenblock *)0x6000000)[28], loseMapLen / 2);
-    DMANow(3, loseTiles, &((charblock *)0x6000000)[0], loseTilesLen / 2);
-
-    hideSprites();
-    (*(unsigned short *)0x4000000) = 0 | (1<<8);
-
-
-    waitForVBlank();
-    flipPage();
-
-
-    state = LOSE;
-}
-
-
-void lose() {
-
-
-    waitForVBlank();
-
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
-        goToStart();
 }
