@@ -193,7 +193,7 @@ void game() {
     if (BUTTON_PRESSED(BUTTON_START)) {
         goToPause();
     }
-    else if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom + 1 <= 11) {
+    else if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom + 1 <= 12) {
         currRoom++;
         goToGame();
     }
@@ -201,7 +201,7 @@ void game() {
         currRoom--;
         goToGame();
     }
-    if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom == 11) {
+    if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom == 12) {
         goToWin();
     }
     

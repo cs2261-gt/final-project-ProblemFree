@@ -468,7 +468,7 @@ game:
 	bne	.L61
 	ldr	r2, .L80+24
 	ldr	r0, [r2]
-	cmp	r0, #10
+	cmp	r0, #11
 	ble	.L79
 	tst	r3, #32
 	beq	.L69
@@ -519,7 +519,7 @@ game:
 	ldr	r2, .L80+24
 .L69:
 	ldr	r3, [r2]
-	cmp	r3, #11
+	cmp	r3, #12
 	bne	.L57
 	pop	{r4, r5, r6, lr}
 	b	goToWin

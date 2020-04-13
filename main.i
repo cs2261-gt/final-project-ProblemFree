@@ -1793,7 +1793,7 @@ void game() {
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         goToPause();
     }
-    else if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4)))) && currRoom + 1 <= 11) {
+    else if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4)))) && currRoom + 1 <= 12) {
         currRoom++;
         goToGame();
     }
@@ -1801,7 +1801,7 @@ void game() {
         currRoom--;
         goToGame();
     }
-    if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4)))) && currRoom == 11) {
+    if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4)))) && currRoom == 12) {
         goToWin();
     }
 
