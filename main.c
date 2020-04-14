@@ -22,6 +22,8 @@ void goToCharCreation();
 void charCreation();
 void goToGame();
 void game();
+void goToCombat(CHARACTER enemy);
+void combat();
 void goToPause();
 void pause();
 void goToWin();
@@ -31,7 +33,7 @@ void lose();
 
 
 // States
-enum {START, CHARCREATE, GAME, PAUSE, WIN, LOSE};
+enum {START, CHARCREATE, GAME, COMBAT, PAUSE, WIN, LOSE};
 int state;
 
 // Button Variables
@@ -65,6 +67,9 @@ int main() {
                 break;
             case GAME:
                 game();
+                break;
+            case COMBAT:
+                combat();
                 break;
             case PAUSE:
                 pause();
@@ -205,6 +210,14 @@ void game() {
         goToWin();
     }
     
+}
+
+void goToCombat(CHARACTER enemy) {
+
+}
+
+void combat() {
+
 }
 
 // Sets up the pause state

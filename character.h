@@ -11,11 +11,10 @@ typedef struct character {
     int ac;
 
     int dmg;
-    int dmgtype;
 
-    // ITEM weapon;
-    // ITEM armor;
-    // ITEM backpack [10];
+    ITEM weapon;
+    ITEM armor;
+    ITEM backpack [10];
 
     int tilerow;
     int tilecol;
@@ -26,7 +25,7 @@ typedef struct character {
 enum {FIGHTER, MAGE, ROGUE};
 
 // Stat types
-enum {HP, STR, DEX, INT, AC};
+enum {HP, STR, DEX, INTEL, AC};
 
 extern CHARACTER player;
 
@@ -80,14 +79,19 @@ enum {PC, MOB};
 
 // Prototypes
 void initPlayer();
-void updatePlayer();
+// void updatePlayer();
 void drawPlayer();
 
-// int damageChar(CHARACTER target, int charType);
-// int healChar (CHARACTER target, int charType);
-// void buffChar (CHARACTER target, int stat, int scale, int charType);
+int damageChar(CHARACTER target, int dice);
+int healChar (CHARACTER target, int dice);
+void buffChar (CHARACTER target, int stat, int scale);
 
 // void pickupItem(ITEM object);
 // void dropItem(ITEM object);
+
+// Dice rolls for characters
+int intDiceRoll(CHARACTER target);
+int dexDiceRoll(CHARACTER target);
+int strDiceRoll(CHARACTER target);
 
 

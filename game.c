@@ -18,9 +18,9 @@ void init() {
 	srand(seed);
 	currRoom = 0;
 
-	// initItems();
+	initItems();
 	initPlayer();
-	// initEnemies();
+	initEnemies();
 	initDungeon();
 
     // Initialize the colors
@@ -32,11 +32,17 @@ void init() {
     }
 }
 
-// // Updates the game each frame
-// void updateGame() {
-// 	updatePlayer();
-// 	updateRoom();
-// }
+// Updates the game each frame
+void updateGame() {
+    if (dungeon[currRoom].adjective == TRAP) {
+        checkTrap();
+        dungeon[currRoom].adjective = EMPTY;
+    } else if (dungeon[currRoom].adjective == MONSTER || dungeon[currRoom].adjective == GUARDED) {
+        gotoCombat(dungeon[currRoom].enemy);
+    }
+
+    
+}
 
 // // Draws the game each frame
 // void drawGame() {

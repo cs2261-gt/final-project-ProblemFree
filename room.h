@@ -2,12 +2,12 @@ typedef struct room {
     int roomType;
     int adjective;
 
-    // ITEM object;
-    // CHARACTER enemy;
-    // int trap;
+    ITEM object;
+    CHARACTER enemy;
+    int trap;
 
-    // int searchSuccess;
-    // int trapSuccess;
+    int searchSuccess;
+    int trapSuccess;
 } ROOM;
 
 // Constants
@@ -35,11 +35,9 @@ void placeEnemy(int i);
 
 void loadRoomData(int currentRoom);
 
-void updateRoom();
+// void updateRoom();
 void drawRoom();
 
-void nextRoom();
-void prevRoom();
 
-// int checkSearch();
-// int checkTrap();
+int checkSearch();
+int checkTrap();

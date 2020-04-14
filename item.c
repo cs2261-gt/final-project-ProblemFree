@@ -6,48 +6,47 @@
 #include "room.h"
 #include "item.h"
 
+ITEM itemList [WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS];
+
 // Init Item Stats
 void initItems() {
-    // ITEM greatsword =   {.id = GREATSWORD,  .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    // ITEM longsword =    {.id = LONGSWORD,   .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    // ITEM spear =        {.id = SPEAR,       .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    // ITEM bow =          {.id = BOW,         .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    // ITEM dagger =       {.id = DAGGER,      .intelligenceEff = 1, .dexterityEff = 2, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    // ITEM magestaff =    {.id = MAGESTAFF,   .intelligenceEff = 2, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    // ITEM spellbook =    {.id = SPELLBOOK,   .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    // ITEM trident =      {.id = TRIDENT,     .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    // ITEM sickle =       {.id = SICKLE,      .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    // ITEM fists =        {.id = FISTS,       .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM greatsword =   {.id = GREATSWORD,  .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM longsword =    {.id = LONGSWORD,   .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM spear =        {.id = SPEAR,       .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM bow =          {.id = BOW,         .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM dagger =       {.id = DAGGER,      .intelligenceEff = 1, .dexterityEff = 2, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM magestaff =    {.id = MAGESTAFF,   .intelligenceEff = 2, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM spellbook =    {.id = SPELLBOOK,   .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM trident =      {.id = TRIDENT,     .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM sickle =       {.id = SICKLE,      .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+    ITEM fists =        {.id = FISTS,       .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
 
-    // ITEM chainmail =    {.id = CHAINMAIL,   .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    // ITEM leather =      {.id = LEATHER,     .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    // ITEM magearmor =    {.id = MAGEARMOR,   .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    // ITEM plate =        {.id = PLATE,       .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    // ITEM gladiators =   {.id = GLADIATORS,  .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 4, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    // ITEM thieves =      {.id = THIEVES,     .intelligenceEff = 0, .dexterityEff = 4, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    // ITEM magerobes =    {.id = MAGEROBES,   .intelligenceEff = 4, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    // ITEM travelers =    {.id = TRAVELERS,   .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    // ITEM heros =        {.id = HEROS,       .intelligenceEff = 2, .dexterityEff = 2, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM chainmail =    {.id = CHAINMAIL,   .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM leather =      {.id = LEATHER,     .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM magearmor =    {.id = MAGEARMOR,   .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM plate =        {.id = PLATE,       .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM gladiators =   {.id = GLADIATORS,  .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 4, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM thieves =      {.id = THIEVES,     .intelligenceEff = 0, .dexterityEff = 4, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM magerobes =    {.id = MAGEROBES,   .intelligenceEff = 4, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM travelers =    {.id = TRAVELERS,   .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
+    ITEM heros =        {.id = HEROS,       .intelligenceEff = 2, .dexterityEff = 2, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
 
-    // ITEM healthpotion = {.id = HEALTHPOTION,    .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HEAL, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    // ITEM stonescale =   {.id = STONESCALE,      .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 1, .specialEff = ACBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    // ITEM mutagen =      {.id = MUTAGEN,         .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = STRBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    // ITEM catseye =      {.id = CATSEYE,         .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = DEXBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    // ITEM smokeleaf =    {.id = SMOKELEAF,       .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = INTBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    // ITEM vitae =        {.id = VITAE,           .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HPBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM healthpotion = {.id = HEALTHPOTION,    .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HEAL, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM stonescale =   {.id = STONESCALE,      .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 1, .specialEff = ACBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM mutagen =      {.id = MUTAGEN,         .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = STRBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM catseye =      {.id = CATSEYE,         .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = DEXBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM smokeleaf =    {.id = SMOKELEAF,       .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = INTBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+    ITEM vitae =        {.id = VITAE,           .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HPBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
 
-    // ITEM revivalorb =       {.id = REVIVALORB,      .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = REVIVE, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    // ITEM dragonheart =      {.id = DRAGONHEART,     .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = SUPERBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    // ITEM vorpalblade =      {.id = VORPALBLADE,     .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    // ITEM artemisbow =       {.id = ARTEMISBOW,      .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    // ITEM archwizardstaff =  {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    // ITEM royal =            {.id = ROYAL,           .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 3, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    // ITEM legendary =        {.id = LEGENDARY,       .intelligenceEff = 4, .dexterityEff = 4, .strengthEff = 4, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM revivalorb =       {.id = REVIVALORB,      .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = REVIVE, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM dragonheart =      {.id = DRAGONHEART,     .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = SUPERBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM vorpalblade =      {.id = VORPALBLADE,     .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM artemisbow =       {.id = ARTEMISBOW,      .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM archwizardstaff =  {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM royal =            {.id = ROYAL,           .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 3, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
+    ITEM legendary =        {.id = LEGENDARY,       .intelligenceEff = 4, .dexterityEff = 4, .strengthEff = 4, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
 
-    // itemlist = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists,
-    //             chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros,
-    //             healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae,
-    //             revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
+    ITEM itemList [WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS] = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists, chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros, healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae, revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
 }
 
 // Randomizers
