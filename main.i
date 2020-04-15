@@ -1610,7 +1610,7 @@ extern CHARACTER enemyChar;
 extern int turn;
 
 
-void initCombat(CHARACTER enemy);
+void initCombat();
 void updateCombat();
 void drawCombat();
 
@@ -1671,7 +1671,7 @@ void goToGame();
 void game();
 void goToPause();
 void pause();
-void goToCombat(CHARACTER enemy);
+void goToCombat();
 void combat();
 void goToCombatPause();
 void combatPause();
@@ -1882,8 +1882,8 @@ void pause() {
 }
 
 
-void goToCombat(CHARACTER enemy) {
-    initCombat(enemy);
+void goToCombat() {
+    initCombat();
 
     loadRoomData(currRoom);
 

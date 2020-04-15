@@ -1610,7 +1610,7 @@ extern CHARACTER enemyChar;
 extern int turn;
 
 
-void initCombat(CHARACTER enemy);
+void initCombat();
 void updateCombat();
 void drawCombat();
 

@@ -12,8 +12,8 @@ CHARACTER enemyChar;
 int turn;
 
 // Control Functions
-void initCombat(CHARACTER enemy) {
-    enemyChar = enemy;
+void initCombat() {
+    enemyChar = dungeon[currRoom].enemy;
     turn = 0;
 }
 
@@ -23,7 +23,7 @@ void updateCombat() {
         if (dungeon[currRoom].adjective == BOSS) {
             goToWin();
         }
-        else {
+        else {\
             if (dungeon[currRoom].adjective == GUARDED) {
                 dungeon[currRoom].adjective = TREASURE;
             } else {

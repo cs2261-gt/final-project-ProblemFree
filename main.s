@@ -430,46 +430,31 @@ pause:
 	.type	goToCombat, %function
 goToCombat:
 	@ Function supports interworking.
-	@ args = 728, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
 	push	{r4, lr}
-	sub	sp, sp, #712
-	add	r4, sp, #720
-	stm	r4, {r0, r1, r2, r3}
-	add	r1, sp, #736
-	mov	r2, #712
-	mov	r0, sp
 	ldr	r3, .L64
 	mov	lr, pc
 	bx	r3
-	ldm	r4, {r0, r1, r2, r3}
-	ldr	r4, .L64+4
-	mov	lr, pc
-	bx	r4
-	ldr	r2, .L64+8
-	ldr	r3, .L64+12
+	ldr	r2, .L64+4
+	ldr	r3, .L64+8
 	ldr	r0, [r2]
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L64+16
+	ldr	r3, .L64+12
 	mov	lr, pc
 	bx	r3
 	mov	r1, #67108864
 	mov	r0, #4608
 	mov	r2, #4
-	ldr	r3, .L64+20
+	ldr	r3, .L64+16
 	strh	r0, [r1]	@ movhi
-	str	r2, [r3]
-	add	sp, sp, #712
-	@ sp needed
 	pop	{r4, lr}
-	add	sp, sp, #16
+	str	r2, [r3]
 	bx	lr
 .L65:
 	.align	2
 .L64:
-	.word	memcpy
 	.word	initCombat
 	.word	currRoom
 	.word	loadRoomData

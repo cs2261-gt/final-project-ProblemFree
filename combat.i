@@ -1610,7 +1610,7 @@ extern CHARACTER enemyChar;
 extern int turn;
 
 
-void initCombat(CHARACTER enemy);
+void initCombat();
 void updateCombat();
 void drawCombat();
 
@@ -1623,8 +1623,8 @@ CHARACTER enemyChar;
 int turn;
 
 
-void initCombat(CHARACTER enemy) {
-    enemyChar = enemy;
+void initCombat() {
+    enemyChar = dungeon[currRoom].enemy;
     turn = 0;
 }
 

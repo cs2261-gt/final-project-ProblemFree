@@ -19,27 +19,31 @@
 	.type	initCombat, %function
 initCombat:
 	@ Function supports interworking.
-	@ args = 728, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
-	push	{r4, lr}
-	add	ip, sp, #8
-	stm	ip, {r0, r1, r2, r3}
-	mov	r2, #728
 	ldr	r3, .L4
-	mov	r1, ip
-	ldr	r0, .L4+4
+	ldr	r1, [r3]
+	ldr	r3, .L4+4
+	add	r1, r1, r1, lsl #1
+	add	r1, r1, r1, lsl #5
+	add	r1, r3, r1, lsl #3
+	mov	r2, #728
+	push	{r4, lr}
+	ldr	r3, .L4+8
+	ldr	r0, .L4+12
+	add	r1, r1, #48
 	mov	lr, pc
 	bx	r3
 	mov	r2, #0
-	ldr	r3, .L4+8
+	ldr	r3, .L4+16
 	pop	{r4, lr}
 	str	r2, [r3]
-	add	sp, sp, #16
 	bx	lr
 .L5:
 	.align	2
 .L4:
+	.word	currRoom
+	.word	dungeon
 	.word	memcpy
 	.word	enemyChar
 	.word	turn
