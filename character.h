@@ -1,3 +1,6 @@
+// Constants
+#define INVSIZE 15
+
 typedef struct character {
     int playerclass;
     int enemyid;
@@ -22,7 +25,6 @@ typedef struct character {
 } CHARACTER;
 
 // PLAYER
-#define INVSIZE 15
 
 // Class Options
 enum {FIGHTER, MAGE, ROGUE};
@@ -89,13 +91,14 @@ void drawPlayer();
 int damageChar(CHARACTER target, int dice);
 int healChar (CHARACTER target, int dice);
 void buffChar (CHARACTER target, int stat, int scale);
+void checkDeath();
 
-// void pickupItem(ITEM object);
 // void dropItem(ITEM object);
 
 // Stat Modifier Calculator
 int statEquipped(CHARACTER target, int stat);
 int statMod(CHARACTER target, int stat);
+int statModMob(CHARACTER target, int stat);
 
 // Dice rolls for characters
 int intDiceRoll(CHARACTER target);

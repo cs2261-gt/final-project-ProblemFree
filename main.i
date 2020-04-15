@@ -1,7 +1,7 @@
-# 1 "item.c"
+# 1 "main.c"
 # 1 "<built-in>"
 # 1 "<command-line>"
-# 1 "item.c"
+# 1 "main.c"
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdlib.h" 1 3
 # 10 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdlib.h" 3
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\machine\\ieeefp.h" 1 3
@@ -810,7 +810,7 @@ extern long double _strtold_r (struct _reent *, const char *restrict, char **res
 extern long double strtold (const char *restrict, char **restrict);
 # 336 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdlib.h" 3
 
-# 2 "item.c" 2
+# 2 "main.c" 2
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 1 3
 # 36 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 3
 # 1 "c:\\devkitpro\\devkitarm\\lib\\gcc\\arm-none-eabi\\9.1.0\\include\\stddef.h" 1 3 4
@@ -1221,7 +1221,7 @@ _putchar_unlocked(int _c)
 }
 # 797 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 3
 
-# 3 "item.c" 2
+# 3 "main.c" 2
 # 1 "myLib.h" 1
 
 
@@ -1331,7 +1331,7 @@ typedef struct{
 
 
 int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, int widthB, int heightB);
-# 4 "item.c" 2
+# 4 "main.c" 2
 # 1 "game.h" 1
 
 extern int seed;
@@ -1349,7 +1349,7 @@ extern unsigned short colors[7];
 void initGame();
 void updateGame();
 void drawGame();
-# 5 "item.c" 2
+# 5 "main.c" 2
 # 1 "item.h" 1
 typedef struct item {
     int id;
@@ -1447,7 +1447,7 @@ int randomWeapon();
 int randomArmor();
 int randomCommon();
 int randomRare();
-# 6 "item.c" 2
+# 6 "main.c" 2
 # 1 "character.h" 1
 
 
@@ -1555,7 +1555,7 @@ int statModMob(CHARACTER target, int stat);
 int intDiceRoll(CHARACTER target);
 int dexDiceRoll(CHARACTER target);
 int strDiceRoll(CHARACTER target);
-# 7 "item.c" 2
+# 7 "main.c" 2
 # 1 "room.h" 1
 typedef struct room {
     int roomType;
@@ -1603,7 +1603,7 @@ void drawRoom();
 
 int checkSearch();
 int checkTrap();
-# 8 "item.c" 2
+# 8 "main.c" 2
 # 1 "combat.h" 1
 
 extern CHARACTER enemyChar;
@@ -1616,162 +1616,371 @@ void drawCombat();
 
 void attack(CHARACTER source, CHARACTER target);
 int rollDmg(int dice, int bonus);
-# 9 "item.c" 2
+# 9 "main.c" 2
+# 1 "start.h" 1
+# 22 "start.h"
+extern const unsigned short startTiles[9616];
 
-ITEM itemList [10 + 9 + 6 + 7];
+
+extern const unsigned short startMap[1024];
 
 
-void initItems() {
-    ITEM greatsword = {.id = GREATSWORD, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM longsword = {.id = LONGSWORD, .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM spear = {.id = SPEAR, .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM bow = {.id = BOW, .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM dagger = {.id = DAGGER, .intelligenceEff = 1, .dexterityEff = 2, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM magestaff = {.id = MAGESTAFF, .intelligenceEff = 2, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM spellbook = {.id = SPELLBOOK, .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM trident = {.id = TRIDENT, .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM sickle = {.id = SICKLE, .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM fists = {.id = FISTS, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+extern const unsigned short startPal[256];
+# 10 "main.c" 2
+# 1 "pause.h" 1
+# 22 "pause.h"
+extern const unsigned short pauseTiles[752];
 
-    ITEM chainmail = {.id = CHAINMAIL, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM leather = {.id = LEATHER, .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM magearmor = {.id = MAGEARMOR, .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM plate = {.id = PLATE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM gladiators = {.id = GLADIATORS, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 4, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM thieves = {.id = THIEVES, .intelligenceEff = 0, .dexterityEff = 4, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM magerobes = {.id = MAGEROBES, .intelligenceEff = 4, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM travelers = {.id = TRAVELERS, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM heros = {.id = HEROS, .intelligenceEff = 2, .dexterityEff = 2, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
 
-    ITEM healthpotion = {.id = HEALTHPOTION, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HEAL, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM stonescale = {.id = STONESCALE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 1, .specialEff = ACBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM mutagen = {.id = MUTAGEN, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = STRBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM catseye = {.id = CATSEYE, .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = DEXBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM smokeleaf = {.id = SMOKELEAF, .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = INTBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM vitae = {.id = VITAE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HPBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
+extern const unsigned short pauseMap[1024];
 
-    ITEM revivalorb = {.id = REVIVALORB, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = REVIVE, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM dragonheart = {.id = DRAGONHEART, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = SUPERBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM vorpalblade = {.id = VORPALBLADE, .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM artemisbow = {.id = ARTEMISBOW, .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM archwizardstaff = {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM royal = {.id = ROYAL, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 3, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM legendary = {.id = LEGENDARY, .intelligenceEff = 4, .dexterityEff = 4, .strengthEff = 4, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
 
-    ITEM itemList [10 + 9 + 6 + 7] = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists, chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros, healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae, revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
+extern const unsigned short pausePal[256];
+# 11 "main.c" 2
+# 1 "win.h" 1
+# 22 "win.h"
+extern const unsigned short winTiles[656];
+
+
+extern const unsigned short winMap[1024];
+
+
+extern const unsigned short winPal[256];
+# 12 "main.c" 2
+# 1 "lose.h" 1
+# 22 "lose.h"
+extern const unsigned short loseTiles[688];
+
+
+extern const unsigned short loseMap[1024];
+
+
+extern const unsigned short losePal[256];
+# 13 "main.c" 2
+
+
+void initialize();
+
+
+
+void goToStart();
+void start();
+void goToCharCreation();
+void charCreation();
+void goToGame();
+void game();
+void goToPause();
+void pause();
+void goToCombat(CHARACTER enemy);
+void combat();
+void goToCombatPause();
+void combatPause();
+void goToWin();
+void win();
+void goToLose();
+void lose();
+
+
+
+enum {START, CHARCREATE, GAME, PAUSE, COMBAT, COMBATPAUSE, WIN, LOSE};
+int state;
+
+
+unsigned short buttons;
+unsigned short oldButtons;
+
+
+int seed;
+
+
+char buffer[41];
+
+int main() {
+
+    initialize();
+
+    while(1) {
+
+
+        oldButtons = buttons;
+        buttons = (*(volatile unsigned short *)0x04000130);
+
+
+        switch(state) {
+
+            case START:
+                start();
+                break;
+            case CHARCREATE:
+                charCreation();
+                break;
+            case GAME:
+                game();
+                break;
+            case PAUSE:
+                pause();
+                break;
+            case COMBAT:
+                combat();
+                break;
+            case COMBATPAUSE:
+                combatPause();
+                break;
+            case WIN:
+                win();
+                break;
+            case LOSE:
+                lose();
+                break;
+        }
+ }
+    return 0;
 }
 
 
-int randomNormal() {
-    int decider = rand() % 100;
+void initialize() {
 
-    if (decider < 50) {
-        return randomCommon();
-    } else if (decider < 75) {
-        return randomArmor();
-    } else {
-        return randomWeapon();
-    }
-}
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8) | (1<<9);
 
-int randomAll() {
-    int decider = rand() % 100;
+    (*(volatile unsigned short*)0x4000008) = ((1)<<2) | ((30)<<8) | (1<<14);
 
-    if (decider < 50) {
-        return randomCommon();
-    } else if (decider < 70) {
-        return randomArmor();
-    } else if (decider < 90) {
-        return randomWeapon();
-    } else {
-        return randomRare();
-    }
+    (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14);
+
+    buttons = (*(volatile unsigned short *)0x04000130);
+
+    goToStart();
 }
 
 
 
-int randomWeapon() {
-    int decider = rand() % 100;
+void goToStart() {
 
-    if (decider < 11) {
-        return GREATSWORD;
-    } else if (decider < 22) {
-        return LONGSWORD;
-    } else if (decider < 33) {
-        return SPEAR;
-    } else if (decider < 44) {
-        return BOW;
-    } else if (decider < 55) {
-        return DAGGER;
-    } else if (decider < 66) {
-        return MAGESTAFF;
-    } else if (decider < 77) {
-        return SPELLBOOK;
-    } else if (decider < 88) {
-        return TRIDENT;
-    } else {
-        return SICKLE;
+    DMANow(3, startPal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, startMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    DMANow(3, startTiles, &((charblock *)0x6000000)[0], 19232 / 2);
+
+    hideSprites();
+    (*(unsigned short *)0x4000000) = 0 | (1<<9);
+
+
+    waitForVBlank();
+    flipPage();
+
+    state = START;
+
+
+    seed = 0;
+}
+
+
+void start() {
+
+    seed++;
+
+
+    waitForVBlank();
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+
+
+        srand(seed);
+
+
+        init();
+        goToGame();
     }
 }
 
-int randomArmor() {
-    int decider = rand() % 100;
 
-    if (decider < 15) {
-        return CHAINMAIL;
-    } else if (decider < 30) {
-        return LEATHER;
-    } else if (decider < 45) {
-        return MAGEARMOR;
-    } else if (decider < 55) {
-        return PLATE;
-    } else if (decider < 65) {
-        return GLADIATORS;
-    } else if (decider < 75) {
-        return THIEVES;
-    } else if (decider < 85) {
-        return MAGEROBES;
-    } else if (decider < 95) {
-        return TRAVELERS;
-    } else {
-        return HEROS;
+void goToCharCreation() {
+# 158 "main.c"
+    hideSprites();
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8) | (1<<9);
+
+    state = CHARCREATE;
+}
+
+
+void charCreation() {
+
+
+
+
+    waitForVBlank();
+    flipPage();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+        goToGame();
+
+}
+
+
+void goToGame() {
+
+    loadRoomData(currRoom);
+
+
+
+
+    hideSprites();
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
+
+    state = GAME;
+}
+
+
+void game() {
+    updateGame();
+
+
+
+    waitForVBlank();
+    flipPage();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        goToPause();
+    }
+
+}
+
+
+void goToPause() {
+
+    DMANow(3, pausePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, pauseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 1504 / 2);
+
+    hideSprites();
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
+
+
+    waitForVBlank();
+    flipPage();
+
+
+    state = PAUSE;
+}
+
+
+void pause() {
+
+
+    waitForVBlank();
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        goToGame();
+    }
+    else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+        goToStart();
     }
 }
 
-int randomCommon() {
-    int decider = rand() % 100;
 
-    if (decider < 50) {
-        return HEALTHPOTION;
-    } else if (decider < 60) {
-        return STONESCALE;
-    } else if (decider < 70) {
-        return MUTAGEN;
-    } else if (decider < 80) {
-        return CATSEYE;
-    } else if (decider < 90) {
-        return SMOKELEAF;
-    } else {
-        return VITAE;
+void goToCombat(CHARACTER enemy) {
+    initCombat(enemy);
+
+    loadRoomData(currRoom);
+
+    hideSprites();
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
+
+    state = COMBAT;
+
+}
+
+
+void combat() {
+    updateCombat();
+    drawCombat();
+}
+
+void goToCombatPause() {
+    DMANow(3, pausePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, pauseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 1504 / 2);
+
+    hideSprites();
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
+
+
+    waitForVBlank();
+    flipPage();
+
+    state = COMBATPAUSE;
+}
+
+void combatPause() {
+
+    waitForVBlank();
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        goToCombat(enemyChar);
+    }
+    else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+        goToStart();
     }
 }
 
-int randomRare() {
-    int decider = rand() % 100;
 
-    if (decider < 25) {
-        return REVIVALORB;
-    } else if (decider < 50) {
-        return DRAGONHEART;
-    } else if (decider < 60) {
-        return VORPALBLADE;
-    } else if (decider < 70) {
-        return ARTEMISBOW;
-    } else if (decider < 80) {
-        return ARCHWIZARDSTAFF;
-    } else if (decider < 90) {
-        return ROYAL;
-    } else {
-        return LEGENDARY;
-    }
+void goToWin() {
+
+    DMANow(3, winPal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, winMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    DMANow(3, winTiles, &((charblock *)0x6000000)[0], 1312 / 2);
+
+    hideSprites();
+    (*(unsigned short *)0x4000000) = 0 | (1<<9);
+
+
+    waitForVBlank();
+    flipPage();
+
+    state = WIN;
+}
+
+
+void win() {
+
+
+    waitForVBlank();
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+        goToStart();
+}
+
+
+void goToLose() {
+
+    DMANow(3, losePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, loseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    DMANow(3, loseTiles, &((charblock *)0x6000000)[0], 1376 / 2);
+
+    hideSprites();
+    (*(unsigned short *)0x4000000) = 0 | (1<<9);
+
+
+    waitForVBlank();
+    flipPage();
+
+
+    state = LOSE;
+}
+
+
+void lose() {
+
+
+    waitForVBlank();
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+        goToStart();
 }

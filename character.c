@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include "myLib.h"
 #include "game.h"
-#include "combat.h"
 #include "item.h"
-#include "room.h"
 #include "character.h"
+#include "room.h"
+#include "combat.h"
 
 CHARACTER player;
 
@@ -13,9 +13,10 @@ CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS];
 
 void initPlayer() {
     player.playerclass = MAGE;
+    player.enemyid = MOBOPTIONS + BOSSOPTIONS;
 
-    player.weapon = fists;
-    player.armor = travelers;
+    player.weapon = itemList[FISTS];
+    player.armor = itemList[TRAVELERS];
 
     player.ac = 10;
     player.intelligence = 12;
@@ -28,10 +29,10 @@ void initPlayer() {
     player.hpCurr = player.hpMax;
 
     player.backpack[0] = player.weapon;
-    player.backpack[1] = player.armor
+    player.backpack[1] = player.armor;
 
     for (int i = 2; i < INVSIZE; i++) {
-        player.backpack[i] = NULL;
+        player.backpack[i].id = WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS;
     }
 
 }
@@ -49,8 +50,8 @@ void checkDeath() {
         int revived = 0;
         for (int i = 0; i < INVSIZE; i++) {
             if (player.backpack[i].id == REVIVALORB) {
-                player.hpCurr == player.hpMax;
-                player.backpack[i] == NULL;
+                player.hpCurr = player.hpMax;
+                player.backpack[i].id = WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS;
                 revived = 1;
                 break;
             }
@@ -80,10 +81,10 @@ void initEnemies() {
     CHARACTER vampire =         {.enemyid = VAMPIRE,        .hpMax = 20, .hpCurr = 20, .dmg = 10, .intelligence = 16, .dexterity = 16, .strength = 16, .ac = 12, .tilerow = 0, .tilecol = 0};
     CHARACTER zombie =          {.enemyid = ZOMBIE,         .hpMax = 15, .hpCurr = 15, .dmg = 6, .intelligence = 8, .dexterity = 10, .strength = 14, .ac = 10, .tilerow = 0, .tilecol = 0};
 
-    CHARACTER beholder =        {.enemyid = BEHOLDER,       .hpMax = 60, .hpCurr = 60, .dmg = 12, .dmgtype = MAGICAL, .intelligence = 20, .dexterity = 18, .strength = 18, .ac = 15, .tilerow = 0, .tilecol = 0};
-    CHARACTER dragon =          {.enemyid = DRAGON,         .hpMax = 80, .hpCurr = 80, .dmg = 20, .dmgtype = MAGICAL, .intelligence = 20, .dexterity = 20, .strength = 20, .ac = 20, .tilerow = 0, .tilecol = 0};
-    CHARACTER wizard =          {.enemyid = WIZARD,         .hpMax = 50, .hpCurr = 50, .dmg = 12, .dmgtype = MAGICAL, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 15, .tilerow = 0, .tilecol = 0};
-    CHARACTER mindflayer =      {.enemyid = MINDFLAYER,     .hpMax = 60, .hpCurr = 60, .dmg = 12, .dmgtype = MAGICAL, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 13, .tilerow = 0, .tilecol = 0};
+    CHARACTER beholder =        {.enemyid = BEHOLDER,       .hpMax = 60, .hpCurr = 60, .dmg = 12, .intelligence = 20, .dexterity = 18, .strength = 18, .ac = 15, .tilerow = 0, .tilecol = 0};
+    CHARACTER dragon =          {.enemyid = DRAGON,         .hpMax = 80, .hpCurr = 80, .dmg = 20, .intelligence = 20, .dexterity = 20, .strength = 20, .ac = 20, .tilerow = 0, .tilecol = 0};
+    CHARACTER wizard =          {.enemyid = WIZARD,         .hpMax = 50, .hpCurr = 50, .dmg = 12, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 15, .tilerow = 0, .tilecol = 0};
+    CHARACTER mindflayer =      {.enemyid = MINDFLAYER,     .hpMax = 60, .hpCurr = 60, .dmg = 12, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 13, .tilerow = 0, .tilecol = 0};
     
     CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
 }
@@ -128,9 +129,9 @@ void buffChar(CHARACTER target, int stat, int scale) {
     }
 }
 
-// void pickupItem(ITEM object);
 // void dropItem(ITEM object);
 
+// Calculate stat total based on equipped items
 int statEquipped(CHARACTER target, int stat) {
         switch (stat)
     {
@@ -149,37 +150,54 @@ int statEquipped(CHARACTER target, int stat) {
     }
 }
 
+// Calculate stat modifier for rolls for player
 int statMod(CHARACTER target, int stat) {
-    return (statEquiped(target, stat) / 2) - 5;
+    return (statEquipped(target, stat) / 2) - 5;
 }
 
-int intDiceRoll(CHARACTER target) {
+// Calculate stat modifier for rolls for mobs
+int statModMob(CHARACTER target, int stat) {
+    switch (stat)
+    {
+        case AC:
+            return (((target.ac) / 2) - 5);
+            break;
+        case INTEL:
+            return (((target.intelligence) / 2) - 5);
+            break;
+        case DEX:
+            return (((target.dexterity) / 2) - 5);
+            break;
+        case STR:
+            return (((target.strength) / 2) - 5);
+            break;
+    }
+}
+
+// Dice Roll Functions for every stat
+int intDiceRoll (CHARACTER target) {
     int modifier = statMod(target, INTEL);
     int roll = (((rand() % 20) + 1) + modifier);
-    if (roll < 1) {
+    if (roll <= 1) {
         return 1;
-    } else {
-        return roll;
     }
-
+    return roll;
 }
 
-int dexDiceRoll(CHARACTER target) {
+int dexDiceRoll (CHARACTER target) {
     int modifier = statMod(target, DEX);
     int roll = (((rand() % 20) + 1) + modifier);
-    if (roll < 1) {
+    if (roll <= 1) {
         return 1;
-    } else {
-        return roll;
     }
+    return roll;
 }
 
-int strDiceRoll(CHARACTER target) {
+int strDiceRoll (CHARACTER target) {
     int modifier = statMod(target, STR);
     int roll = (((rand() % 20) + 1) + modifier);
-    if (roll < 1) {
+    if (roll <= 1) {
         return 1;
-    } else {
-        return roll;
     }
+    return roll;
 }

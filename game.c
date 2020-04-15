@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "myLib.h"
-#include "combat.h"
-#include "character.h"
-#include "item.h"
-#include "room.h"
 #include "game.h"
+#include "item.h"
+#include "character.h"
+#include "room.h"
+#include "combat.h"
 
 // ShadowOAM
 OBJ_ATTR shadowOAM [128];
@@ -36,27 +36,31 @@ void init() {
 
 // Updates the game each frame
 void updateGame() {
-
+    
+    // Handle events before room is run
     if (dungeon[currRoom].adjective == TRAP) {
         checkTrap();
         dungeon[currRoom].adjective = EMPTY;
-    } else if (dungeon[currRoom].adjective == MONSTER || dungeon[currRoom].adjective == GUARDED) {
-        gotoCombat(dungeon[currRoom].enemy);
-    }
-
-    // // Search Room ability
-    // if (BUTTON_PRESSED(BUTTON_A)) {
-    //     checkSearch();
-    // }
-    
-    // Room Traversal
-    else if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom + 1 <= 12) {
-        currRoom++;
-        goToGame();
-    }
-    else if (BUTTON_PRESSED(BUTTON_LEFT) && currRoom - 1 >= 0) {
-        currRoom--;
-        goToGame();
+    } else if (dungeon[currRoom].adjective == MONSTER || dungeon[currRoom].adjective == GUARDED || dungeon[currRoom].adjective == BOSS) {
+        goToCombat(dungeon[currRoom].enemy);
+    } else {
+        // Search Room ability
+        if (BUTTON_PRESSED(BUTTON_A)) {
+            turnCount++;
+            checkSearch();
+        }
+        
+        // Room Traversal
+        else if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom + 1 <= 12) {
+            turnCount++;
+            currRoom++;
+            goToGame();
+        }
+        else if (BUTTON_PRESSED(BUTTON_LEFT) && currRoom - 1 >= 0) {
+            turnCount++;
+            currRoom--;
+            goToGame();
+        }
     }
 }
 

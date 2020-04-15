@@ -1,7 +1,7 @@
-# 1 "item.c"
+# 1 "combat.c"
 # 1 "<built-in>"
 # 1 "<command-line>"
-# 1 "item.c"
+# 1 "combat.c"
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdlib.h" 1 3
 # 10 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdlib.h" 3
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\machine\\ieeefp.h" 1 3
@@ -810,7 +810,7 @@ extern long double _strtold_r (struct _reent *, const char *restrict, char **res
 extern long double strtold (const char *restrict, char **restrict);
 # 336 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdlib.h" 3
 
-# 2 "item.c" 2
+# 2 "combat.c" 2
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 1 3
 # 36 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 3
 # 1 "c:\\devkitpro\\devkitarm\\lib\\gcc\\arm-none-eabi\\9.1.0\\include\\stddef.h" 1 3 4
@@ -1221,7 +1221,7 @@ _putchar_unlocked(int _c)
 }
 # 797 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 3
 
-# 3 "item.c" 2
+# 3 "combat.c" 2
 # 1 "myLib.h" 1
 
 
@@ -1331,7 +1331,7 @@ typedef struct{
 
 
 int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, int widthB, int heightB);
-# 4 "item.c" 2
+# 4 "combat.c" 2
 # 1 "game.h" 1
 
 extern int seed;
@@ -1349,7 +1349,7 @@ extern unsigned short colors[7];
 void initGame();
 void updateGame();
 void drawGame();
-# 5 "item.c" 2
+# 5 "combat.c" 2
 # 1 "item.h" 1
 typedef struct item {
     int id;
@@ -1447,7 +1447,7 @@ int randomWeapon();
 int randomArmor();
 int randomCommon();
 int randomRare();
-# 6 "item.c" 2
+# 6 "combat.c" 2
 # 1 "character.h" 1
 
 
@@ -1555,7 +1555,7 @@ int statModMob(CHARACTER target, int stat);
 int intDiceRoll(CHARACTER target);
 int dexDiceRoll(CHARACTER target);
 int strDiceRoll(CHARACTER target);
-# 7 "item.c" 2
+# 7 "combat.c" 2
 # 1 "room.h" 1
 typedef struct room {
     int roomType;
@@ -1603,7 +1603,7 @@ void drawRoom();
 
 int checkSearch();
 int checkTrap();
-# 8 "item.c" 2
+# 8 "combat.c" 2
 # 1 "combat.h" 1
 
 extern CHARACTER enemyChar;
@@ -1616,162 +1616,219 @@ void drawCombat();
 
 void attack(CHARACTER source, CHARACTER target);
 int rollDmg(int dice, int bonus);
-# 9 "item.c" 2
-
-ITEM itemList [10 + 9 + 6 + 7];
+# 9 "combat.c" 2
 
 
-void initItems() {
-    ITEM greatsword = {.id = GREATSWORD, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM longsword = {.id = LONGSWORD, .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM spear = {.id = SPEAR, .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM bow = {.id = BOW, .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM dagger = {.id = DAGGER, .intelligenceEff = 1, .dexterityEff = 2, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM magestaff = {.id = MAGESTAFF, .intelligenceEff = 2, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM spellbook = {.id = SPELLBOOK, .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM trident = {.id = TRIDENT, .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 2, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM sickle = {.id = SICKLE, .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
-    ITEM fists = {.id = FISTS, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0};
+CHARACTER enemyChar;
+int turn;
 
-    ITEM chainmail = {.id = CHAINMAIL, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM leather = {.id = LEATHER, .intelligenceEff = 0, .dexterityEff = 2, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM magearmor = {.id = MAGEARMOR, .intelligenceEff = 2, .dexterityEff = 0, .strengthEff = 0, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM plate = {.id = PLATE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM gladiators = {.id = GLADIATORS, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 4, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM thieves = {.id = THIEVES, .intelligenceEff = 0, .dexterityEff = 4, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM magerobes = {.id = MAGEROBES, .intelligenceEff = 4, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM travelers = {.id = TRAVELERS, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
-    ITEM heros = {.id = HEROS, .intelligenceEff = 2, .dexterityEff = 2, .strengthEff = 2, .acEff = 2, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0};
 
-    ITEM healthpotion = {.id = HEALTHPOTION, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HEAL, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM stonescale = {.id = STONESCALE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 1, .specialEff = ACBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM mutagen = {.id = MUTAGEN, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 1, .acEff = 0, .specialEff = STRBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM catseye = {.id = CATSEYE, .intelligenceEff = 0, .dexterityEff = 1, .strengthEff = 0, .acEff = 0, .specialEff = DEXBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM smokeleaf = {.id = SMOKELEAF, .intelligenceEff = 1, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = INTBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-    ITEM vitae = {.id = VITAE, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = HPBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0};
-
-    ITEM revivalorb = {.id = REVIVALORB, .intelligenceEff = 0, .dexterityEff = 0, .strengthEff = 0, .acEff = 0, .specialEff = REVIVE, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM dragonheart = {.id = DRAGONHEART, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = SUPERBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM vorpalblade = {.id = VORPALBLADE, .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM artemisbow = {.id = ARTEMISBOW, .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM archwizardstaff = {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM royal = {.id = ROYAL, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 3, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM legendary = {.id = LEGENDARY, .intelligenceEff = 4, .dexterityEff = 4, .strengthEff = 4, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
-
-    ITEM itemList [10 + 9 + 6 + 7] = {greatsword, longsword, spear, bow, dagger, magestaff, spellbook, trident, sickle, fists, chainmail, leather, magearmor, plate, gladiators, thieves, magerobes, travelers, heros, healthpotion, stonescale, mutagen, catseye, smokeleaf, vitae, revivalorb, dragonheart, vorpalblade, artemisbow, archwizardstaff, royal, legendary};
+void initCombat(CHARACTER enemy) {
+    enemyChar = enemy;
+    turn = 0;
 }
 
+void updateCombat() {
 
-int randomNormal() {
-    int decider = rand() % 100;
-
-    if (decider < 50) {
-        return randomCommon();
-    } else if (decider < 75) {
-        return randomArmor();
+    if (enemyChar.hpCurr == 0) {
+        if (dungeon[currRoom].adjective == BOSS) {
+            goToWin();
+        }
+        else {
+            if (dungeon[currRoom].adjective == GUARDED) {
+                dungeon[currRoom].adjective = TREASURE;
+            } else {
+                dungeon[currRoom].adjective = EMPTY;
+            }
+            turnCount++;
+            goToGame();
+        }
     } else {
-        return randomWeapon();
+
+
+
+        checkDeath();
+
+
+        if (turn == 0) {
+            if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
+                player.stance = OFFENSE;
+                attack(player, enemyChar);
+            } else if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
+                player.stance = DEFENSE;
+            } else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+                goToCombatPause(enemyChar);
+            } else if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<9))) && dungeon[currRoom].adjective != BOSS) {
+                currRoom--;
+                goToGame();
+            }
+        }
+
+
+        else if (turn == 1) {
+            int enemydecider = rand() % 100;
+
+            switch (enemyChar.enemyid)
+            {
+            case BEHOLDER:
+                if (enemyChar.hpCurr > enemyChar.hpMax / 5) {
+                    if (enemydecider < 20) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                } else {
+                    if (enemydecider < 50) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                }
+                break;
+            case DRAGON:
+                if (enemyChar.hpCurr > enemyChar.hpMax / 4) {
+                    if (enemydecider < 20) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                } else {
+                    if (enemydecider < 40) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                }
+                break;
+            case WIZARD:
+                if (enemyChar.hpCurr > enemyChar.hpMax / 3) {
+                    if (enemydecider < 40) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                } else {
+                    if (enemydecider < 60) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                }
+                break;
+            case MINDFLAYER:
+                if (enemyChar.hpCurr > enemyChar.hpMax / 5) {
+                    if (enemydecider < 30) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                } else {
+                    if (enemydecider < 75) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                }
+                break;
+            default:
+                if (enemyChar.hpCurr > enemyChar.hpMax / 4) {
+                    if (enemydecider < 30) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                } else {
+                    if (enemydecider < 60) {
+                        enemyChar.stance = DEFENSE;
+                    } else {
+                        enemyChar.stance = OFFENSE;
+                        attack(enemyChar, player);
+                    }
+                }
+                break;
+            }
+            turn = 0;
+        }
     }
 }
 
-int randomAll() {
-    int decider = rand() % 100;
+void drawCombat() {
 
-    if (decider < 50) {
-        return randomCommon();
-    } else if (decider < 70) {
-        return randomArmor();
-    } else if (decider < 90) {
-        return randomWeapon();
-    } else {
-        return randomRare();
-    }
 }
 
 
+void attack(CHARACTER source, CHARACTER target) {
 
-int randomWeapon() {
-    int decider = rand() % 100;
+    if (source.playerclass == MAGE) {
+        if ((rand() % 20) + 1 + statMod(source, INTEL) >= target.ac + target.stance) {
+            int damage = rollDmg(10, statMod(source, INTEL));
+            if (target.hpCurr - damage <= 0) {
+                target.hpCurr = 0;
+            } else {
+                target.hpCurr -= damage;
+            }
+        }
+    } else if (source.playerclass == ROGUE) {
+        if ((rand() % 20) + 1 + statMod(source, DEX) >= target.ac + target.stance) {
+            int damage = rollDmg(10, statMod(source, DEX));
+            if (target.hpCurr - damage <= 0) {
+                target.hpCurr = 0;
+            } else {
+                target.hpCurr -= damage;
+            }
+        }
+    } else if (source.playerclass == FIGHTER) {
+        if ((rand() % 20) + 1 + statMod(source, STR) >= target.ac + target.stance) {
+            int damage = rollDmg(10, statMod(source, STR));
+            if (target.hpCurr - damage <= 0) {
+                target.hpCurr = 0;
+            } else {
+                target.hpCurr -= damage;
+            }
+        }
+    }
 
-    if (decider < 11) {
-        return GREATSWORD;
-    } else if (decider < 22) {
-        return LONGSWORD;
-    } else if (decider < 33) {
-        return SPEAR;
-    } else if (decider < 44) {
-        return BOW;
-    } else if (decider < 55) {
-        return DAGGER;
-    } else if (decider < 66) {
-        return MAGESTAFF;
-    } else if (decider < 77) {
-        return SPELLBOOK;
-    } else if (decider < 88) {
-        return TRIDENT;
-    } else {
-        return SICKLE;
+    else if (source.enemyid == BEHOLDER || source.enemyid == DRAGON || source.enemyid == WIZARD || source.enemyid == MINDFLAYER) {
+        if (((rand() % 20) + 1 + 2) >= statEquipped(target, AC) + target.stance) {
+            int damage = rollDmg(source.dmg, 2);
+            if (target.hpCurr - damage <= 0) {
+                target.hpCurr = 0;
+            } else {
+                target.hpCurr -= damage;
+            }
+        }
+    } else if (source.enemyid == DRAGON) {
+        if (((rand() % 20) + 1 + 5) >= statEquipped(target, AC) + target.stance) {
+            int damage = rollDmg(source.dmg, 5);
+            if (target.hpCurr - damage <= 0) {
+                target.hpCurr = 0;
+            } else {
+                target.hpCurr -= damage;
+            }
+        }
+    }
+
+    else {
+        if (((rand() % 20) + 1 + 0) >= statEquipped(target, AC) + target.stance) {
+            int damage = rollDmg(source.dmg, 0);
+            if (target.hpCurr - damage <= 0) {
+                target.hpCurr = 0;
+            } else {
+                target.hpCurr -= damage;
+            }
+        }
     }
 }
 
-int randomArmor() {
-    int decider = rand() % 100;
-
-    if (decider < 15) {
-        return CHAINMAIL;
-    } else if (decider < 30) {
-        return LEATHER;
-    } else if (decider < 45) {
-        return MAGEARMOR;
-    } else if (decider < 55) {
-        return PLATE;
-    } else if (decider < 65) {
-        return GLADIATORS;
-    } else if (decider < 75) {
-        return THIEVES;
-    } else if (decider < 85) {
-        return MAGEROBES;
-    } else if (decider < 95) {
-        return TRAVELERS;
-    } else {
-        return HEROS;
-    }
-}
-
-int randomCommon() {
-    int decider = rand() % 100;
-
-    if (decider < 50) {
-        return HEALTHPOTION;
-    } else if (decider < 60) {
-        return STONESCALE;
-    } else if (decider < 70) {
-        return MUTAGEN;
-    } else if (decider < 80) {
-        return CATSEYE;
-    } else if (decider < 90) {
-        return SMOKELEAF;
-    } else {
-        return VITAE;
-    }
-}
-
-int randomRare() {
-    int decider = rand() % 100;
-
-    if (decider < 25) {
-        return REVIVALORB;
-    } else if (decider < 50) {
-        return DRAGONHEART;
-    } else if (decider < 60) {
-        return VORPALBLADE;
-    } else if (decider < 70) {
-        return ARTEMISBOW;
-    } else if (decider < 80) {
-        return ARCHWIZARDSTAFF;
-    } else if (decider < 90) {
-        return ROYAL;
-    } else {
-        return LEGENDARY;
-    }
+int rollDmg(int dice, int bonus) {
+    return ((rand() % dice) + 1 + bonus);
 }

@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include "myLib.h"
 #include "game.h"
-#include "combat.h"
-#include "character.h"
 #include "item.h"
+#include "character.h"
 #include "room.h"
+#include "combat.h"
 
 #include "alchemybg.h"
 #include "atriumbg.h"
@@ -111,7 +111,7 @@ void initDungeon() {
 
         if (dungeon[i].roomType == TREASURY) {
             dungeon[i].adjective = RARETREASURE;
-            dungeon[i].item = itemList[randomRare()];
+            dungeon[i].object = itemList[randomRare()];
             dungeon[i].searchSuccess = 0;
         }
     }
@@ -134,7 +134,7 @@ void placeAny(int i) {
 }
 
 void placeTrap(int i) {
-    dungeon[i].trap = ((rand() % 2) == 0 ? PHYSICAL : MAGICAL)
+    dungeon[i].trap = ((rand() % 2) == 0 ? PHYSICAL : MAGICAL);
     dungeon[i].trapSuccess = 10 + ((rand() % 4) + 1);
 }
 
@@ -249,19 +249,25 @@ void drawRoom() {
 
 // Checks
 int checkSearch() {
-    // if (intDiceRoll(player) >= dungeon[currRoom].searchSuccess) {
-    //     player.backpack
-    // }
+    if (intDiceRoll(player) >= dungeon[currRoom].searchSuccess) {
+        for (int i = 0; i < INVSIZE; i++) {
+            if (player.backpack[i].id == WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS) {
+                player.backpack[i] = dungeon[currRoom].object;
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 int checkTrap() {
     if (dungeon[currRoom].trap == MAGICAL) {
-        if (intDiceRoll(player) < dungeon[currRoom.trapSuccess]) {
+        if (intDiceRoll(player) < dungeon[currRoom].trapSuccess) {
             damageChar(player, 6); 
             return 1;
         }
     } else if (dungeon[currRoom].trap == PHYSICAL) {
-        if (dexDiceRoll(player) < dungeon[currRoom.trapSuccess]) {
+        if (dexDiceRoll(player) < dungeon[currRoom].trapSuccess) {
             damageChar(player, 6); 
             return 1;
         }

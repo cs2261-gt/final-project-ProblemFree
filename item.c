@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include "myLib.h"
 #include "game.h"
-#include "combat.h"
+#include "item.h"
 #include "character.h"
 #include "room.h"
-#include "item.h"
+#include "combat.h"
 
 ITEM itemList [WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS];
 
