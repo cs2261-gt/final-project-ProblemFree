@@ -23,7 +23,7 @@ void updateCombat() {
         if (dungeon[currRoom].adjective == BOSS) {
             goToWin();
         }
-        else {\
+        else {
             if (dungeon[currRoom].adjective == GUARDED) {
                 dungeon[currRoom].adjective = TREASURE;
             } else {
