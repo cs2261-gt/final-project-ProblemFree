@@ -8,6 +8,9 @@ typedef struct room {
 
     int searchSuccess;
     int trapSuccess;
+
+    int searched;
+    
 } ROOM;
 
 // Constants

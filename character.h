@@ -11,21 +11,28 @@ typedef struct character {
     int ac;
 
     int dmg;
+    int stance;
 
     ITEM weapon;
     ITEM armor;
-    ITEM backpack [10];
+    ITEM backpack [INVSIZE];
 
     int tilerow;
     int tilecol;
 } CHARACTER;
 
 // PLAYER
+#define INVSIZE 15
+
 // Class Options
 enum {FIGHTER, MAGE, ROGUE};
 
 // Stat types
 enum {HP, STR, DEX, INTEL, AC};
+
+// Combat move options
+enum {OFFENSE, DEFENSE = 4};
+
 
 extern CHARACTER player;
 
@@ -73,9 +80,6 @@ extern CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS];
 // Damage Types
 enum {PHYSICAL, MAGICAL};
 
-// Types of characters
-enum {PC, MOB};
-
 
 // Prototypes
 void initPlayer();
@@ -88,6 +92,10 @@ void buffChar (CHARACTER target, int stat, int scale);
 
 // void pickupItem(ITEM object);
 // void dropItem(ITEM object);
+
+// Stat Modifier Calculator
+int statEquipped(CHARACTER target, int stat);
+int statMod(CHARACTER target, int stat);
 
 // Dice rolls for characters
 int intDiceRoll(CHARACTER target);

@@ -1,6 +1,8 @@
 // Variables
 extern int seed;
 extern int currRoom;
+extern int turnCount;
+
 
 // Custom Game Colors
 #define NUMCOLORS 7

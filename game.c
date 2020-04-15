@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "myLib.h"
+#include "combat.h"
 #include "character.h"
 #include "item.h"
 #include "room.h"
@@ -12,6 +13,7 @@ OBJ_ATTR shadowOAM [128];
 // Variables
 int seed;
 int currRoom;
+int turnCount;
 
 // Initialize the game
 void init() {
@@ -34,6 +36,7 @@ void init() {
 
 // Updates the game each frame
 void updateGame() {
+
     if (dungeon[currRoom].adjective == TRAP) {
         checkTrap();
         dungeon[currRoom].adjective = EMPTY;
@@ -41,7 +44,20 @@ void updateGame() {
         gotoCombat(dungeon[currRoom].enemy);
     }
 
+    // // Search Room ability
+    // if (BUTTON_PRESSED(BUTTON_A)) {
+    //     checkSearch();
+    // }
     
+    // Room Traversal
+    else if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom + 1 <= 12) {
+        currRoom++;
+        goToGame();
+    }
+    else if (BUTTON_PRESSED(BUTTON_LEFT) && currRoom - 1 >= 0) {
+        currRoom--;
+        goToGame();
+    }
 }
 
 // // Draws the game each frame

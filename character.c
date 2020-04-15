@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "myLib.h"
 #include "game.h"
+#include "combat.h"
 #include "item.h"
 #include "room.h"
 #include "character.h"
@@ -21,14 +22,45 @@ void initPlayer() {
     player.dexterity = 10;
     player.strength = 8;
 
+    player.dmg = 8;
+
     player.hpMax = 50;
     player.hpCurr = player.hpMax;
+
+    player.backpack[0] = player.weapon;
+    player.backpack[1] = player.armor
+
+    for (int i = 2; i < INVSIZE; i++) {
+        player.backpack[i] = NULL;
+    }
 
 }
 
 // void updatePlayer() {
 
 // }
+
+void drawPlayer() {
+
+}
+
+void checkDeath() {
+    if (player.hpCurr == 0) {
+        int revived = 0;
+        for (int i = 0; i < INVSIZE; i++) {
+            if (player.backpack[i].id == REVIVALORB) {
+                player.hpCurr == player.hpMax;
+                player.backpack[i] == NULL;
+                revived = 1;
+                break;
+            }
+        }
+        if (!revived) {
+            goToLose();
+        }
+    }
+}
+
 
 void initEnemies() {
     CHARACTER abomination =     {.enemyid = ABOMINATION,    .hpMax = 25, .hpCurr = 25, .dmg = 10, .intelligence = 8, .dexterity = 12, .strength = 16, .ac = 12, .tilerow = 0, .tilecol = 0};
@@ -58,8 +90,9 @@ void initEnemies() {
 
 int damageChar(CHARACTER target, int dice) {
     int damage = (rand() % dice) + 1;
-    if (target.hpCurr - damage <= 0) {
-        target.hpCurr = 0;
+    // Ensure players do not die by traps
+    if (target.hpCurr - damage <= 1) {
+        target.hpCurr = 1;
     } else {
         target.hpCurr -= damage;
     }
@@ -98,8 +131,30 @@ void buffChar(CHARACTER target, int stat, int scale) {
 // void pickupItem(ITEM object);
 // void dropItem(ITEM object);
 
+int statEquipped(CHARACTER target, int stat) {
+        switch (stat)
+    {
+        case AC:
+            return (target.ac + target.armor.acEff);
+            break;
+        case INTEL:
+            return (target.intelligence + target.armor.intelligenceEff + target.weapon.intelligenceEff);
+            break;
+        case DEX:
+            return (target.dexterity + target.armor.dexterityEff + target.weapon.dexterityEff);
+            break;
+        case STR:
+            return (target.strength + target.armor.strengthEff + target.weapon.strengthEff);
+            break;
+    }
+}
+
+int statMod(CHARACTER target, int stat) {
+    return (statEquiped(target, stat) / 2) - 5;
+}
+
 int intDiceRoll(CHARACTER target) {
-    int modifier = ((target.intelligence + target.armor.intelligenceEff + target.weapon.intelligenceEff) / 2) - 5;
+    int modifier = statMod(target, INTEL);
     int roll = (((rand() % 20) + 1) + modifier);
     if (roll < 1) {
         return 1;
@@ -110,7 +165,7 @@ int intDiceRoll(CHARACTER target) {
 }
 
 int dexDiceRoll(CHARACTER target) {
-    int modifier = ((target.dexterity + target.armor.dexterityEff + target.weapon.dexterityEff) / 2) - 5;
+    int modifier = statMod(target, DEX);
     int roll = (((rand() % 20) + 1) + modifier);
     if (roll < 1) {
         return 1;
@@ -120,7 +175,7 @@ int dexDiceRoll(CHARACTER target) {
 }
 
 int strDiceRoll(CHARACTER target) {
-    int modifier = ((target.strength + target.armor.strengthEff + target.weapon.strengthEff) / 2) - 5;
+    int modifier = statMod(target, STR);
     int roll = (((rand() % 20) + 1) + modifier);
     if (roll < 1) {
         return 1;

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "myLib.h"
 #include "game.h"
+#include "combat.h"
 #include "character.h"
 #include "room.h"
 #include "item.h"

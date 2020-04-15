@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "myLib.h"
 #include "game.h"
+#include "combat.h"
 #include "character.h"
 #include "item.h"
 #include "room.h"
@@ -22,10 +23,12 @@ void goToCharCreation();
 void charCreation();
 void goToGame();
 void game();
-void goToCombat(CHARACTER enemy);
-void combat();
 void goToPause();
 void pause();
+void goToCombat(CHARACTER enemy);
+void combat();
+void goToCombatPause();
+void combatPause();
 void goToWin();
 void win();
 void goToLose();
@@ -33,7 +36,7 @@ void lose();
 
 
 // States
-enum {START, CHARCREATE, GAME, COMBAT, PAUSE, WIN, LOSE};
+enum {START, CHARCREATE, GAME, PAUSE, COMBAT, COMBATPAUSE, WIN, LOSE};
 int state;
 
 // Button Variables
@@ -68,11 +71,14 @@ int main() {
             case GAME:
                 game();
                 break;
+            case PAUSE:
+                pause();
+                break;
             case COMBAT:
                 combat();
                 break;
-            case PAUSE:
-                pause();
+            case COMBATPAUSE:
+                combatPause();
                 break;
             case WIN:
                 win();
@@ -88,9 +94,11 @@ int main() {
 // Set up GBA
 void initialize() {
 
-    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE;
+    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
 
-    REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE;
+    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(22) | BG_SIZE_WIDE;
+
+    REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE;
 
     buttons = BUTTONS;
 
@@ -106,7 +114,7 @@ void goToStart() {
     DMANow(3, startTiles, &CHARBLOCK[0], startTilesLen / 2);
 
     hideSprites();
-    REG_DISPCTL =   MODE0 | BG0_ENABLE;
+    REG_DISPCTL =   MODE0 | BG0_ENABLE | BG1_ENABLE;
 
     //Wait for vertical blank and flip the page
     waitForVBlank();
@@ -149,7 +157,7 @@ void goToCharCreation() {
     // DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
 
     hideSprites();
-    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE;
+    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
 
     state = CHARCREATE;
 }
@@ -179,7 +187,7 @@ void goToGame() {
     // DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
 
     hideSprites();
-    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE;
+    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
 
     state = GAME;
 }
@@ -198,26 +206,7 @@ void game() {
     if (BUTTON_PRESSED(BUTTON_START)) {
         goToPause();
     }
-    else if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom + 1 <= 12) {
-        currRoom++;
-        goToGame();
-    }
-    else if (BUTTON_PRESSED(BUTTON_LEFT) && currRoom - 1 >= 0) {
-        currRoom--;
-        goToGame();
-    }
-    if (BUTTON_PRESSED(BUTTON_RIGHT) && currRoom == 12) {
-        goToWin();
-    }
     
-}
-
-void goToCombat(CHARACTER enemy) {
-
-}
-
-void combat() {
-
 }
 
 // Sets up the pause state
@@ -228,7 +217,7 @@ void goToPause() {
     DMANow(3, pauseTiles, &CHARBLOCK[0], pauseTilesLen / 2);
 
     hideSprites();
-    REG_DISPCTL =   MODE0 | BG0_ENABLE;
+    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
 
     //Wait for vertical blank and flip the page
     waitForVBlank();
@@ -253,6 +242,53 @@ void pause() {
     }
 }
 
+// Set up Combat state
+void goToCombat() {
+    initCombat(enemy);
+
+    loadRoomData(currRoom);
+
+    hideSprites();
+    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
+
+    state = COMBAT;
+
+}
+
+// Handle every frame of Combat state
+void combat() {
+    updateCombat();
+    drawCombat();
+}
+
+void goToCombatPause() {
+    DMANow(3, pausePal, PALETTE, 256);
+    DMANow(3, pauseMap, &SCREENBLOCK[28], pauseMapLen / 2);
+    DMANow(3, pauseTiles, &CHARBLOCK[0], pauseTilesLen / 2);
+
+    hideSprites();
+    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
+
+    //Wait for vertical blank and flip the page
+    waitForVBlank();
+    flipPage();
+
+    state = COMBATPAUSE;
+}
+
+void CombatPause() {
+    // Lock the framerate to 60 fps
+    waitForVBlank();
+
+    // State transitions
+    if (BUTTON_PRESSED(BUTTON_START)) {
+        goToCombat(enemyChar);
+    }
+    else if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        goToStart();
+    }
+}
+
 // Sets up the win state
 void goToWin() {
 
@@ -261,7 +297,7 @@ void goToWin() {
     DMANow(3, winTiles, &CHARBLOCK[0], winTilesLen / 2);
 
     hideSprites();
-    REG_DISPCTL =   MODE0 | BG0_ENABLE;
+    REG_DISPCTL =   MODE0 | BG0_ENABLE | BG1_ENABLE;
 
     //Wait for vertical blank and flip the page
     waitForVBlank();
@@ -289,7 +325,7 @@ void goToLose() {
     DMANow(3, loseTiles, &CHARBLOCK[0], loseTilesLen / 2);
 
     hideSprites();
-    REG_DISPCTL =   MODE0 | BG0_ENABLE;
+    REG_DISPCTL =   MODE0 | BG0_ENABLE | BG1_ENABLE;
 
     //Wait for vertical blank and flip the page
     waitForVBlank();

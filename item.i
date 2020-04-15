@@ -1336,6 +1336,8 @@ int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, i
 
 extern int seed;
 extern int currRoom;
+extern int turnCount;
+
 
 
 
@@ -1348,6 +1350,19 @@ void initGame();
 void updateGame();
 void drawGame();
 # 5 "item.c" 2
+# 1 "combat.h" 1
+
+extern CHARACTER enemyChar;
+extern int turn;
+
+
+void initCombat(CHARACTER enemy);
+void updateCombat();
+void drawCombat();
+
+void attack(CHARACTER source, CHARACTER target);
+int rollDmg(int dice, int bonus);
+# 6 "item.c" 2
 # 1 "character.h" 1
 typedef struct character {
     int playerclass;
@@ -1362,10 +1377,11 @@ typedef struct character {
     int ac;
 
     int dmg;
+    int stance;
 
     ITEM weapon;
     ITEM armor;
-    ITEM backpack [10];
+    ITEM backpack [INVSIZE];
 
     int tilerow;
     int tilecol;
@@ -1373,10 +1389,16 @@ typedef struct character {
 
 
 
+
+
 enum {FIGHTER, MAGE, ROGUE};
 
 
 enum {HP, STR, DEX, INTEL, AC};
+
+
+enum {OFFENSE, DEFENSE = 4};
+
 
 extern CHARACTER player;
 
@@ -1425,9 +1447,6 @@ extern CHARACTER enemyList [16 + 4];
 enum {PHYSICAL, MAGICAL};
 
 
-enum {PC, MOB};
-
-
 
 void initPlayer();
 
@@ -1441,10 +1460,14 @@ void buffChar (CHARACTER target, int stat, int scale);
 
 
 
+int statEquipped(CHARACTER target, int stat);
+int statMod(CHARACTER target, int stat);
+
+
 int intDiceRoll(CHARACTER target);
 int dexDiceRoll(CHARACTER target);
 int strDiceRoll(CHARACTER target);
-# 6 "item.c" 2
+# 7 "item.c" 2
 # 1 "room.h" 1
 typedef struct room {
     int roomType;
@@ -1456,6 +1479,8 @@ typedef struct room {
 
     int searchSuccess;
     int trapSuccess;
+
+    int searched = 0;
 } ROOM;
 
 
@@ -1489,7 +1514,7 @@ void drawRoom();
 
 int checkSearch();
 int checkTrap();
-# 7 "item.c" 2
+# 8 "item.c" 2
 # 1 "item.h" 1
 typedef struct item {
     int id;
@@ -1587,7 +1612,7 @@ int randomWeapon();
 int randomArmor();
 int randomCommon();
 int randomRare();
-# 8 "item.c" 2
+# 9 "item.c" 2
 
 ITEM itemList [10 + 9 + 6 + 7];
 
