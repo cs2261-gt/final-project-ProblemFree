@@ -1539,22 +1539,22 @@ void initPlayer();
 
 void drawPlayer();
 
-int damageChar(CHARACTER target, int dice);
-int healChar (CHARACTER target, int dice);
-void buffChar (CHARACTER target, int stat, int scale);
+int damageChar(CHARACTER * target, int dice);
+int healChar (CHARACTER * target, int dice);
+void buffChar (CHARACTER * target, int stat, int scale);
 void checkDeath();
 
 
 
 
-int statEquipped(CHARACTER target, int stat);
-int statMod(CHARACTER target, int stat);
-int statModMob(CHARACTER target, int stat);
+int statEquipped(CHARACTER * target, int stat);
+int statMod(CHARACTER * target, int stat);
+int statModMob(CHARACTER * target, int stat);
 
 
-int intDiceRoll(CHARACTER target);
-int dexDiceRoll(CHARACTER target);
-int strDiceRoll(CHARACTER target);
+int intDiceRoll(CHARACTER * target);
+int dexDiceRoll(CHARACTER * target);
+int strDiceRoll(CHARACTER * target);
 # 7 "character.c" 2
 # 1 "room.h" 1
 typedef struct room {
@@ -1614,7 +1614,7 @@ void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
 
-void attack(CHARACTER source, CHARACTER target);
+void attack(CHARACTER * source, CHARACTER * target);
 int rollDmg(int dice, int bonus);
 # 9 "character.c" 2
 
@@ -1700,42 +1700,42 @@ void initEnemies() {
     CHARACTER enemyList [16 + 4] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
 }
 
-int damageChar(CHARACTER target, int dice) {
+int damageChar(CHARACTER * target, int dice) {
     int damage = (rand() % dice) + 1;
 
-    if (target.hpCurr - damage <= 1) {
-        target.hpCurr = 1;
+    if (target->hpCurr - damage <= 1) {
+        target->hpCurr = 1;
     } else {
-        target.hpCurr -= damage;
+        target->hpCurr -= damage;
     }
 }
 
-int healChar(CHARACTER target, int dice) {
+int healChar(CHARACTER * target, int dice) {
     int heal = (rand() % dice) + 1;
-    if (target.hpCurr + heal >= target.hpMax) {
-        target.hpCurr = target.hpMax;
+    if (target->hpCurr + heal >= target->hpMax) {
+        target->hpCurr = target->hpMax;
     } else {
-        target.hpCurr += heal;
+        target->hpCurr += heal;
     }
 }
 
-void buffChar(CHARACTER target, int stat, int scale) {
+void buffChar(CHARACTER * target, int stat, int scale) {
     switch (stat)
     {
     case HP:
-        target.hpMax += scale;
+        target->hpMax += scale;
         break;
     case AC:
-        target.ac += scale;
+        target->ac += scale;
         break;
     case INTEL:
-        target.intelligence += scale;
+        target->intelligence += scale;
         break;
     case DEX:
-        target.dexterity += scale;
+        target->dexterity += scale;
         break;
     case STR:
-        target.strength += scale;
+        target->strength += scale;
         break;
     }
 }
@@ -1743,50 +1743,50 @@ void buffChar(CHARACTER target, int stat, int scale) {
 
 
 
-int statEquipped(CHARACTER target, int stat) {
+int statEquipped(CHARACTER * target, int stat) {
         switch (stat)
     {
         case AC:
-            return (target.ac + target.armor.acEff);
+            return (target->ac + target->armor.acEff);
             break;
         case INTEL:
-            return (target.intelligence + target.armor.intelligenceEff + target.weapon.intelligenceEff);
+            return (target->intelligence + target->armor.intelligenceEff + target->weapon.intelligenceEff);
             break;
         case DEX:
-            return (target.dexterity + target.armor.dexterityEff + target.weapon.dexterityEff);
+            return (target->dexterity + target->armor.dexterityEff + target->weapon.dexterityEff);
             break;
         case STR:
-            return (target.strength + target.armor.strengthEff + target.weapon.strengthEff);
+            return (target->strength + target->armor.strengthEff + target->weapon.strengthEff);
             break;
     }
 }
 
 
-int statMod(CHARACTER target, int stat) {
+int statMod(CHARACTER * target, int stat) {
     return (statEquipped(target, stat) / 2) - 5;
 }
 
 
-int statModMob(CHARACTER target, int stat) {
+int statModMob(CHARACTER * target, int stat) {
     switch (stat)
     {
         case AC:
-            return (((target.ac) / 2) - 5);
+            return (((target->ac) / 2) - 5);
             break;
         case INTEL:
-            return (((target.intelligence) / 2) - 5);
+            return (((target->intelligence) / 2) - 5);
             break;
         case DEX:
-            return (((target.dexterity) / 2) - 5);
+            return (((target->dexterity) / 2) - 5);
             break;
         case STR:
-            return (((target.strength) / 2) - 5);
+            return (((target->strength) / 2) - 5);
             break;
     }
 }
 
 
-int intDiceRoll (CHARACTER target) {
+int intDiceRoll (CHARACTER * target) {
     int modifier = statMod(target, INTEL);
     int roll = (((rand() % 20) + 1) + modifier);
     if (roll <= 1) {
@@ -1795,7 +1795,7 @@ int intDiceRoll (CHARACTER target) {
     return roll;
 }
 
-int dexDiceRoll (CHARACTER target) {
+int dexDiceRoll (CHARACTER * target) {
     int modifier = statMod(target, DEX);
     int roll = (((rand() % 20) + 1) + modifier);
     if (roll <= 1) {
@@ -1804,7 +1804,7 @@ int dexDiceRoll (CHARACTER target) {
     return roll;
 }
 
-int strDiceRoll (CHARACTER target) {
+int strDiceRoll (CHARACTER * target) {
     int modifier = statMod(target, STR);
     int roll = (((rand() % 20) + 1) + modifier);
     if (roll <= 1) {

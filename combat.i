@@ -1539,22 +1539,22 @@ void initPlayer();
 
 void drawPlayer();
 
-int damageChar(CHARACTER target, int dice);
-int healChar (CHARACTER target, int dice);
-void buffChar (CHARACTER target, int stat, int scale);
+int damageChar(CHARACTER * target, int dice);
+int healChar (CHARACTER * target, int dice);
+void buffChar (CHARACTER * target, int stat, int scale);
 void checkDeath();
 
 
 
 
-int statEquipped(CHARACTER target, int stat);
-int statMod(CHARACTER target, int stat);
-int statModMob(CHARACTER target, int stat);
+int statEquipped(CHARACTER * target, int stat);
+int statMod(CHARACTER * target, int stat);
+int statModMob(CHARACTER * target, int stat);
 
 
-int intDiceRoll(CHARACTER target);
-int dexDiceRoll(CHARACTER target);
-int strDiceRoll(CHARACTER target);
+int intDiceRoll(CHARACTER * target);
+int dexDiceRoll(CHARACTER * target);
+int strDiceRoll(CHARACTER * target);
 # 7 "combat.c" 2
 # 1 "room.h" 1
 typedef struct room {
@@ -1614,7 +1614,7 @@ void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
 
-void attack(CHARACTER source, CHARACTER target);
+void attack(CHARACTER * source, CHARACTER * target);
 int rollDmg(int dice, int bonus);
 # 9 "combat.c" 2
 
@@ -1651,15 +1651,15 @@ void updateCombat() {
 
 
         if (turn == 0) {
-            if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
+            if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<0)))) {
                 player.stance = OFFENSE;
-                attack(player, enemyChar);
+                attack(&player, &enemyChar);
                 turn = 1;
-            } else if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
+            } else if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<1)))) {
                 player.stance = DEFENSE;
                 turn = 1;
-            } else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-                goToCombatPause(enemyChar);
+            } else if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<3)))) {
+                goToCombatPause();
             } else if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<9))) && dungeon[currRoom].adjective != BOSS) {
                 currRoom--;
                 goToGame();
@@ -1678,8 +1678,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 } else {
@@ -1688,7 +1689,7 @@ void updateCombat() {
                         turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 }
@@ -1700,7 +1701,7 @@ void updateCombat() {
                         turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 } else {
@@ -1709,7 +1710,7 @@ void updateCombat() {
                         turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 }
@@ -1721,7 +1722,7 @@ void updateCombat() {
                         turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 } else {
@@ -1730,7 +1731,7 @@ void updateCombat() {
                         turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 }
@@ -1742,7 +1743,7 @@ void updateCombat() {
                         turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 } else {
@@ -1751,7 +1752,7 @@ void updateCombat() {
                         turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 }
@@ -1763,7 +1764,7 @@ void updateCombat() {
                         turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 } else {
@@ -1772,7 +1773,7 @@ void updateCombat() {
                         turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
-                        attack(enemyChar, player);
+                        attack(&enemyChar, &player);
                         turn = 0;
                     }
                 }
@@ -1787,64 +1788,64 @@ void drawCombat() {
 }
 
 
-void attack(CHARACTER source, CHARACTER target) {
+void attack(CHARACTER * source, CHARACTER * target) {
 
-    if (source.playerclass == MAGE) {
-        if ((rand() % 20) + 1 + statMod(source, INTEL) >= target.ac + target.stance) {
+    if (source->playerclass == MAGE) {
+        if ((rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance) {
             int damage = rollDmg(10, statMod(source, INTEL));
-            if (target.hpCurr - damage <= 0) {
-                target.hpCurr = 0;
+            if (target->hpCurr - damage <= 0) {
+                target->hpCurr = 0;
             } else {
-                target.hpCurr -= damage;
+                target->hpCurr -= damage;
             }
         }
-    } else if (source.playerclass == ROGUE) {
-        if ((rand() % 20) + 1 + statMod(source, DEX) >= target.ac + target.stance) {
+    } else if (source->playerclass == ROGUE) {
+        if ((rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance) {
             int damage = rollDmg(10, statMod(source, DEX));
-            if (target.hpCurr - damage <= 0) {
-                target.hpCurr = 0;
+            if (target->hpCurr - damage <= 0) {
+                target->hpCurr = 0;
             } else {
-                target.hpCurr -= damage;
+                target->hpCurr -= damage;
             }
         }
-    } else if (source.playerclass == FIGHTER) {
-        if ((rand() % 20) + 1 + statMod(source, STR) >= target.ac + target.stance) {
+    } else if (source->playerclass == FIGHTER) {
+        if ((rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance) {
             int damage = rollDmg(10, statMod(source, STR));
-            if (target.hpCurr - damage <= 0) {
-                target.hpCurr = 0;
+            if (target->hpCurr - damage <= 0) {
+                target->hpCurr = 0;
             } else {
-                target.hpCurr -= damage;
+                target->hpCurr -= damage;
             }
         }
     }
 
-    else if (source.enemyid == BEHOLDER || source.enemyid == DRAGON || source.enemyid == WIZARD || source.enemyid == MINDFLAYER) {
-        if (((rand() % 20) + 1 + 2) >= statEquipped(target, AC) + target.stance) {
-            int damage = rollDmg(source.dmg, 2);
-            if (target.hpCurr - damage <= 0) {
-                target.hpCurr = 0;
+    else if (source->enemyid == BEHOLDER || source->enemyid == DRAGON || source->enemyid == WIZARD || source->enemyid == MINDFLAYER) {
+        if (((rand() % 20) + 1 + 2) >= statEquipped(target, AC) + target->stance) {
+            int damage = rollDmg(source->dmg, 2);
+            if (target->hpCurr - damage <= 0) {
+                target->hpCurr = 0;
             } else {
-                target.hpCurr -= damage;
+                target->hpCurr -= damage;
             }
         }
-    } else if (source.enemyid == DRAGON) {
-        if (((rand() % 20) + 1 + 5) >= statEquipped(target, AC) + target.stance) {
-            int damage = rollDmg(source.dmg, 5);
-            if (target.hpCurr - damage <= 0) {
-                target.hpCurr = 0;
+    } else if (source->enemyid == DRAGON) {
+        if (((rand() % 20) + 1 + 5) >= statEquipped(target, AC) + target->stance) {
+            int damage = rollDmg(source->dmg, 5);
+            if (target->hpCurr - damage <= 0) {
+                target->hpCurr = 0;
             } else {
-                target.hpCurr -= damage;
+                target->hpCurr -= damage;
             }
         }
     }
 
     else {
-        if (((rand() % 20) + 1 + 0) >= statEquipped(target, AC) + target.stance) {
-            int damage = rollDmg(source.dmg, 0);
-            if (target.hpCurr - damage <= 0) {
-                target.hpCurr = 0;
+        if (((rand() % 20) + 1 + 0) >= statEquipped(target, AC) + target->stance) {
+            int damage = rollDmg(source->dmg, 0);
+            if (target->hpCurr - damage <= 0) {
+                target->hpCurr = 0;
             } else {
-                target.hpCurr -= damage;
+                target->hpCurr -= damage;
             }
         }
     }

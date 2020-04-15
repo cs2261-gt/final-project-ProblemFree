@@ -931,31 +931,24 @@ checkSearch:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, lr}
+	push	{r4, lr}
 	ldr	r4, .L87
-	sub	sp, sp, #716
-	mov	r2, #712
 	ldr	r3, .L87+4
-	add	r1, r4, #16
-	mov	r0, sp
+	mov	r0, r4
 	mov	lr, pc
 	bx	r3
-	ldr	r5, .L87+8
-	ldm	r4, {r0, r1, r2, r3}
-	mov	lr, pc
-	bx	r5
-	ldr	r3, .L87+12
-	ldr	lr, [r3]
-	ldr	ip, .L87+16
-	add	r3, lr, lr, lsl #1
-	add	r3, r3, r3, lsl #5
-	add	r3, ip, r3, lsl #3
-	ldr	r3, [r3, #780]
+	ldr	r3, .L87+8
+	ldr	ip, [r3]
+	ldr	lr, .L87+12
+	add	r2, ip, ip, lsl #1
+	add	r2, r2, r2, lsl #5
+	add	r2, lr, r2, lsl #3
+	ldr	r3, [r2, #780]
 	cmp	r0, r3
 	blt	.L83
 	mov	r2, r4
 	mov	r3, #0
-	lsl	r0, lr, #1
+	lsl	r0, ip, #1
 .L82:
 	ldr	r1, [r2, #120]
 	cmp	r1, #32
@@ -966,36 +959,31 @@ checkSearch:
 	bne	.L82
 .L83:
 	mov	r3, #0
+	pop	{r4, lr}
 	mov	r0, r3
-	add	sp, sp, #716
-	@ sp needed
-	pop	{r4, r5, lr}
 	bx	lr
 .L86:
-	add	lr, r0, lr
-	add	lr, lr, lr, lsl #5
-	add	ip, ip, lr, lsl #3
+	add	ip, r0, ip
+	add	ip, ip, ip, lsl #5
+	add	lr, lr, ip, lsl #3
 	add	r3, r3, r3, lsl #2
-	add	ip, ip, #8
-	add	r4, r4, r3, lsl #3
-	ldmia	ip!, {r0, r1, r2, r3}
-	add	r4, r4, #120
-	stmia	r4!, {r0, r1, r2, r3}
-	ldmia	ip!, {r0, r1, r2, r3}
-	stmia	r4!, {r0, r1, r2, r3}
+	add	lr, lr, #8
+	add	ip, r4, r3, lsl #3
+	ldmia	lr!, {r0, r1, r2, r3}
+	add	ip, ip, #120
+	stmia	ip!, {r0, r1, r2, r3}
+	ldmia	lr!, {r0, r1, r2, r3}
+	stmia	ip!, {r0, r1, r2, r3}
 	mov	r3, #1
-	ldm	ip, {r0, r1}
-	stm	r4, {r0, r1}
+	ldm	lr, {r0, r1}
+	pop	{r4, lr}
+	stm	ip, {r0, r1}
 	mov	r0, r3
-	add	sp, sp, #716
-	@ sp needed
-	pop	{r4, r5, lr}
 	bx	lr
 .L88:
 	.align	2
 .L87:
 	.word	player
-	.word	memcpy
 	.word	intDiceRoll
 	.word	currRoom
 	.word	dungeon
@@ -1010,69 +998,46 @@ checkTrap:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, r7, r8, lr}
-	ldr	r6, .L98
-	ldr	r3, [r6]
-	ldr	r5, .L98+4
+	push	{r4, r5, r6, lr}
+	ldr	r5, .L98
+	ldr	r3, [r5]
+	ldr	r4, .L98+4
 	add	r3, r3, r3, lsl #1
 	add	r3, r3, r3, lsl #5
-	add	r3, r5, r3, lsl #3
+	add	r3, r4, r3, lsl #3
 	ldr	r3, [r3, #776]
 	cmp	r3, #1
-	sub	sp, sp, #720
 	beq	.L96
 	cmp	r3, #0
 	beq	.L97
 .L93:
 	mov	r0, #0
 .L89:
-	add	sp, sp, #720
-	@ sp needed
-	pop	{r4, r5, r6, r7, r8, lr}
+	pop	{r4, r5, r6, lr}
 	bx	lr
 .L97:
-	ldr	r4, .L98+8
-	mov	r2, #712
-	add	r1, r4, #16
-	mov	r0, sp
-	ldr	r7, .L98+12
-	mov	lr, pc
-	bx	r7
-	ldr	r8, .L98+16
-	ldm	r4, {r0, r1, r2, r3}
+	ldr	r0, .L98+8
+	ldr	r3, .L98+12
 .L95:
 	mov	lr, pc
-	bx	r8
-	ldr	r3, [r6]
+	bx	r3
+	ldr	r3, [r5]
 	add	r3, r3, r3, lsl #1
 	add	r3, r3, r3, lsl #5
-	add	r5, r5, r3, lsl #3
-	ldr	r3, [r5, #784]
+	add	r4, r4, r3, lsl #3
+	ldr	r3, [r4, #784]
 	cmp	r0, r3
 	bge	.L93
-	mov	r3, #6
-	mov	r2, #712
-	ldr	r1, .L98+20
-	mov	r0, sp
-	str	r3, [sp, #712]
+	mov	r1, #6
+	ldr	r0, .L98+8
+	ldr	r3, .L98+16
 	mov	lr, pc
-	bx	r7
-	ldm	r4, {r0, r1, r2, r3}
-	ldr	r4, .L98+24
-	mov	lr, pc
-	bx	r4
+	bx	r3
 	mov	r0, #1
 	b	.L89
 .L96:
-	ldr	r4, .L98+8
-	mov	r2, #712
-	add	r1, r4, #16
-	mov	r0, sp
-	ldr	r7, .L98+12
-	mov	lr, pc
-	bx	r7
-	ldr	r8, .L98+28
-	ldm	r4, {r0, r1, r2, r3}
+	ldr	r0, .L98+8
+	ldr	r3, .L98+20
 	b	.L95
 .L99:
 	.align	2
@@ -1080,9 +1045,7 @@ checkTrap:
 	.word	currRoom
 	.word	dungeon
 	.word	player
-	.word	memcpy
 	.word	dexDiceRoll
-	.word	player+16
 	.word	damageChar
 	.word	intDiceRoll
 	.size	checkTrap, .-checkTrap

@@ -1539,22 +1539,22 @@ void initPlayer();
 
 void drawPlayer();
 
-int damageChar(CHARACTER target, int dice);
-int healChar (CHARACTER target, int dice);
-void buffChar (CHARACTER target, int stat, int scale);
+int damageChar(CHARACTER * target, int dice);
+int healChar (CHARACTER * target, int dice);
+void buffChar (CHARACTER * target, int stat, int scale);
 void checkDeath();
 
 
 
 
-int statEquipped(CHARACTER target, int stat);
-int statMod(CHARACTER target, int stat);
-int statModMob(CHARACTER target, int stat);
+int statEquipped(CHARACTER * target, int stat);
+int statMod(CHARACTER * target, int stat);
+int statModMob(CHARACTER * target, int stat);
 
 
-int intDiceRoll(CHARACTER target);
-int dexDiceRoll(CHARACTER target);
-int strDiceRoll(CHARACTER target);
+int intDiceRoll(CHARACTER * target);
+int dexDiceRoll(CHARACTER * target);
+int strDiceRoll(CHARACTER * target);
 # 7 "room.c" 2
 # 1 "room.h" 1
 typedef struct room {
@@ -1614,7 +1614,7 @@ void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
 
-void attack(CHARACTER source, CHARACTER target);
+void attack(CHARACTER * source, CHARACTER * target);
 int rollDmg(int dice, int bonus);
 # 9 "room.c" 2
 
@@ -2022,7 +2022,7 @@ void drawRoom() {
 
 
 int checkSearch() {
-    if (intDiceRoll(player) >= dungeon[currRoom].searchSuccess) {
+    if (intDiceRoll(&player) >= dungeon[currRoom].searchSuccess) {
         for (int i = 0; i < 15; i++) {
             if (player.backpack[i].id == 10 + 9 + 6 + 7) {
                 player.backpack[i] = dungeon[currRoom].object;
@@ -2035,13 +2035,13 @@ int checkSearch() {
 
 int checkTrap() {
     if (dungeon[currRoom].trap == MAGICAL) {
-        if (intDiceRoll(player) < dungeon[currRoom].trapSuccess) {
-            damageChar(player, 6);
+        if (intDiceRoll(&player) < dungeon[currRoom].trapSuccess) {
+            damageChar(&player, 6);
             return 1;
         }
     } else if (dungeon[currRoom].trap == PHYSICAL) {
-        if (dexDiceRoll(player) < dungeon[currRoom].trapSuccess) {
-            damageChar(player, 6);
+        if (dexDiceRoll(&player) < dungeon[currRoom].trapSuccess) {
+            damageChar(&player, 6);
             return 1;
         }
     }

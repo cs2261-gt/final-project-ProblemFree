@@ -154,6 +154,7 @@ initEnemies:
 	@ link register save eliminated.
 	bx	lr
 	.size	initEnemies, .-initEnemies
+	.global	__aeabi_idivmod
 	.align	2
 	.global	damageChar
 	.syntax unified
@@ -162,22 +163,31 @@ initEnemies:
 	.type	damageChar, %function
 damageChar:
 	@ Function supports interworking.
-	@ args = 732, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
-	push	{r4, lr}
-	ldr	r4, .L24
-	add	ip, sp, #4
-	stmib	ip, {r0, r1, r2, r3}
+	push	{r4, r5, r6, lr}
+	mov	r5, r1
+	ldr	r3, .L24
+	mov	r4, r0
 	mov	lr, pc
-	bx	r4
-	pop	{r4, lr}
-	add	sp, sp, #16
+	bx	r3
+	mov	r1, r5
+	ldr	r3, .L24+4
+	mov	lr, pc
+	bx	r3
+	ldr	r3, [r4, #12]
+	add	r1, r1, #1
+	sub	r1, r3, r1
+	cmp	r1, #1
+	movlt	r1, #1
+	str	r1, [r4, #12]
+	pop	{r4, r5, r6, lr}
 	bx	lr
 .L25:
 	.align	2
 .L24:
 	.word	rand
+	.word	__aeabi_idivmod
 	.size	damageChar, .-damageChar
 	.align	2
 	.global	healChar
@@ -187,23 +197,32 @@ damageChar:
 	.type	healChar, %function
 healChar:
 	@ Function supports interworking.
-	@ args = 732, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
-	push	{r4, lr}
-	ldr	r4, .L28
-	add	ip, sp, #4
-	stmib	ip, {r0, r1, r2, r3}
+	push	{r4, r5, r6, lr}
+	mov	r5, r1
+	ldr	r3, .L28
+	mov	r4, r0
 	mov	lr, pc
-	bx	r4
-	pop	{r4, lr}
-	mov	r0, #0
-	add	sp, sp, #16
+	bx	r3
+	mov	r1, r5
+	ldr	r3, .L28+4
+	mov	lr, pc
+	bx	r3
+	ldr	r2, [r4, #12]
+	ldr	r3, [r4, #8]
+	add	r1, r1, #1
+	add	r1, r1, r2
+	cmp	r1, r3
+	movge	r1, r3
+	str	r1, [r4, #12]
+	pop	{r4, r5, r6, lr}
 	bx	lr
 .L29:
 	.align	2
 .L28:
 	.word	rand
+	.word	__aeabi_idivmod
 	.size	healChar, .-healChar
 	.align	2
 	.global	buffChar
@@ -213,13 +232,43 @@ healChar:
 	.type	buffChar, %function
 buffChar:
 	@ Function supports interworking.
-	@ args = 736, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	sub	sp, sp, #16
-	sub	ip, sp, #4
-	stmib	ip, {r0, r1, r2, r3}
-	add	sp, sp, #16
+	cmp	r1, #4
+	ldrls	pc, [pc, r1, asl #2]
+	b	.L30
+.L33:
+	.word	.L37
+	.word	.L36
+	.word	.L35
+	.word	.L34
+	.word	.L32
+.L36:
+	ldr	r3, [r0, #24]
+	add	r2, r3, r2
+	str	r2, [r0, #24]
+.L30:
+	bx	lr
+.L32:
+	ldr	r3, [r0, #28]
+	add	r2, r3, r2
+	str	r2, [r0, #28]
+	bx	lr
+.L37:
+	ldr	r3, [r0, #8]
+	add	r2, r3, r2
+	str	r2, [r0, #8]
+	bx	lr
+.L35:
+	ldr	r3, [r0, #20]
+	add	r2, r3, r2
+	str	r2, [r0, #20]
+	bx	lr
+.L34:
+	ldr	r3, [r0, #16]
+	add	r2, r3, r2
+	str	r2, [r0, #16]
 	bx	lr
 	.size	buffChar, .-buffChar
 	.align	2
@@ -230,56 +279,45 @@ buffChar:
 	.type	statEquipped, %function
 statEquipped:
 	@ Function supports interworking.
-	@ args = 732, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
-	str	lr, [sp, #-4]!
-	mov	lr, sp
-	ldr	ip, [sp, #732]
-	sub	ip, ip, #1
-	stmib	lr, {r0, r1, r2, r3}
-	cmp	ip, #3
-	ldrls	pc, [pc, ip, asl #2]
-	b	.L32
-.L35:
-	.word	.L38
-	.word	.L37
-	.word	.L36
-	.word	.L34
-.L37:
-	ldr	r0, [sp, #24]
-	ldr	r2, [sp, #96]
-	ldr	r3, [sp, #56]
-	add	r0, r0, r2
-	add	r0, r0, r3
-.L32:
-	ldr	lr, [sp], #4
-	add	sp, sp, #16
+	@ link register save eliminated.
+	sub	r1, r1, #1
+	cmp	r1, #3
+	ldrls	pc, [pc, r1, asl #2]
+	b	.L39
+.L41:
+	.word	.L44
+	.word	.L43
+	.word	.L42
+	.word	.L40
+.L40:
+	ldr	r3, [r0, #28]
+	ldr	r0, [r0, #100]
+	add	r0, r3, r0
 	bx	lr
-.L34:
-	ldr	r0, [sp, #32]
-	ldr	r3, [sp, #104]
-	ldr	lr, [sp], #4
-	add	r0, r0, r3
-	add	sp, sp, #16
-	bx	lr
-.L36:
-	ldr	r0, [sp, #20]
-	ldr	r2, [sp, #92]
-	ldr	r3, [sp, #52]
-	ldr	lr, [sp], #4
+.L42:
+	ldr	r3, [r0, #16]
+	ldr	r1, [r0, #88]
+	ldr	r2, [r0, #48]
+	add	r0, r3, r1
 	add	r0, r0, r2
-	add	r0, r0, r3
-	add	sp, sp, #16
 	bx	lr
-.L38:
-	ldr	r0, [sp, #28]
-	ldr	r2, [sp, #100]
-	ldr	r3, [sp, #60]
-	ldr	lr, [sp], #4
+.L43:
+	ldr	r3, [r0, #20]
+	ldr	r1, [r0, #92]
+	ldr	r2, [r0, #52]
+	add	r0, r3, r1
 	add	r0, r0, r2
-	add	r0, r0, r3
-	add	sp, sp, #16
+	bx	lr
+.L44:
+	ldr	r3, [r0, #24]
+	ldr	r1, [r0, #96]
+	ldr	r2, [r0, #56]
+	add	r0, r3, r1
+	add	r0, r0, r2
+	bx	lr
+.L39:
 	bx	lr
 	.size	statEquipped, .-statEquipped
 	.align	2
@@ -290,52 +328,15 @@ statEquipped:
 	.type	statMod, %function
 statMod:
 	@ Function supports interworking.
-	@ args = 732, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
-	push	{r4, r5, r6, r7, r8, r9, r10, lr}
-	add	r4, sp, #28
-	stmib	r4, {r0, r1, r2, r3}
-	ldr	lr, [sp, #760]
-	add	r1, sp, #48
-	add	r4, sp, #128
-	sub	lr, lr, #1
-	ldm	r1, {r1, r2, r3, r10}
-	ldr	r7, [sp, #80]
-	ldr	r5, [sp, #84]
-	ldr	r0, [sp, #88]
-	ldr	r8, [sp, #120]
-	ldr	r6, [sp, #124]
-	ldm	r4, {r4, r9}
-	cmp	lr, #3
-	ldrls	pc, [pc, lr, asl #2]
-	b	.L42
-.L44:
-	.word	.L47
-	.word	.L46
-	.word	.L45
-	.word	.L43
-.L45:
-	add	ip, r1, r8
-	add	ip, ip, r7
-.L42:
-	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
-	add	ip, ip, ip, lsr #31
-	asr	r0, ip, #1
+	push	{r4, lr}
+	bl	statEquipped
+	add	r0, r0, r0, lsr #31
+	asr	r0, r0, #1
 	sub	r0, r0, #5
-	add	sp, sp, #16
+	pop	{r4, lr}
 	bx	lr
-.L43:
-	add	ip, r10, r9
-	b	.L42
-.L47:
-	add	ip, r3, r4
-	add	ip, ip, r0
-	b	.L42
-.L46:
-	add	ip, r2, r6
-	add	ip, ip, r5
-	b	.L42
 	.size	statMod, .-statMod
 	.align	2
 	.global	statModMob
@@ -345,54 +346,43 @@ statMod:
 	.type	statModMob, %function
 statModMob:
 	@ Function supports interworking.
-	@ args = 732, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
-	str	lr, [sp, #-4]!
-	mov	lr, sp
-	ldr	ip, [sp, #732]
-	sub	ip, ip, #1
-	stmib	lr, {r0, r1, r2, r3}
-	cmp	ip, #3
-	ldrls	pc, [pc, ip, asl #2]
+	@ link register save eliminated.
+	sub	r1, r1, #1
+	cmp	r1, #3
+	ldrls	pc, [pc, r1, asl #2]
 	b	.L49
-.L52:
-	.word	.L55
+.L51:
 	.word	.L54
 	.word	.L53
-	.word	.L51
-.L54:
-	ldr	r0, [sp, #24]
+	.word	.L52
+	.word	.L50
+.L50:
+	ldr	r0, [r0, #28]
 	add	r0, r0, r0, lsr #31
 	asr	r0, r0, #1
 	sub	r0, r0, #5
-.L49:
-	ldr	lr, [sp], #4
-	add	sp, sp, #16
 	bx	lr
-.L51:
-	ldr	r0, [sp, #32]
-	ldr	lr, [sp], #4
+.L52:
+	ldr	r0, [r0, #16]
 	add	r0, r0, r0, lsr #31
 	asr	r0, r0, #1
 	sub	r0, r0, #5
-	add	sp, sp, #16
 	bx	lr
 .L53:
-	ldr	r0, [sp, #20]
-	ldr	lr, [sp], #4
+	ldr	r0, [r0, #20]
 	add	r0, r0, r0, lsr #31
 	asr	r0, r0, #1
 	sub	r0, r0, #5
-	add	sp, sp, #16
 	bx	lr
-.L55:
-	ldr	r0, [sp, #28]
-	ldr	lr, [sp], #4
+.L54:
+	ldr	r0, [r0, #24]
 	add	r0, r0, r0, lsr #31
 	asr	r0, r0, #1
 	sub	r0, r0, #5
-	add	sp, sp, #16
+	bx	lr
+.L49:
 	bx	lr
 	.size	statModMob, .-statModMob
 	.align	2
@@ -403,24 +393,21 @@ statModMob:
 	.type	intDiceRoll, %function
 intDiceRoll:
 	@ Function supports interworking.
-	@ args = 728, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
-	push	{r4, r5, r6, lr}
-	ldr	lr, [sp, #32]
-	ldr	ip, [sp, #104]
-	add	ip, ip, lr
-	ldr	lr, [sp, #64]
-	add	ip, ip, lr
-	add	ip, ip, ip, lsr #31
-	add	lr, sp, #12
-	ldr	r5, .L60
-	asr	ip, ip, #1
-	stmib	lr, {r0, r1, r2, r3}
-	sub	r4, ip, #5
+	ldr	r3, [r0, #16]
+	ldr	r1, [r0, #88]
+	ldr	r2, [r0, #48]
+	add	r0, r3, r1
+	add	r0, r0, r2
+	add	r0, r0, r0, lsr #31
+	push	{r4, lr}
+	ldr	r3, .L58
+	asr	r0, r0, #1
+	sub	r4, r0, #5
 	mov	lr, pc
-	bx	r5
-	ldr	r3, .L60+4
+	bx	r3
+	ldr	r3, .L58+4
 	smull	r1, r2, r3, r0
 	asr	r3, r0, #31
 	rsb	r3, r3, r2, asr #3
@@ -428,14 +415,13 @@ intDiceRoll:
 	sub	r0, r0, r3, lsl #2
 	add	r0, r0, #1
 	add	r0, r0, r4
-	pop	{r4, r5, r6, lr}
 	cmp	r0, #1
 	movlt	r0, #1
-	add	sp, sp, #16
+	pop	{r4, lr}
 	bx	lr
-.L61:
+.L59:
 	.align	2
-.L60:
+.L58:
 	.word	rand
 	.word	1717986919
 	.size	intDiceRoll, .-intDiceRoll
@@ -447,24 +433,21 @@ intDiceRoll:
 	.type	dexDiceRoll, %function
 dexDiceRoll:
 	@ Function supports interworking.
-	@ args = 728, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
-	push	{r4, r5, r6, lr}
-	ldr	lr, [sp, #108]
-	ldr	ip, [sp, #36]
-	add	ip, ip, lr
-	ldr	lr, [sp, #68]
-	add	ip, ip, lr
-	add	ip, ip, ip, lsr #31
-	add	lr, sp, #12
-	ldr	r5, .L64
-	asr	ip, ip, #1
-	stmib	lr, {r0, r1, r2, r3}
-	sub	r4, ip, #5
+	ldr	r3, [r0, #20]
+	ldr	r1, [r0, #92]
+	ldr	r2, [r0, #52]
+	add	r0, r3, r1
+	add	r0, r0, r2
+	add	r0, r0, r0, lsr #31
+	push	{r4, lr}
+	ldr	r3, .L62
+	asr	r0, r0, #1
+	sub	r4, r0, #5
 	mov	lr, pc
-	bx	r5
-	ldr	r3, .L64+4
+	bx	r3
+	ldr	r3, .L62+4
 	smull	r1, r2, r3, r0
 	asr	r3, r0, #31
 	rsb	r3, r3, r2, asr #3
@@ -472,14 +455,13 @@ dexDiceRoll:
 	sub	r0, r0, r3, lsl #2
 	add	r0, r0, #1
 	add	r0, r0, r4
-	pop	{r4, r5, r6, lr}
 	cmp	r0, #1
 	movlt	r0, #1
-	add	sp, sp, #16
+	pop	{r4, lr}
 	bx	lr
-.L65:
+.L63:
 	.align	2
-.L64:
+.L62:
 	.word	rand
 	.word	1717986919
 	.size	dexDiceRoll, .-dexDiceRoll
@@ -491,24 +473,21 @@ dexDiceRoll:
 	.type	strDiceRoll, %function
 strDiceRoll:
 	@ Function supports interworking.
-	@ args = 728, pretend = 16, frame = 0
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	sub	sp, sp, #16
-	push	{r4, r5, r6, lr}
-	ldr	lr, [sp, #112]
-	ldr	ip, [sp, #40]
-	add	ip, ip, lr
-	ldr	lr, [sp, #72]
-	add	ip, ip, lr
-	add	ip, ip, ip, lsr #31
-	add	lr, sp, #12
-	ldr	r5, .L68
-	asr	ip, ip, #1
-	stmib	lr, {r0, r1, r2, r3}
-	sub	r4, ip, #5
+	ldr	r3, [r0, #24]
+	ldr	r1, [r0, #96]
+	ldr	r2, [r0, #56]
+	add	r0, r3, r1
+	add	r0, r0, r2
+	add	r0, r0, r0, lsr #31
+	push	{r4, lr}
+	ldr	r3, .L66
+	asr	r0, r0, #1
+	sub	r4, r0, #5
 	mov	lr, pc
-	bx	r5
-	ldr	r3, .L68+4
+	bx	r3
+	ldr	r3, .L66+4
 	smull	r1, r2, r3, r0
 	asr	r3, r0, #31
 	rsb	r3, r3, r2, asr #3
@@ -516,14 +495,13 @@ strDiceRoll:
 	sub	r0, r0, r3, lsl #2
 	add	r0, r0, #1
 	add	r0, r0, r4
-	pop	{r4, r5, r6, lr}
 	cmp	r0, #1
 	movlt	r0, #1
-	add	sp, sp, #16
+	pop	{r4, lr}
 	bx	lr
-.L69:
+.L67:
 	.align	2
-.L68:
+.L66:
 	.word	rand
 	.word	1717986919
 	.size	strDiceRoll, .-strDiceRoll

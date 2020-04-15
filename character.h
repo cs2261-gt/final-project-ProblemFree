@@ -88,21 +88,21 @@ void initPlayer();
 // void updatePlayer();
 void drawPlayer();
 
-int damageChar(CHARACTER target, int dice);
-int healChar (CHARACTER target, int dice);
-void buffChar (CHARACTER target, int stat, int scale);
+int damageChar(CHARACTER * target, int dice);
+int healChar (CHARACTER * target, int dice);
+void buffChar (CHARACTER * target, int stat, int scale);
 void checkDeath();
 
 // void dropItem(ITEM object);
 
 // Stat Modifier Calculator
-int statEquipped(CHARACTER target, int stat);
-int statMod(CHARACTER target, int stat);
-int statModMob(CHARACTER target, int stat);
+int statEquipped(CHARACTER * target, int stat);
+int statMod(CHARACTER * target, int stat);
+int statModMob(CHARACTER * target, int stat);
 
 // Dice rolls for characters
-int intDiceRoll(CHARACTER target);
-int dexDiceRoll(CHARACTER target);
-int strDiceRoll(CHARACTER target);
+int intDiceRoll(CHARACTER * target);
+int dexDiceRoll(CHARACTER * target);
+int strDiceRoll(CHARACTER * target);
 
 

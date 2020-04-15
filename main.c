@@ -245,6 +245,7 @@ void pause() {
 void goToCombat(CHARACTER * enemy) {
     initCombat(&enemy);
 
+
     loadRoomData(currRoom);
 
     hideSprites();

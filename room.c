@@ -249,7 +249,7 @@ void drawRoom() {
 
 // Checks
 int checkSearch() {
-    if (intDiceRoll(player) >= dungeon[currRoom].searchSuccess) {
+    if (intDiceRoll(&player) >= dungeon[currRoom].searchSuccess) {
         for (int i = 0; i < INVSIZE; i++) {
             if (player.backpack[i].id == WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS) {
                 player.backpack[i] = dungeon[currRoom].object;
@@ -262,13 +262,13 @@ int checkSearch() {
 
 int checkTrap() {
     if (dungeon[currRoom].trap == MAGICAL) {
-        if (intDiceRoll(player) < dungeon[currRoom].trapSuccess) {
-            damageChar(player, 6); 
+        if (intDiceRoll(&player) < dungeon[currRoom].trapSuccess) {
+            damageChar(&player, 6); 
             return 1;
         }
     } else if (dungeon[currRoom].trap == PHYSICAL) {
-        if (dexDiceRoll(player) < dungeon[currRoom].trapSuccess) {
-            damageChar(player, 6); 
+        if (dexDiceRoll(&player) < dungeon[currRoom].trapSuccess) {
+            damageChar(&player, 6); 
             return 1;
         }
     }

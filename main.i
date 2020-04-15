@@ -1539,22 +1539,22 @@ void initPlayer();
 
 void drawPlayer();
 
-int damageChar(CHARACTER target, int dice);
-int healChar (CHARACTER target, int dice);
-void buffChar (CHARACTER target, int stat, int scale);
+int damageChar(CHARACTER * target, int dice);
+int healChar (CHARACTER * target, int dice);
+void buffChar (CHARACTER * target, int stat, int scale);
 void checkDeath();
 
 
 
 
-int statEquipped(CHARACTER target, int stat);
-int statMod(CHARACTER target, int stat);
-int statModMob(CHARACTER target, int stat);
+int statEquipped(CHARACTER * target, int stat);
+int statMod(CHARACTER * target, int stat);
+int statModMob(CHARACTER * target, int stat);
 
 
-int intDiceRoll(CHARACTER target);
-int dexDiceRoll(CHARACTER target);
-int strDiceRoll(CHARACTER target);
+int intDiceRoll(CHARACTER * target);
+int dexDiceRoll(CHARACTER * target);
+int strDiceRoll(CHARACTER * target);
 # 7 "main.c" 2
 # 1 "room.h" 1
 typedef struct room {
@@ -1614,7 +1614,7 @@ void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
 
-void attack(CHARACTER source, CHARACTER target);
+void attack(CHARACTER * source, CHARACTER * target);
 int rollDmg(int dice, int bonus);
 # 9 "main.c" 2
 # 1 "start.h" 1
@@ -1884,6 +1884,7 @@ void pause() {
 
 void goToCombat(CHARACTER * enemy) {
     initCombat(&enemy);
+
 
     loadRoomData(currRoom);
 

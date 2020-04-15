@@ -7,7 +7,7 @@ void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
 
-void attack(CHARACTER source, CHARACTER target);
+void attack(CHARACTER * source, CHARACTER * target);
 int rollDmg(int dice, int bonus);
 
 
