@@ -90,49 +90,41 @@ updateGame:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, lr}
+	push	{r4, r5, r6, lr}
 	ldr	r5, .L31
 	ldr	r2, [r5]
 	ldr	r4, .L31+4
-	add	r1, r2, r2, lsl #1
-	add	r1, r1, r1, lsl #5
-	add	r1, r4, r1, lsl #3
-	ldr	r3, [r1, #4]
+	add	r0, r2, r2, lsl #1
+	add	r0, r0, r0, lsl #5
+	add	r3, r4, r0, lsl #3
+	ldr	r3, [r3, #4]
 	cmp	r3, #2
-	sub	sp, sp, #716
 	beq	.L29
-	bic	r0, r3, #2
+	bic	r1, r3, #2
 	cmp	r3, #6
-	cmpne	r0, #1
+	cmpne	r1, #1
 	bne	.L9
-	add	r4, r1, #48
-	mov	r2, #712
+	lsl	r0, r0, #3
+	add	r0, r0, #48
 	ldr	r3, .L31+8
-	add	r1, r1, #64
-	mov	r0, sp
+	add	r0, r4, r0
 	mov	lr, pc
 	bx	r3
-	ldm	r4, {r0, r1, r2, r3}
-	ldr	r4, .L31+12
-	mov	lr, pc
-	bx	r4
 .L6:
-	add	sp, sp, #716
-	@ sp needed
-	pop	{r4, r5, lr}
+	pop	{r4, r5, r6, lr}
 	bx	lr
 .L9:
-	ldr	r3, .L31+16
+	ldr	r3, .L31+12
 	ldrh	r3, [r3]
 	tst	r3, #1
 	beq	.L10
-	ldr	r1, .L31+20
+	ldr	r1, .L31+16
 	ldrh	r1, [r1]
 	tst	r1, #1
 	bne	.L10
-	ldr	r2, .L31+24
+	ldr	r2, .L31+20
 	ldr	r3, [r2]
-	ldr	r1, .L31+28
+	ldr	r1, .L31+24
 	add	r3, r3, #1
 	str	r3, [r2]
 	mov	lr, pc
@@ -141,7 +133,7 @@ updateGame:
 .L10:
 	tst	r3, #16
 	beq	.L11
-	ldr	r1, .L31+20
+	ldr	r1, .L31+16
 	ldrh	r1, [r1]
 	lsr	r1, r1, #4
 	eor	r1, r1, #1
@@ -153,7 +145,7 @@ updateGame:
 .L11:
 	tst	r3, #32
 	beq	.L6
-	ldr	r3, .L31+20
+	ldr	r3, .L31+16
 	ldrh	r3, [r3]
 	lsr	r3, r3, #5
 	eor	r3, r3, #1
@@ -162,19 +154,19 @@ updateGame:
 	andgt	r3, r3, #1
 	cmp	r3, #0
 	beq	.L6
-	ldr	r1, .L31+24
+	ldr	r1, .L31+20
 	ldr	r3, [r1]
 	sub	r2, r2, #1
 .L28:
 	add	r3, r3, #1
-	ldr	r0, .L31+32
+	ldr	r0, .L31+28
 	str	r2, [r5]
 	str	r3, [r1]
 	mov	lr, pc
 	bx	r0
 	b	.L6
 .L29:
-	ldr	r3, .L31+36
+	ldr	r3, .L31+32
 	mov	lr, pc
 	bx	r3
 	mov	r2, #0
@@ -183,12 +175,10 @@ updateGame:
 	add	r3, r3, r3, lsl #5
 	add	r4, r4, r3, lsl #3
 	str	r2, [r4, #4]
-	add	sp, sp, #716
-	@ sp needed
-	pop	{r4, r5, lr}
+	pop	{r4, r5, r6, lr}
 	bx	lr
 .L30:
-	ldr	r1, .L31+24
+	ldr	r1, .L31+20
 	add	r2, r2, #1
 	ldr	r3, [r1]
 	b	.L28
@@ -197,7 +187,6 @@ updateGame:
 .L31:
 	.word	currRoom
 	.word	dungeon
-	.word	memcpy
 	.word	goToCombat
 	.word	oldButtons
 	.word	buttons

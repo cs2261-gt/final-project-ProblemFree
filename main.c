@@ -24,7 +24,7 @@ void goToGame();
 void game();
 void goToPause();
 void pause();
-void goToCombat();
+void goToCombat(CHARACTER * enemy);
 void combat();
 void goToCombatPause();
 void combatPause();
@@ -242,8 +242,8 @@ void pause() {
 }
 
 // Set up Combat state
-void goToCombat() {
-    initCombat();
+void goToCombat(CHARACTER * enemy) {
+    initCombat(&enemy);
 
     loadRoomData(currRoom);
 
@@ -281,7 +281,7 @@ void combatPause() {
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
-        goToCombat(enemyChar);
+        goToCombat(&enemyChar);
     }
     else if (BUTTON_PRESSED(BUTTON_SELECT)) {
         goToStart();

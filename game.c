@@ -42,7 +42,7 @@ void updateGame() {
         checkTrap();
         dungeon[currRoom].adjective = EMPTY;
     } else if (dungeon[currRoom].adjective == MONSTER || dungeon[currRoom].adjective == GUARDED || dungeon[currRoom].adjective == BOSS) {
-        goToCombat(dungeon[currRoom].enemy);
+        goToCombat(&(dungeon[currRoom].enemy));
     } else {
         // Search Room ability
         if (BUTTON_PRESSED(BUTTON_A)) {

@@ -1610,7 +1610,7 @@ extern CHARACTER enemyChar;
 extern int turn;
 
 
-void initCombat();
+void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
 
@@ -1623,8 +1623,8 @@ CHARACTER enemyChar;
 int turn;
 
 
-void initCombat() {
-    enemyChar = dungeon[currRoom].enemy;
+void initCombat(CHARACTER * enemy) {
+    enemyChar = *enemy;
     turn = 0;
 }
 
@@ -1654,8 +1654,10 @@ void updateCombat() {
             if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
                 player.stance = OFFENSE;
                 attack(player, enemyChar);
+                turn = 1;
             } else if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
                 player.stance = DEFENSE;
+                turn = 1;
             } else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
                 goToCombatPause(enemyChar);
             } else if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<9))) && dungeon[currRoom].adjective != BOSS) {
@@ -1674,16 +1676,20 @@ void updateCombat() {
                 if (enemyChar.hpCurr > enemyChar.hpMax / 5) {
                     if (enemydecider < 20) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 } else {
                     if (enemydecider < 50) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 }
                 break;
@@ -1691,16 +1697,20 @@ void updateCombat() {
                 if (enemyChar.hpCurr > enemyChar.hpMax / 4) {
                     if (enemydecider < 20) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 } else {
                     if (enemydecider < 40) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 }
                 break;
@@ -1708,16 +1718,20 @@ void updateCombat() {
                 if (enemyChar.hpCurr > enemyChar.hpMax / 3) {
                     if (enemydecider < 40) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 } else {
                     if (enemydecider < 60) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 }
                 break;
@@ -1725,16 +1739,20 @@ void updateCombat() {
                 if (enemyChar.hpCurr > enemyChar.hpMax / 5) {
                     if (enemydecider < 30) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 } else {
                     if (enemydecider < 75) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 }
                 break;
@@ -1742,21 +1760,24 @@ void updateCombat() {
                 if (enemyChar.hpCurr > enemyChar.hpMax / 4) {
                     if (enemydecider < 30) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 } else {
                     if (enemydecider < 60) {
                         enemyChar.stance = DEFENSE;
+                        turn = 0;
                     } else {
                         enemyChar.stance = OFFENSE;
                         attack(enemyChar, player);
+                        turn = 0;
                     }
                 }
                 break;
             }
-            turn = 0;
         }
     }
 }

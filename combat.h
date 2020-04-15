@@ -3,7 +3,7 @@ extern CHARACTER enemyChar;
 extern int turn;
 
 // Prototypes
-void initCombat();
+void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
 

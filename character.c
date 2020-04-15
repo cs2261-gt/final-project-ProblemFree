@@ -91,7 +91,7 @@ void initEnemies() {
 
 int damageChar(CHARACTER target, int dice) {
     int damage = (rand() % dice) + 1;
-    // Ensure character does not die from damage
+    // Ensure players do not die by traps
     if (target.hpCurr - damage <= 1) {
         target.hpCurr = 1;
     } else {

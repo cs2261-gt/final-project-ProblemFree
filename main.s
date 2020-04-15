@@ -430,10 +430,13 @@ pause:
 	.type	goToCombat, %function
 goToCombat:
 	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
+	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, lr}
+	str	lr, [sp, #-4]!
+	sub	sp, sp, #12
+	str	r0, [sp, #4]
 	ldr	r3, .L64
+	add	r0, sp, #4
 	mov	lr, pc
 	bx	r3
 	ldr	r2, .L64+4
@@ -449,8 +452,10 @@ goToCombat:
 	mov	r2, #4
 	ldr	r3, .L64+16
 	strh	r0, [r1]	@ movhi
-	pop	{r4, lr}
 	str	r2, [r3]
+	add	sp, sp, #12
+	@ sp needed
+	ldr	lr, [sp], #4
 	bx	lr
 .L65:
 	.align	2
@@ -556,9 +561,8 @@ combatPause:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, lr}
 	ldr	r3, .L86
-	sub	sp, sp, #712
+	push	{r4, lr}
 	mov	lr, pc
 	bx	r3
 	ldr	r3, .L86+4
@@ -577,27 +581,13 @@ combatPause:
 	tst	r3, #4
 	beq	.L85
 .L74:
-	add	sp, sp, #712
-	@ sp needed
 	pop	{r4, lr}
 	bx	lr
 .L84:
-	ldr	r4, .L86+12
-	mov	r2, #712
-	add	r1, r4, #16
-	mov	r0, sp
-	ldr	r3, .L86+16
-	mov	lr, pc
-	bx	r3
-	ldm	r4, {r0, r1, r2, r3}
-	bl	goToCombat
-	add	sp, sp, #712
-	@ sp needed
+	ldr	r0, .L86+12
 	pop	{r4, lr}
-	bx	lr
+	b	goToCombat
 .L85:
-	add	sp, sp, #712
-	@ sp needed
 	pop	{r4, lr}
 	b	goToStart
 .L87:
@@ -607,7 +597,6 @@ combatPause:
 	.word	oldButtons
 	.word	buttons
 	.word	enemyChar
-	.word	memcpy
 	.size	combatPause, .-combatPause
 	.align	2
 	.global	goToWin
