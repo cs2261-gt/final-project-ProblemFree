@@ -1712,7 +1712,7 @@ void initEnemies() {
 }
 
 void drawEnemy(int enemyType, int col, int row) {
-    shadowOAM[2].attr0 = row | (0<<14) |(0<<13);
+    shadowOAM[2].attr0 = row | (0<<14) | (0<<13);
     shadowOAM[2].attr1 = col | (1<<14);
     switch (enemyType)
     {

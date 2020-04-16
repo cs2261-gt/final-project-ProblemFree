@@ -230,9 +230,10 @@ void goToPause() {
 
 // Runs every frame of the pause state
 void pause() {
-
-    // Lock the framerate to 60 fps
+    //Wait for vertical blank and flip the page
     waitForVBlank();
+    flipPage();
+    DMANow(3, shadowOAM, OAM, 512);
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
@@ -276,7 +277,6 @@ void goToCombatPause() {
     DMANow(3, pauseMap, &SCREENBLOCK[28], pauseMapLen / 2);
     DMANow(3, pauseTiles, &CHARBLOCK[0], pauseTilesLen / 2);
 
-    hideSprites();
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG1_ENABLE;
 
     //Wait for vertical blank and flip the page
@@ -287,8 +287,12 @@ void goToCombatPause() {
 }
 
 void combatPause() {
-    // Lock the framerate to 60 fps
+
+    //Wait for vertical blank and flip the page
+    hideSprites();
     waitForVBlank();
+    flipPage();
+    DMANow(3, shadowOAM, OAM, 512);
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
@@ -306,7 +310,6 @@ void goToWin() {
     DMANow(3, winMap, &SCREENBLOCK[28], winMapLen / 2);
     DMANow(3, winTiles, &CHARBLOCK[0], winTilesLen / 2);
 
-    hideSprites();
     REG_DISPCTL =   MODE0 | BG1_ENABLE;
 
     //Wait for vertical blank and flip the page
@@ -320,6 +323,7 @@ void goToWin() {
 void win() {
 
     // Lock the framerate to 60 fps
+    hideSprites();
     waitForVBlank();
 
     // State transitions
@@ -334,7 +338,6 @@ void goToLose() {
     DMANow(3, loseMap, &SCREENBLOCK[28], loseMapLen / 2);
     DMANow(3, loseTiles, &CHARBLOCK[0], loseTilesLen / 2);
 
-    hideSprites();
     REG_DISPCTL =   MODE0 | BG1_ENABLE;
 
     //Wait for vertical blank and flip the page
@@ -349,6 +352,7 @@ void goToLose() {
 void lose() {
 
     // Lock the framerate to 60 fps
+    hideSprites();
     waitForVBlank();
 
     // State transitions

@@ -92,7 +92,7 @@ void initEnemies() {
 }
 
 void drawEnemy(int enemyType, int col, int row) {
-    shadowOAM[2].attr0 = row | ATTR0_SQUARE |ATTR0_4BPP;
+    shadowOAM[2].attr0 = row | ATTR0_SQUARE | ATTR0_4BPP;
     shadowOAM[2].attr1 = col | ATTR1_SMALL;
     switch (enemyType)
     {

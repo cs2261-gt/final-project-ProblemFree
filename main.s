@@ -387,22 +387,32 @@ pause:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r3, .L60
 	push	{r4, lr}
+	ldr	r3, .L60
 	mov	lr, pc
 	bx	r3
 	ldr	r3, .L60+4
+	mov	lr, pc
+	bx	r3
+	ldr	r4, .L60+8
+	mov	r3, #512
+	mov	r2, #117440512
+	mov	r0, #3
+	ldr	r1, .L60+12
+	mov	lr, pc
+	bx	r4
+	ldr	r3, .L60+16
 	ldrh	r3, [r3]
 	tst	r3, #8
 	beq	.L49
-	ldr	r2, .L60+8
+	ldr	r2, .L60+20
 	ldrh	r2, [r2]
 	tst	r2, #8
 	beq	.L58
 .L49:
 	tst	r3, #4
 	beq	.L48
-	ldr	r3, .L60+8
+	ldr	r3, .L60+20
 	ldrh	r3, [r3]
 	tst	r3, #4
 	beq	.L59
@@ -419,6 +429,9 @@ pause:
 	.align	2
 .L60:
 	.word	waitForVBlank
+	.word	flipPage
+	.word	DMANow
+	.word	shadowOAM
 	.word	oldButtons
 	.word	buttons
 	.size	pause, .-pause
@@ -551,25 +564,22 @@ goToCombatPause:
 	mov	lr, pc
 	bx	r4
 	mov	r0, #3
+	mov	r3, #752
 	mov	r2, #100663296
 	ldr	r1, .L72+16
-	mov	r3, #752
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L72+20
-	mov	lr, pc
-	bx	r3
 	mov	r2, #67108864
 	mov	r1, #4608
-	ldr	r3, .L72+24
+	ldr	r3, .L72+20
 	strh	r1, [r2]	@ movhi
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L72+28
+	ldr	r3, .L72+24
 	mov	lr, pc
 	bx	r3
 	mov	r2, #5
-	ldr	r3, .L72+32
+	ldr	r3, .L72+28
 	pop	{r4, lr}
 	str	r2, [r3]
 	bx	lr
@@ -581,7 +591,6 @@ goToCombatPause:
 	.word	100720640
 	.word	pauseMap
 	.word	pauseTiles
-	.word	hideSprites
 	.word	waitForVBlank
 	.word	flipPage
 	.word	state
@@ -596,22 +605,35 @@ combatPause:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r3, .L86
 	push	{r4, lr}
+	ldr	r3, .L86
 	mov	lr, pc
 	bx	r3
 	ldr	r3, .L86+4
+	mov	lr, pc
+	bx	r3
+	ldr	r3, .L86+8
+	mov	lr, pc
+	bx	r3
+	ldr	r4, .L86+12
+	mov	r3, #512
+	mov	r2, #117440512
+	mov	r0, #3
+	ldr	r1, .L86+16
+	mov	lr, pc
+	bx	r4
+	ldr	r3, .L86+20
 	ldrh	r3, [r3]
 	tst	r3, #8
 	beq	.L75
-	ldr	r2, .L86+8
+	ldr	r2, .L86+24
 	ldrh	r2, [r2]
 	tst	r2, #8
 	beq	.L84
 .L75:
 	tst	r3, #4
 	beq	.L74
-	ldr	r3, .L86+8
+	ldr	r3, .L86+24
 	ldrh	r3, [r3]
 	tst	r3, #4
 	beq	.L85
@@ -619,7 +641,7 @@ combatPause:
 	pop	{r4, lr}
 	bx	lr
 .L84:
-	ldr	r0, .L86+12
+	ldr	r0, .L86+28
 	pop	{r4, lr}
 	b	goToCombat
 .L85:
@@ -628,7 +650,11 @@ combatPause:
 .L87:
 	.align	2
 .L86:
+	.word	hideSprites
 	.word	waitForVBlank
+	.word	flipPage
+	.word	DMANow
+	.word	shadowOAM
 	.word	oldButtons
 	.word	buttons
 	.word	enemyChar
@@ -658,25 +684,22 @@ goToWin:
 	mov	lr, pc
 	bx	r4
 	mov	r0, #3
+	mov	r3, #656
 	mov	r2, #100663296
 	ldr	r1, .L90+16
-	mov	r3, #656
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L90+20
-	mov	lr, pc
-	bx	r3
 	mov	r2, #67108864
 	mov	r1, #512
-	ldr	r3, .L90+24
+	ldr	r3, .L90+20
 	strh	r1, [r2]	@ movhi
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L90+28
+	ldr	r3, .L90+24
 	mov	lr, pc
 	bx	r3
 	mov	r2, #6
-	ldr	r3, .L90+32
+	ldr	r3, .L90+28
 	pop	{r4, lr}
 	str	r2, [r3]
 	bx	lr
@@ -688,7 +711,6 @@ goToWin:
 	.word	100720640
 	.word	winMap
 	.word	winTiles
-	.word	hideSprites
 	.word	waitForVBlank
 	.word	flipPage
 	.word	state
@@ -703,15 +725,18 @@ win:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r3, .L99
 	push	{r4, lr}
+	ldr	r3, .L99
 	mov	lr, pc
 	bx	r3
 	ldr	r3, .L99+4
+	mov	lr, pc
+	bx	r3
+	ldr	r3, .L99+8
 	ldrh	r3, [r3]
 	tst	r3, #8
 	beq	.L92
-	ldr	r3, .L99+8
+	ldr	r3, .L99+12
 	ldrh	r3, [r3]
 	tst	r3, #8
 	beq	.L98
@@ -724,6 +749,7 @@ win:
 .L100:
 	.align	2
 .L99:
+	.word	hideSprites
 	.word	waitForVBlank
 	.word	oldButtons
 	.word	buttons
@@ -854,25 +880,22 @@ goToLose:
 	mov	lr, pc
 	bx	r4
 	mov	r0, #3
+	mov	r3, #688
 	mov	r2, #100663296
 	ldr	r1, .L119+16
-	mov	r3, #688
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L119+20
-	mov	lr, pc
-	bx	r3
 	mov	r2, #67108864
 	mov	r1, #512
-	ldr	r3, .L119+24
+	ldr	r3, .L119+20
 	strh	r1, [r2]	@ movhi
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L119+28
+	ldr	r3, .L119+24
 	mov	lr, pc
 	bx	r3
 	mov	r2, #7
-	ldr	r3, .L119+32
+	ldr	r3, .L119+28
 	pop	{r4, lr}
 	str	r2, [r3]
 	bx	lr
@@ -884,7 +907,6 @@ goToLose:
 	.word	100720640
 	.word	loseMap
 	.word	loseTiles
-	.word	hideSprites
 	.word	waitForVBlank
 	.word	flipPage
 	.word	state

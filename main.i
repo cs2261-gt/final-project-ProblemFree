@@ -1880,8 +1880,9 @@ void goToPause() {
 
 void pause() {
 
-
     waitForVBlank();
+    flipPage();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
@@ -1925,7 +1926,6 @@ void goToCombatPause() {
     DMANow(3, pauseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
     DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 1504 / 2);
 
-    hideSprites();
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
 
 
@@ -1937,7 +1937,11 @@ void goToCombatPause() {
 
 void combatPause() {
 
+
+    hideSprites();
     waitForVBlank();
+    flipPage();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
@@ -1955,7 +1959,6 @@ void goToWin() {
     DMANow(3, winMap, &((screenblock *)0x6000000)[28], 2048 / 2);
     DMANow(3, winTiles, &((charblock *)0x6000000)[0], 1312 / 2);
 
-    hideSprites();
     (*(unsigned short *)0x4000000) = 0 | (1<<9);
 
 
@@ -1969,6 +1972,7 @@ void goToWin() {
 void win() {
 
 
+    hideSprites();
     waitForVBlank();
 
 
@@ -1983,7 +1987,6 @@ void goToLose() {
     DMANow(3, loseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
     DMANow(3, loseTiles, &((charblock *)0x6000000)[0], 1376 / 2);
 
-    hideSprites();
     (*(unsigned short *)0x4000000) = 0 | (1<<9);
 
 
@@ -1998,6 +2001,7 @@ void goToLose() {
 void lose() {
 
 
+    hideSprites();
     waitForVBlank();
 
 
