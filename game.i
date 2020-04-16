@@ -1537,7 +1537,10 @@ enum {PHYSICAL, MAGICAL};
 
 void initPlayer();
 
-void drawPlayer();
+void drawPlayer(int col, int row);
+
+void initEnemies();
+void drawEnemy(int enemyType, int col, int row);
 
 int damageChar(CHARACTER * target, int dice);
 int healChar (CHARACTER * target, int dice);

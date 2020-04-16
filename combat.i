@@ -1537,7 +1537,10 @@ enum {PHYSICAL, MAGICAL};
 
 void initPlayer();
 
-void drawPlayer();
+void drawPlayer(int col, int row);
+
+void initEnemies();
+void drawEnemy(int enemyType, int col, int row);
 
 int damageChar(CHARACTER * target, int dice);
 int healChar (CHARACTER * target, int dice);
@@ -1651,16 +1654,16 @@ void updateCombat() {
 
 
         if (turn == 0) {
-            if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<0)))) {
+            if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
                 player.stance = OFFENSE;
                 attack(&player, &enemyChar);
                 turn = 1;
-            } else if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<1)))) {
+            } else if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
                 player.stance = DEFENSE;
                 turn = 1;
-            } else if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<3)))) {
+            } else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
                 goToCombatPause();
-            } else if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<9))) && dungeon[currRoom].adjective != BOSS) {
+            } else if ((!(~(oldButtons)&((1<<9))) && (~buttons & ((1<<9)))) && dungeon[currRoom].adjective != BOSS) {
                 currRoom--;
                 goToGame();
             }
@@ -1784,7 +1787,7 @@ void updateCombat() {
 }
 
 void drawCombat() {
-
+    drawEnemy(enemyChar.enemyid, (240 / 2) - 8, (160 / 2) - 8);
 }
 
 

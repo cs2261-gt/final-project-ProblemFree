@@ -66,7 +66,7 @@ void updateGame() {
 
 // // Draws the game each frame
 // void drawGame() {
-// 	drawPlayer();
+// 	drawPlayer(col, row);
 // 	drawRoom();
 // }
 

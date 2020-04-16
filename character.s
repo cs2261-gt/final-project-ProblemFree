@@ -30,13 +30,14 @@ initPlayer:
 	mov	r9, #10
 	mov	r8, #8
 	mov	r7, #50
-	ldmia	r4!, {r0, r1, r2, r3}
+	add	r5, r4, #8
+	ldmia	r5!, {r0, r1, r2, r3}
 	add	r6, lr, #40
 	stmia	r6!, {r0, r1, r2, r3}
-	ldmia	r4!, {r0, r1, r2, r3}
+	ldmia	r5!, {r0, r1, r2, r3}
 	stmia	r6!, {r0, r1, r2, r3}
-	ldm	r4, {r0, r1}
-	add	r4, r4, #288
+	ldm	r5, {r0, r1}
+	add	r4, r4, #88
 	stm	r6, {r0, r1}
 	ldmia	r4!, {r0, r1, r2, r3}
 	add	r5, lr, #80
@@ -82,7 +83,7 @@ initPlayer:
 .L7:
 	.align	2
 .L6:
-	.word	itemList+360
+	.word	itemList+1152
 	.word	player
 	.size	initPlayer, .-initPlayer
 	.align	2
@@ -154,6 +155,131 @@ initEnemies:
 	@ link register save eliminated.
 	bx	lr
 	.size	initEnemies, .-initEnemies
+	.align	2
+	.global	drawEnemy
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	drawEnemy, %function
+drawEnemy:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	ldr	r3, .L45
+	orr	r1, r1, #16384
+	strh	r1, [r3, #18]	@ movhi
+	strh	r2, [r3, #16]	@ movhi
+	cmp	r0, #19
+	ldrls	pc, [pc, r0, asl #2]
+	b	.L22
+.L25:
+	.word	.L44
+	.word	.L43
+	.word	.L42
+	.word	.L41
+	.word	.L40
+	.word	.L39
+	.word	.L38
+	.word	.L37
+	.word	.L36
+	.word	.L35
+	.word	.L34
+	.word	.L33
+	.word	.L32
+	.word	.L31
+	.word	.L30
+	.word	.L29
+	.word	.L28
+	.word	.L27
+	.word	.L26
+	.word	.L24
+.L24:
+	mov	r2, #70
+	strh	r2, [r3, #20]	@ movhi
+.L22:
+	bx	lr
+.L26:
+	mov	r2, #68
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L27:
+	mov	r2, #66
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L28:
+	mov	r2, #64
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L29:
+	mov	r2, #30
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L30:
+	mov	r2, #28
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L31:
+	mov	r2, #26
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L32:
+	mov	r2, #24
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L33:
+	mov	r2, #22
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L34:
+	mov	r2, #20
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L35:
+	mov	r2, #18
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L36:
+	mov	r2, #16
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L37:
+	mov	r2, #14
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L38:
+	mov	r2, #12
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L39:
+	mov	r2, #10
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L40:
+	mov	r2, #8
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L41:
+	mov	r2, #6
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L42:
+	mov	r2, #4
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L43:
+	mov	r2, #2
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L44:
+	mov	r2, #0
+	strh	r2, [r3, #20]	@ movhi
+	bx	lr
+.L46:
+	.align	2
+.L45:
+	.word	shadowOAM
+	.size	drawEnemy, .-drawEnemy
 	.global	__aeabi_idivmod
 	.align	2
 	.global	damageChar
@@ -167,12 +293,12 @@ damageChar:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
 	mov	r5, r1
-	ldr	r3, .L24
+	ldr	r3, .L49
 	mov	r4, r0
 	mov	lr, pc
 	bx	r3
 	mov	r1, r5
-	ldr	r3, .L24+4
+	ldr	r3, .L49+4
 	mov	lr, pc
 	bx	r3
 	ldr	r3, [r4, #12]
@@ -183,9 +309,9 @@ damageChar:
 	str	r1, [r4, #12]
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L25:
+.L50:
 	.align	2
-.L24:
+.L49:
 	.word	rand
 	.word	__aeabi_idivmod
 	.size	damageChar, .-damageChar
@@ -201,12 +327,12 @@ healChar:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
 	mov	r5, r1
-	ldr	r3, .L28
+	ldr	r3, .L53
 	mov	r4, r0
 	mov	lr, pc
 	bx	r3
 	mov	r1, r5
-	ldr	r3, .L28+4
+	ldr	r3, .L53+4
 	mov	lr, pc
 	bx	r3
 	ldr	r2, [r4, #12]
@@ -218,9 +344,9 @@ healChar:
 	str	r1, [r4, #12]
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L29:
+.L54:
 	.align	2
-.L28:
+.L53:
 	.word	rand
 	.word	__aeabi_idivmod
 	.size	healChar, .-healChar
@@ -237,35 +363,35 @@ buffChar:
 	@ link register save eliminated.
 	cmp	r1, #4
 	ldrls	pc, [pc, r1, asl #2]
-	b	.L30
-.L33:
-	.word	.L37
-	.word	.L36
-	.word	.L35
-	.word	.L34
-	.word	.L32
-.L36:
+	b	.L55
+.L58:
+	.word	.L62
+	.word	.L61
+	.word	.L60
+	.word	.L59
+	.word	.L57
+.L61:
 	ldr	r3, [r0, #24]
 	add	r2, r3, r2
 	str	r2, [r0, #24]
-.L30:
+.L55:
 	bx	lr
-.L32:
+.L57:
 	ldr	r3, [r0, #28]
 	add	r2, r3, r2
 	str	r2, [r0, #28]
 	bx	lr
-.L37:
+.L62:
 	ldr	r3, [r0, #8]
 	add	r2, r3, r2
 	str	r2, [r0, #8]
 	bx	lr
-.L35:
+.L60:
 	ldr	r3, [r0, #20]
 	add	r2, r3, r2
 	str	r2, [r0, #20]
 	bx	lr
-.L34:
+.L59:
 	ldr	r3, [r0, #16]
 	add	r2, r3, r2
 	str	r2, [r0, #16]
@@ -285,39 +411,39 @@ statEquipped:
 	sub	r1, r1, #1
 	cmp	r1, #3
 	ldrls	pc, [pc, r1, asl #2]
-	b	.L39
-.L41:
-	.word	.L44
-	.word	.L43
-	.word	.L42
-	.word	.L40
-.L40:
+	b	.L64
+.L66:
+	.word	.L69
+	.word	.L68
+	.word	.L67
+	.word	.L65
+.L65:
 	ldr	r3, [r0, #28]
 	ldr	r0, [r0, #100]
 	add	r0, r3, r0
 	bx	lr
-.L42:
+.L67:
 	ldr	r3, [r0, #16]
 	ldr	r1, [r0, #88]
 	ldr	r2, [r0, #48]
 	add	r0, r3, r1
 	add	r0, r0, r2
 	bx	lr
-.L43:
+.L68:
 	ldr	r3, [r0, #20]
 	ldr	r1, [r0, #92]
 	ldr	r2, [r0, #52]
 	add	r0, r3, r1
 	add	r0, r0, r2
 	bx	lr
-.L44:
+.L69:
 	ldr	r3, [r0, #24]
 	ldr	r1, [r0, #96]
 	ldr	r2, [r0, #56]
 	add	r0, r3, r1
 	add	r0, r0, r2
 	bx	lr
-.L39:
+.L64:
 	bx	lr
 	.size	statEquipped, .-statEquipped
 	.align	2
@@ -352,37 +478,37 @@ statModMob:
 	sub	r1, r1, #1
 	cmp	r1, #3
 	ldrls	pc, [pc, r1, asl #2]
-	b	.L49
-.L51:
-	.word	.L54
-	.word	.L53
-	.word	.L52
-	.word	.L50
-.L50:
+	b	.L74
+.L76:
+	.word	.L79
+	.word	.L78
+	.word	.L77
+	.word	.L75
+.L75:
 	ldr	r0, [r0, #28]
 	add	r0, r0, r0, lsr #31
 	asr	r0, r0, #1
 	sub	r0, r0, #5
 	bx	lr
-.L52:
+.L77:
 	ldr	r0, [r0, #16]
 	add	r0, r0, r0, lsr #31
 	asr	r0, r0, #1
 	sub	r0, r0, #5
 	bx	lr
-.L53:
+.L78:
 	ldr	r0, [r0, #20]
 	add	r0, r0, r0, lsr #31
 	asr	r0, r0, #1
 	sub	r0, r0, #5
 	bx	lr
-.L54:
+.L79:
 	ldr	r0, [r0, #24]
 	add	r0, r0, r0, lsr #31
 	asr	r0, r0, #1
 	sub	r0, r0, #5
 	bx	lr
-.L49:
+.L74:
 	bx	lr
 	.size	statModMob, .-statModMob
 	.align	2
@@ -402,12 +528,12 @@ intDiceRoll:
 	add	r0, r0, r2
 	add	r0, r0, r0, lsr #31
 	push	{r4, lr}
-	ldr	r3, .L58
+	ldr	r3, .L83
 	asr	r0, r0, #1
 	sub	r4, r0, #5
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L58+4
+	ldr	r3, .L83+4
 	smull	r1, r2, r3, r0
 	asr	r3, r0, #31
 	rsb	r3, r3, r2, asr #3
@@ -419,9 +545,9 @@ intDiceRoll:
 	movlt	r0, #1
 	pop	{r4, lr}
 	bx	lr
-.L59:
+.L84:
 	.align	2
-.L58:
+.L83:
 	.word	rand
 	.word	1717986919
 	.size	intDiceRoll, .-intDiceRoll
@@ -442,12 +568,12 @@ dexDiceRoll:
 	add	r0, r0, r2
 	add	r0, r0, r0, lsr #31
 	push	{r4, lr}
-	ldr	r3, .L62
+	ldr	r3, .L87
 	asr	r0, r0, #1
 	sub	r4, r0, #5
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L62+4
+	ldr	r3, .L87+4
 	smull	r1, r2, r3, r0
 	asr	r3, r0, #31
 	rsb	r3, r3, r2, asr #3
@@ -459,9 +585,9 @@ dexDiceRoll:
 	movlt	r0, #1
 	pop	{r4, lr}
 	bx	lr
-.L63:
+.L88:
 	.align	2
-.L62:
+.L87:
 	.word	rand
 	.word	1717986919
 	.size	dexDiceRoll, .-dexDiceRoll
@@ -482,12 +608,12 @@ strDiceRoll:
 	add	r0, r0, r2
 	add	r0, r0, r0, lsr #31
 	push	{r4, lr}
-	ldr	r3, .L66
+	ldr	r3, .L91
 	asr	r0, r0, #1
 	sub	r4, r0, #5
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L66+4
+	ldr	r3, .L91+4
 	smull	r1, r2, r3, r0
 	asr	r3, r0, #31
 	rsb	r3, r3, r2, asr #3
@@ -499,9 +625,9 @@ strDiceRoll:
 	movlt	r0, #1
 	pop	{r4, lr}
 	bx	lr
-.L67:
+.L92:
 	.align	2
-.L66:
+.L91:
 	.word	rand
 	.word	1717986919
 	.size	strDiceRoll, .-strDiceRoll

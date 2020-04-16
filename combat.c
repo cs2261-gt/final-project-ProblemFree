@@ -40,16 +40,16 @@ void updateCombat() {
 
         // Handle player turn
         if (turn == 0) {
-            if (BUTTON_HELD(BUTTON_A)) {
+            if (BUTTON_PRESSED(BUTTON_A)) {
                 player.stance = OFFENSE;
                 attack(&player, &enemyChar);
                 turn = 1;
-            } else if (BUTTON_HELD(BUTTON_B)) {
+            } else if (BUTTON_PRESSED(BUTTON_B)) {
                 player.stance = DEFENSE;
                 turn = 1;
-            } else if (BUTTON_HELD(BUTTON_START)) {
+            } else if (BUTTON_PRESSED(BUTTON_START)) {
                 goToCombatPause();
-            } else if (BUTTON_HELD(BUTTON_L) && dungeon[currRoom].adjective != BOSS) {
+            } else if (BUTTON_PRESSED(BUTTON_L) && dungeon[currRoom].adjective != BOSS) {
                 currRoom--;
                 goToGame();
             }
@@ -173,7 +173,7 @@ void updateCombat() {
 }
 
 void drawCombat() {
-
+    drawEnemy(enemyChar.enemyid, (SCREENWIDTH / 2) - 8, (SCREENHEIGHT / 2) - 8);
 }
 
 // Handle all possible attack combos (player to mob, boss to player, dragon boss to player, and moc to player), give players and bosses advantage

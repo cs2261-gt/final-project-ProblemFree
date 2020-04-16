@@ -1537,7 +1537,10 @@ enum {PHYSICAL, MAGICAL};
 
 void initPlayer();
 
-void drawPlayer();
+void drawPlayer(int col, int row);
+
+void initEnemies();
+void drawEnemy(int enemyType, int col, int row);
 
 int damageChar(CHARACTER * target, int dice);
 int healChar (CHARACTER * target, int dice);
@@ -1657,6 +1660,14 @@ extern const unsigned short loseMap[1024];
 
 extern const unsigned short losePal[256];
 # 13 "main.c" 2
+
+# 1 "enemysheet.h" 1
+# 21 "enemysheet.h"
+extern const unsigned short enemysheetTiles[16896];
+
+
+extern const unsigned short enemysheetPal[256];
+# 15 "main.c" 2
 
 
 void initialize();
@@ -1794,7 +1805,7 @@ void start() {
 
 
 void goToCharCreation() {
-# 158 "main.c"
+# 160 "main.c"
     hideSprites();
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8) | (1<<9);
 
@@ -1888,6 +1899,9 @@ void goToCombat(CHARACTER * enemy) {
 
     loadRoomData(currRoom);
 
+    DMANow(3, enemysheetPal, ((unsigned short *)0x5000200), 256);
+    DMANow(3, enemysheetTiles, &((charblock *)0x6000000)[4], 33792 / 2);
+
     hideSprites();
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
 
@@ -1899,6 +1913,11 @@ void goToCombat(CHARACTER * enemy) {
 void combat() {
     updateCombat();
     drawCombat();
+
+
+    waitForVBlank();
+    flipPage();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 }
 
 void goToCombatPause() {

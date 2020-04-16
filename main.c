@@ -11,6 +11,8 @@
 #include "win.h"
 #include "lose.h"
 
+#include "enemysheet.h"
+
 // Prototypes
 void initialize();
 
@@ -248,6 +250,9 @@ void goToCombat(CHARACTER * enemy) {
 
     loadRoomData(currRoom);
 
+    DMANow(3, enemysheetPal, SPRITEPALETTE, 256);
+    DMANow(3, enemysheetTiles, &CHARBLOCK[4], enemysheetTilesLen / 2);
+
     hideSprites();
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG1_ENABLE;
 
@@ -259,6 +264,11 @@ void goToCombat(CHARACTER * enemy) {
 void combat() {
     updateCombat();
     drawCombat();
+
+    //Wait for vertical blank and flip the page
+    waitForVBlank();
+    flipPage();
+    DMANow(3, shadowOAM, OAM, 512);
 }
 
 void goToCombatPause() {

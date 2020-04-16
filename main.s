@@ -432,8 +432,8 @@ goToCombat:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
-	str	lr, [sp, #-4]!
-	sub	sp, sp, #12
+	push	{r4, lr}
+	sub	sp, sp, #8
 	str	r0, [sp, #4]
 	ldr	r3, .L64
 	add	r0, sp, #4
@@ -444,18 +444,31 @@ goToCombat:
 	ldr	r0, [r2]
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L64+12
+	ldr	r4, .L64+12
+	mov	r3, #256
+	mov	r0, #3
+	ldr	r2, .L64+16
+	ldr	r1, .L64+20
+	mov	lr, pc
+	bx	r4
+	mov	r0, #3
+	ldr	r2, .L64+24
+	ldr	r1, .L64+28
+	mov	r3, #16896
+	mov	lr, pc
+	bx	r4
+	ldr	r3, .L64+32
 	mov	lr, pc
 	bx	r3
 	mov	r1, #67108864
 	mov	r0, #4608
 	mov	r2, #4
-	ldr	r3, .L64+16
+	ldr	r3, .L64+36
 	strh	r0, [r1]	@ movhi
 	str	r2, [r3]
-	add	sp, sp, #12
+	add	sp, sp, #8
 	@ sp needed
-	ldr	lr, [sp], #4
+	pop	{r4, lr}
 	bx	lr
 .L65:
 	.align	2
@@ -463,6 +476,11 @@ goToCombat:
 	.word	initCombat
 	.word	currRoom
 	.word	loadRoomData
+	.word	DMANow
+	.word	83886592
+	.word	enemysheetPal
+	.word	100728832
+	.word	enemysheetTiles
 	.word	hideSprites
 	.word	state
 	.size	goToCombat, .-goToCombat
@@ -483,6 +501,19 @@ combat:
 	ldr	r3, .L68+4
 	mov	lr, pc
 	bx	r3
+	ldr	r3, .L68+8
+	mov	lr, pc
+	bx	r3
+	ldr	r3, .L68+12
+	mov	lr, pc
+	bx	r3
+	ldr	r4, .L68+16
+	mov	r3, #512
+	mov	r2, #117440512
+	mov	r0, #3
+	ldr	r1, .L68+20
+	mov	lr, pc
+	bx	r4
 	pop	{r4, lr}
 	bx	lr
 .L69:
@@ -490,6 +521,10 @@ combat:
 .L68:
 	.word	updateCombat
 	.word	drawCombat
+	.word	waitForVBlank
+	.word	flipPage
+	.word	DMANow
+	.word	shadowOAM
 	.size	combat, .-combat
 	.align	2
 	.global	goToCombatPause
@@ -758,12 +793,9 @@ main:
 	ldr	r3, .L115+44
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L115+48
-	mov	lr, pc
-	bx	r3
 	b	.L102
 .L108:
-	ldr	r3, .L115+52
+	ldr	r3, .L115+48
 	mov	lr, pc
 	bx	r3
 	b	.L102
@@ -793,8 +825,7 @@ main:
 	.word	game
 	.word	win
 	.word	combatPause
-	.word	updateCombat
-	.word	drawCombat
+	.word	combat
 	.word	pause
 	.size	main, .-main
 	.text
