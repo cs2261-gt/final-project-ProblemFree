@@ -18,8 +18,8 @@ typedef struct character {
 
     ITEM weapon;
     ITEM armor;
-    ITEM backpack [INVSIZE];
 
+    int active;
     int tilerow;
     int tilecol;
 } CHARACTER;
@@ -27,7 +27,7 @@ typedef struct character {
 // PLAYER
 
 // Class Options
-enum {FIGHTER, MAGE, ROGUE};
+enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
 
 // Stat types
 enum {HP, STR, DEX, INTEL, AC};
@@ -37,6 +37,8 @@ enum {OFFENSE, DEFENSE = 4};
 
 
 extern CHARACTER player;
+extern ITEM backpack [INVSIZE];
+extern int weaponSlider;
 
 
 // ENEMIES 

@@ -2,6 +2,9 @@
 extern CHARACTER enemyChar;
 extern int turn;
 
+// Constants
+#define TIMERWAIT 1000
+
 // Prototypes
 void initCombat(CHARACTER * enemy);
 void updateCombat();

@@ -1469,8 +1469,8 @@ typedef struct character {
 
     ITEM weapon;
     ITEM armor;
-    ITEM backpack [15];
 
+    int active;
     int tilerow;
     int tilecol;
 } CHARACTER;
@@ -1478,7 +1478,7 @@ typedef struct character {
 
 
 
-enum {FIGHTER, MAGE, ROGUE};
+enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1488,6 +1488,8 @@ enum {OFFENSE, DEFENSE = 4};
 
 
 extern CHARACTER player;
+extern ITEM backpack [15];
+extern int weaponSlider;
 
 
 
@@ -1613,6 +1615,9 @@ extern CHARACTER enemyChar;
 extern int turn;
 
 
+
+
+
 void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
@@ -1628,12 +1633,23 @@ int turn;
 
 void initCombat(CHARACTER * enemy) {
     enemyChar = *enemy;
+
+    enemyChar.enemyid = enemy->enemyid;
+    enemyChar.intelligence = enemy->intelligence;
+    enemyChar.dexterity = enemy->dexterity;
+    enemyChar.strength = enemy->strength;
+    enemyChar.ac = enemy->ac;
+    enemyChar.hpMax = enemy->hpMax;
+    enemyChar.hpCurr = enemy->hpCurr;
+    enemyChar.dmg = enemy->dmg;
+    enemyChar.active = 1;
     turn = 0;
 }
 
 void updateCombat() {
 
-    if (enemyChar.hpCurr == 0) {
+    if (enemyChar.hpCurr <= 0) {
+        enemyChar.active = 0;
         if (dungeon[currRoom].adjective == BOSS) {
             goToWin();
         }
@@ -1648,8 +1664,6 @@ void updateCombat() {
         }
     } else {
 
-
-
         checkDeath();
 
 
@@ -1657,13 +1671,22 @@ void updateCombat() {
             if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
                 player.stance = OFFENSE;
                 attack(&player, &enemyChar);
-                turn = 1;
+                for (volatile int timer = 0; timer <= 1000; timer++) {
+                    if (timer == 1000) {
+                        turn = 1;
+                    }
+                }
             } else if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
                 player.stance = DEFENSE;
-                turn = 1;
+                for (volatile int timer = 0; timer <= 1000; timer++) {
+                    if (timer == 1000) {
+                        turn = 1;
+                    }
+                }
             } else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
                 goToCombatPause();
             } else if ((!(~(oldButtons)&((1<<9))) && (~buttons & ((1<<9)))) && dungeon[currRoom].adjective != BOSS) {
+                enemyChar.active = 0;
                 currRoom--;
                 goToGame();
             }
@@ -1787,15 +1810,18 @@ void updateCombat() {
 }
 
 void drawCombat() {
-    drawEnemy(enemyChar.enemyid, (240 / 2) - 8, (160 / 2) - 8);
+    if (enemyChar.active) {
+        drawEnemy(enemyChar.enemyid, (240 / 2) - 8, (160 / 2) - 8);
+    }
 }
 
 
 void attack(CHARACTER * source, CHARACTER * target) {
 
     if (source->playerclass == MAGE) {
-        if ((rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance) {
-            int damage = rollDmg(10, statMod(source, INTEL));
+        if ( 1 ) {
+
+            int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -1803,8 +1829,9 @@ void attack(CHARACTER * source, CHARACTER * target) {
             }
         }
     } else if (source->playerclass == ROGUE) {
-        if ((rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance) {
-            int damage = rollDmg(10, statMod(source, DEX));
+        if ( 1 ) {
+
+            int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -1812,8 +1839,9 @@ void attack(CHARACTER * source, CHARACTER * target) {
             }
         }
     } else if (source->playerclass == FIGHTER) {
-        if ((rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance) {
-            int damage = rollDmg(10, statMod(source, STR));
+        if ( 1 ) {
+
+            int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {

@@ -1469,8 +1469,8 @@ typedef struct character {
 
     ITEM weapon;
     ITEM armor;
-    ITEM backpack [15];
 
+    int active;
     int tilerow;
     int tilecol;
 } CHARACTER;
@@ -1478,7 +1478,7 @@ typedef struct character {
 
 
 
-enum {FIGHTER, MAGE, ROGUE};
+enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1488,6 +1488,8 @@ enum {OFFENSE, DEFENSE = 4};
 
 
 extern CHARACTER player;
+extern ITEM backpack [15];
+extern int weaponSlider;
 
 
 
@@ -1611,6 +1613,9 @@ int checkTrap();
 
 extern CHARACTER enemyChar;
 extern int turn;
+
+
+
 
 
 void initCombat(CHARACTER * enemy);
@@ -1854,7 +1859,6 @@ void initDungeon() {
     }
 
 
-
     for (int i = 1; i < 12 - 1; i++) {
         decider = rand() % 100;
 
@@ -1915,7 +1919,14 @@ void placeTrap(int i) {
 }
 
 void placeEnemy(int i) {
-    dungeon[i].enemy = enemyList[rand() % 16];
+    int decider = (rand() * rand() % 16);
+    dungeon[i].enemy.enemyid = enemyList[decider].intelligence;
+    dungeon[i].enemy.intelligence = enemyList[decider].intelligence;
+    dungeon[i].enemy.dexterity = enemyList[decider].dexterity;
+    dungeon[i].enemy.strength = enemyList[decider].strength;
+    dungeon[i].enemy.ac = enemyList[decider].ac;
+    dungeon[i].enemy.hpMax = enemyList[decider].hpMax;
+    dungeon[i].enemy.hpCurr = enemyList[decider].hpCurr;
 }
 
 
@@ -2027,8 +2038,8 @@ void drawRoom() {
 int checkSearch() {
     if (intDiceRoll(&player) >= dungeon[currRoom].searchSuccess) {
         for (int i = 0; i < 15; i++) {
-            if (player.backpack[i].id == 10 + 9 + 6 + 7) {
-                player.backpack[i] = dungeon[currRoom].object;
+            if (backpack[i].id == 10 + 9 + 6 + 7) {
+                backpack[i] = dungeon[currRoom].object;
                 return 1;
             }
         }

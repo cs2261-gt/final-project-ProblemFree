@@ -10,6 +10,30 @@
 #include "enemysheet.h"
 
 CHARACTER player;
+ITEM backpack [INVSIZE];
+int weaponSlider = 209;
+
+CHARACTER abomination;
+CHARACTER apprentice;
+CHARACTER chimera;
+CHARACTER drow;
+CHARACTER elemental;
+CHARACTER golem;
+CHARACTER goblin;
+CHARACTER homunculus;
+CHARACTER kobold;
+CHARACTER mimic;
+CHARACTER orc;
+CHARACTER slime;
+CHARACTER skeleton;
+CHARACTER troll;
+CHARACTER vampire;
+CHARACTER zombie;
+
+CHARACTER beholder;
+CHARACTER dragon;
+CHARACTER wizard;
+CHARACTER mindflayer;
 
 CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS];
 
@@ -30,30 +54,62 @@ void initPlayer() {
     player.hpMax = 50;
     player.hpCurr = player.hpMax;
 
-    player.backpack[0] = player.weapon;
-    player.backpack[1] = player.armor;
+    backpack[0] = player.weapon;
+    backpack[1] = player.armor;
 
     for (int i = 2; i < INVSIZE; i++) {
-        player.backpack[i].id = WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS;
+        backpack[i].id = WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS;
     }
 
 }
 
-// void updatePlayer() {
-
-// }
+void updatePlayer() {
+    if (BUTTON_PRESSED(BUTTON_LEFT)) {
+        if (player.playerclass == MAGE) {
+            player.playerclass = FIGHTER;
+        } else if (player.playerclass == FIGHTER) {
+            player.playerclass = ROGUE;
+        } else if (player.playerclass == ROGUE) {
+            player.playerclass = MAGE;
+        }
+    } else if (BUTTON_PRESSED(BUTTON_LEFT)) {
+        if (player.playerclass == MAGE) {
+            player.playerclass = ROGUE;
+        } else if (player.playerclass == FIGHTER) {
+            player.playerclass = MAGE;
+        } else if (player.playerclass == ROGUE) {
+            player.playerclass = FIGHTER;
+        }
+    }
+    
+    if (BUTTON_PRESSED(BUTTON_UP)) {
+        weaponSlider++;
+        player.weapon = itemList[ARMOROPTIONS + (weaponSlider % WEAPONOPTIONS)];
+    } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
+        weaponSlider--;
+        player.weapon = itemList[ARMOROPTIONS + (weaponSlider % WEAPONOPTIONS)];
+    }
+}
 
 void drawPlayer(int col, int row) {
-
+    switch (player.playerclass)
+    {
+    case MAGE:
+        break;
+    case FIGHTER:
+        break;
+    case ROGUE:
+        break;
+    }
 }
 
 void checkDeath() {
     if (player.hpCurr == 0) {
         int revived = 0;
         for (int i = 0; i < INVSIZE; i++) {
-            if (player.backpack[i].id == REVIVALORB) {
+            if (backpack[i].id == REVIVALORB) {
                 player.hpCurr = player.hpMax;
-                player.backpack[i].id = WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS;
+                backpack[i].id = WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS;
                 revived = 1;
                 break;
             }
@@ -87,10 +143,33 @@ void initEnemies() {
     CHARACTER dragon =          {.enemyid = DRAGON,         .hpMax = 80, .hpCurr = 80, .dmg = 20, .intelligence = 20, .dexterity = 20, .strength = 20, .ac = 18, .tilerow = 0, .tilecol = 0};
     CHARACTER wizard =          {.enemyid = WIZARD,         .hpMax = 50, .hpCurr = 50, .dmg = 12, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 11, .tilerow = 0, .tilecol = 0};
     CHARACTER mindflayer =      {.enemyid = MINDFLAYER,     .hpMax = 60, .hpCurr = 60, .dmg = 12, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 11, .tilerow = 0, .tilecol = 0};
+     
+    CHARACTER enemyList[] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
     
-    CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
+//     enemyList[0] = abomination;
+//     enemyList[1] = apprentice;
+//     enemyList[2] = chimera;
+//     enemyList[3] = drow;
+//     enemyList[4] = elemental;
+//     enemyList[5] = golem;
+//     enemyList[6] = goblin;
+//     enemyList[7] = homunculus;
+//     enemyList[8] = kobold;
+//     enemyList[9] = mimic;
+//     enemyList[10] = orc;
+//     enemyList[11] = slime;
+//     enemyList[12] = skeleton;
+//     enemyList[13] = troll;
+//     enemyList[14] = vampire;
+//     enemyList[15] = zombie;
+//     enemyList[16] = beholder;
+//     enemyList[17] = dragon;
+//     enemyList[18] = wizard;
+//     enemyList[19] = mindflayer;
 }
 
+// to export spritesheets: make sure the spritesheet is 256x256 at 16 colors at per sprite
+// tipe 4bpp, no map, pal checked -> 256
 void drawEnemy(int enemyType, int col, int row) {
     shadowOAM[2].attr0 = row | ATTR0_SQUARE | ATTR0_4BPP;
     shadowOAM[2].attr1 = col | ATTR1_SMALL;
@@ -229,9 +308,6 @@ int statMod(CHARACTER * target, int stat) {
 int statModMob(CHARACTER * target, int stat) {
     switch (stat)
     {
-        case AC:
-            return (((target->ac) / 2) - 5);
-            break;
         case INTEL:
             return (((target->intelligence) / 2) - 5);
             break;

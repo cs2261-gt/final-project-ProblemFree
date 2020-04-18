@@ -1469,8 +1469,8 @@ typedef struct character {
 
     ITEM weapon;
     ITEM armor;
-    ITEM backpack [15];
 
+    int active;
     int tilerow;
     int tilecol;
 } CHARACTER;
@@ -1478,7 +1478,7 @@ typedef struct character {
 
 
 
-enum {FIGHTER, MAGE, ROGUE};
+enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1488,6 +1488,8 @@ enum {OFFENSE, DEFENSE = 4};
 
 
 extern CHARACTER player;
+extern ITEM backpack [15];
+extern int weaponSlider;
 
 
 
@@ -1613,6 +1615,9 @@ extern CHARACTER enemyChar;
 extern int turn;
 
 
+
+
+
 void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
@@ -1623,13 +1628,37 @@ int rollDmg(int dice, int bonus);
 
 # 1 "enemysheet.h" 1
 # 21 "enemysheet.h"
-extern const unsigned short enemysheetTiles[16896];
+extern const unsigned short enemysheetTiles[16384];
 
 
 extern const unsigned short enemysheetPal[256];
 # 11 "character.c" 2
 
 CHARACTER player;
+ITEM backpack [15];
+int weaponSlider = 209;
+
+CHARACTER abomination;
+CHARACTER apprentice;
+CHARACTER chimera;
+CHARACTER drow;
+CHARACTER elemental;
+CHARACTER golem;
+CHARACTER goblin;
+CHARACTER homunculus;
+CHARACTER kobold;
+CHARACTER mimic;
+CHARACTER orc;
+CHARACTER slime;
+CHARACTER skeleton;
+CHARACTER troll;
+CHARACTER vampire;
+CHARACTER zombie;
+
+CHARACTER beholder;
+CHARACTER dragon;
+CHARACTER wizard;
+CHARACTER mindflayer;
 
 CHARACTER enemyList [16 + 4];
 
@@ -1650,30 +1679,62 @@ void initPlayer() {
     player.hpMax = 50;
     player.hpCurr = player.hpMax;
 
-    player.backpack[0] = player.weapon;
-    player.backpack[1] = player.armor;
+    backpack[0] = player.weapon;
+    backpack[1] = player.armor;
 
     for (int i = 2; i < 15; i++) {
-        player.backpack[i].id = 10 + 9 + 6 + 7;
+        backpack[i].id = 10 + 9 + 6 + 7;
     }
 
 }
 
+void updatePlayer() {
+    if ((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+        if (player.playerclass == MAGE) {
+            player.playerclass = FIGHTER;
+        } else if (player.playerclass == FIGHTER) {
+            player.playerclass = ROGUE;
+        } else if (player.playerclass == ROGUE) {
+            player.playerclass = MAGE;
+        }
+    } else if ((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+        if (player.playerclass == MAGE) {
+            player.playerclass = ROGUE;
+        } else if (player.playerclass == FIGHTER) {
+            player.playerclass = MAGE;
+        } else if (player.playerclass == ROGUE) {
+            player.playerclass = FIGHTER;
+        }
+    }
 
-
-
+    if ((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
+        weaponSlider++;
+        player.weapon = itemList[9 + (weaponSlider % 10)];
+    } else if ((!(~(oldButtons)&((1<<7))) && (~buttons & ((1<<7))))) {
+        weaponSlider--;
+        player.weapon = itemList[9 + (weaponSlider % 10)];
+    }
+}
 
 void drawPlayer(int col, int row) {
-
+    switch (player.playerclass)
+    {
+    case MAGE:
+        break;
+    case FIGHTER:
+        break;
+    case ROGUE:
+        break;
+    }
 }
 
 void checkDeath() {
     if (player.hpCurr == 0) {
         int revived = 0;
         for (int i = 0; i < 15; i++) {
-            if (player.backpack[i].id == REVIVALORB) {
+            if (backpack[i].id == REVIVALORB) {
                 player.hpCurr = player.hpMax;
-                player.backpack[i].id = 10 + 9 + 6 + 7;
+                backpack[i].id = 10 + 9 + 6 + 7;
                 revived = 1;
                 break;
             }
@@ -1708,8 +1769,11 @@ void initEnemies() {
     CHARACTER wizard = {.enemyid = WIZARD, .hpMax = 50, .hpCurr = 50, .dmg = 12, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 11, .tilerow = 0, .tilecol = 0};
     CHARACTER mindflayer = {.enemyid = MINDFLAYER, .hpMax = 60, .hpCurr = 60, .dmg = 12, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 11, .tilerow = 0, .tilecol = 0};
 
-    CHARACTER enemyList [16 + 4] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
+    CHARACTER enemyList[] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
+# 169 "character.c"
 }
+
+
 
 void drawEnemy(int enemyType, int col, int row) {
     shadowOAM[2].attr0 = row | (0<<14) | (0<<13);
@@ -1849,9 +1913,6 @@ int statMod(CHARACTER * target, int stat) {
 int statModMob(CHARACTER * target, int stat) {
     switch (stat)
     {
-        case AC:
-            return (((target->ac) / 2) - 5);
-            break;
         case INTEL:
             return (((target->intelligence) / 2) - 5);
             break;

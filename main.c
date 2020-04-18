@@ -115,11 +115,10 @@ void goToStart() {
     DMANow(3, startTiles, &CHARBLOCK[0], startTilesLen / 2);
 
     hideSprites();
+    REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_8BPP;
     REG_DISPCTL =   MODE0 | BG1_ENABLE;
 
-    //Wait for vertical blank and flip the page
     waitForVBlank();
-    flipPage();
 
     state = START;
 
@@ -158,6 +157,7 @@ void goToCharCreation() {
     // DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
 
     hideSprites();
+    REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
 
     state = CHARCREATE;
@@ -168,9 +168,7 @@ void charCreation() {
     // updatePlayer();
     // drawPlayer();
 
-    //Wait for vertical blank and flip the page
     waitForVBlank();
-    flipPage();
     DMANow(3, shadowOAM, OAM, 512);
 
     // State transitions
@@ -188,6 +186,7 @@ void goToGame() {
     // DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
 
     hideSprites();
+    REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG1_ENABLE;
 
     state = GAME;
@@ -198,9 +197,7 @@ void game() {
     updateGame();
     // drawGame();
 
-    //Wait for vertical blank and flip the page
     waitForVBlank();
-    flipPage();
     DMANow(3, shadowOAM, OAM, 512);
 
     // State transitions
@@ -222,7 +219,7 @@ void goToPause() {
 
     //Wait for vertical blank and flip the page
     waitForVBlank();
-    flipPage();
+    
 
 
     state = PAUSE;
@@ -230,9 +227,7 @@ void goToPause() {
 
 // Runs every frame of the pause state
 void pause() {
-    //Wait for vertical blank and flip the page
     waitForVBlank();
-    flipPage();
     DMANow(3, shadowOAM, OAM, 512);
 
     // State transitions
@@ -266,9 +261,7 @@ void combat() {
     updateCombat();
     drawCombat();
 
-    //Wait for vertical blank and flip the page
     waitForVBlank();
-    flipPage();
     DMANow(3, shadowOAM, OAM, 512);
 }
 
@@ -279,19 +272,15 @@ void goToCombatPause() {
 
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG1_ENABLE;
 
-    //Wait for vertical blank and flip the page
     waitForVBlank();
-    flipPage();
 
     state = COMBATPAUSE;
 }
 
 void combatPause() {
 
-    //Wait for vertical blank and flip the page
     hideSprites();
     waitForVBlank();
-    flipPage();
     DMANow(3, shadowOAM, OAM, 512);
 
     // State transitions
@@ -312,9 +301,7 @@ void goToWin() {
 
     REG_DISPCTL =   MODE0 | BG1_ENABLE;
 
-    //Wait for vertical blank and flip the page
     waitForVBlank();
-    flipPage();
 
     state = WIN;
 }
@@ -340,9 +327,7 @@ void goToLose() {
 
     REG_DISPCTL =   MODE0 | BG1_ENABLE;
 
-    //Wait for vertical blank and flip the page
     waitForVBlank();
-    flipPage();
 
 
     state = LOSE;
