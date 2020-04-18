@@ -29,10 +29,10 @@ placeCommon:
 	ldr	ip, .L4+4
 	ldr	r3, .L4+8
 	add	r0, r0, r0, lsl #2
-	rsb	r4, r4, r4, lsl #3
-	rsb	r4, r4, r4, lsl #3
+	add	r4, r4, r4, lsl #1
+	add	r4, r4, r4, lsl #5
 	add	ip, ip, r0, lsl #3
-	add	r4, r3, r4, lsl #2
+	add	r4, r3, r4, lsl #3
 	ldmia	ip!, {r0, r1, r2, r3}
 	add	lr, r4, #8
 	stmia	lr!, {r0, r1, r2, r3}
@@ -49,7 +49,7 @@ placeCommon:
 	add	r3, r3, r3, lsl #1
 	sub	r0, r0, r3, lsl #1
 	add	r0, r0, #9
-	str	r0, [r4, #184]
+	str	r0, [r4, #780]
 	pop	{r4, lr}
 	bx	lr
 .L5:
@@ -79,10 +79,10 @@ placeRare:
 	ldr	ip, .L8+4
 	ldr	r3, .L8+8
 	add	r0, r0, r0, lsl #2
-	rsb	r4, r4, r4, lsl #3
-	rsb	r4, r4, r4, lsl #3
+	add	r4, r4, r4, lsl #1
+	add	r4, r4, r4, lsl #5
 	add	ip, ip, r0, lsl #3
-	add	r4, r3, r4, lsl #2
+	add	r4, r3, r4, lsl #3
 	ldmia	ip!, {r0, r1, r2, r3}
 	add	lr, r4, #8
 	stmia	lr!, {r0, r1, r2, r3}
@@ -99,7 +99,7 @@ placeRare:
 	add	r3, r3, r3, lsl #1
 	sub	r0, r0, r3, lsl #1
 	add	r0, r0, #13
-	str	r0, [r4, #184]
+	str	r0, [r4, #780]
 	pop	{r4, lr}
 	bx	lr
 .L9:
@@ -129,10 +129,10 @@ placeAny:
 	ldr	ip, .L12+4
 	ldr	r3, .L12+8
 	add	r0, r0, r0, lsl #2
-	rsb	r4, r4, r4, lsl #3
-	rsb	r4, r4, r4, lsl #3
+	add	r4, r4, r4, lsl #1
+	add	r4, r4, r4, lsl #5
 	add	ip, ip, r0, lsl #3
-	add	r4, r3, r4, lsl #2
+	add	r4, r3, r4, lsl #3
 	ldmia	ip!, {r0, r1, r2, r3}
 	add	lr, r4, #8
 	stmia	lr!, {r0, r1, r2, r3}
@@ -149,7 +149,7 @@ placeAny:
 	add	r3, r3, r3, lsl #1
 	sub	r0, r0, r3, lsl #1
 	add	r0, r0, #11
-	str	r0, [r4, #184]
+	str	r0, [r4, #780]
 	pop	{r4, lr}
 	bx	lr
 .L13:
@@ -176,12 +176,12 @@ placeTrap:
 	ldr	r5, .L16
 	mov	lr, pc
 	bx	r5
-	rsb	r4, r4, r4, lsl #3
+	add	r4, r4, r4, lsl #1
 	ldr	r3, .L16+4
-	rsb	r4, r4, r4, lsl #3
-	add	r4, r3, r4, lsl #2
+	add	r4, r4, r4, lsl #5
+	add	r4, r3, r4, lsl #3
 	and	r0, r0, #1
-	str	r0, [r4, #180]
+	str	r0, [r4, #776]
 	mov	lr, pc
 	bx	r5
 	rsbs	r3, r0, #0
@@ -189,7 +189,7 @@ placeTrap:
 	and	r0, r0, #3
 	rsbpl	r0, r3, #0
 	add	r0, r0, #11
-	str	r0, [r4, #188]
+	str	r0, [r4, #784]
 	pop	{r4, r5, r6, lr}
 	bx	lr
 .L17:
@@ -208,47 +208,35 @@ placeEnemy:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, lr}
-	ldr	r6, .L20
-	mov	r5, r0
-	mov	lr, pc
-	bx	r6
+	push	{r4, lr}
+	ldr	r3, .L20
 	mov	r4, r0
 	mov	lr, pc
-	bx	r6
-	mul	r3, r0, r4
-	rsbs	r2, r3, #0
-	and	r2, r2, #15
-	ldr	r1, .L20+4
-	and	r3, r3, #15
-	rsbpl	r3, r2, #0
-	add	r3, r3, r3, lsl #5
-	add	r3, r1, r3, lsl #2
-	add	r1, r3, #20
-	ldr	r2, .L20+8
-	rsb	r5, r5, r5, lsl #3
-	ldm	r1, {r1, lr}
-	rsb	r5, r5, r5, lsl #3
-	add	r2, r2, r5, lsl #2
-	str	r1, [r2, #68]
-	add	r1, r3, #12
-	ldr	ip, [r3, #28]
-	ldr	r0, [r3, #8]
-	ldm	r1, {r1, r3}
-	str	lr, [r2, #72]
-	str	ip, [r2, #76]
-	str	r0, [r2, #56]
-	str	r1, [r2, #60]
-	str	r3, [r2, #52]
-	str	r3, [r2, #64]
-	pop	{r4, r5, r6, lr}
+	bx	r3
+	mov	r2, #728
+	rsbs	lr, r0, #0
+	ldr	ip, .L20+4
+	add	r4, r4, r4, lsl #1
+	and	lr, lr, #15
+	ldr	r1, .L20+8
+	add	r4, r4, r4, lsl #5
+	and	r3, r0, #15
+	add	r4, ip, r4, lsl #3
+	rsbpl	r3, lr, #0
+	mla	r1, r2, r3, r1
+	add	r0, r4, #48
+	ldr	r3, .L20+12
+	mov	lr, pc
+	bx	r3
+	pop	{r4, lr}
 	bx	lr
 .L21:
 	.align	2
 .L20:
 	.word	rand
-	.word	enemyList
 	.word	dungeon
+	.word	enemyList
+	.word	memcpy
 	.size	placeEnemy, .-placeEnemy
 	.align	2
 	.global	initDungeon
@@ -286,20 +274,20 @@ initDungeon:
 .L24:
 	mov	r2, #17
 	mov	r3, #6
-	str	r2, [r5, #2156]
-	str	r3, [r5, #2160]
+	ldr	r5, .L52+12
+	str	r2, [r5, #520]
+	str	r3, [r5, #524]
 	mov	lr, pc
 	bx	r4
-	rsbs	r2, r0, #0
-	and	r2, r2, #3
+	mov	r2, #728
+	rsbs	r1, r0, #0
+	and	r1, r1, #3
 	and	r3, r0, #3
-	rsbpl	r3, r2, #0
-	ldr	r1, .L52+12
+	rsbpl	r3, r1, #0
+	ldr	r1, .L52+16
 	add	r3, r3, #16
-	add	r3, r3, r3, lsl #5
-	add	r1, r1, r3, lsl #2
-	mov	r2, #132
-	ldr	r0, .L52+16
+	mla	r1, r2, r3, r1
+	add	r0, r5, #568
 	ldr	r3, .L52+20
 	mov	lr, pc
 	bx	r3
@@ -332,7 +320,7 @@ initDungeon:
 .L31:
 	ldr	r2, [r1, #4]!
 	cmp	r1, r6
-	str	r2, [r3, #196]!
+	str	r2, [r3, #792]!
 	bne	.L31
 	mov	r6, #1
 	ldr	r7, .L52+8
@@ -342,16 +330,16 @@ initDungeon:
 .L49:
 	mov	r3, #1
 	mov	r0, r6
-	str	r3, [r5, #200]
+	str	r3, [r5, #796]
 	bl	placeEnemy
 .L33:
-	ldr	r3, [r5, #196]
+	ldr	r3, [r5, #792]
 	cmp	r3, #10
 	beq	.L47
 .L38:
 	add	r6, r6, #1
 	cmp	r6, #11
-	add	r5, r5, #196
+	add	r5, r5, #792
 	beq	.L48
 .L39:
 	mov	lr, pc
@@ -364,7 +352,7 @@ initDungeon:
 	sub	r3, r0, r3, lsl #2
 	cmp	r3, #9
 	movle	r3, #0
-	strle	r3, [r5, #200]
+	strle	r3, [r5, #796]
 	ble	.L33
 	cmp	r3, #29
 	ble	.L49
@@ -376,21 +364,21 @@ initDungeon:
 	bgt	.L37
 	mov	r3, #4
 	mov	r0, r6
-	str	r3, [r5, #200]
+	str	r3, [r5, #796]
 	bl	placeCommon
-	ldr	r3, [r5, #196]
+	ldr	r3, [r5, #792]
 	cmp	r3, #10
 	bne	.L38
 .L47:
 	mov	r3, #5
-	str	r3, [r5, #200]
+	str	r3, [r5, #796]
 	mov	lr, pc
 	bx	r9
 	mov	lr, #0
 	add	r0, r0, r0, lsl #2
 	add	ip, r8, r0, lsl #3
 	ldmia	ip!, {r0, r1, r2, r3}
-	add	r10, r5, #204
+	add	r10, r5, #800
 	stmia	r10!, {r0, r1, r2, r3}
 	ldmia	ip!, {r0, r1, r2, r3}
 	stmia	r10!, {r0, r1, r2, r3}
@@ -398,8 +386,8 @@ initDungeon:
 	ldm	ip, {r0, r1}
 	cmp	r6, #11
 	stm	r10, {r0, r1}
-	add	r5, r5, #196
-	str	lr, [r5, #184]
+	add	r5, r5, #792
+	str	lr, [r5, #780]
 	bne	.L39
 .L48:
 	add	sp, sp, #40
@@ -409,7 +397,7 @@ initDungeon:
 .L37:
 	mov	r3, #5
 	mov	r0, r6
-	str	r3, [r5, #200]
+	str	r3, [r5, #796]
 	bl	placeRare
 	b	.L33
 .L27:
@@ -419,13 +407,13 @@ initDungeon:
 .L50:
 	mov	r3, #2
 	mov	r0, r6
-	str	r3, [r5, #200]
+	str	r3, [r5, #796]
 	bl	placeTrap
 	b	.L33
 .L51:
 	mov	r3, #3
 	mov	r0, r6
-	str	r3, [r5, #200]
+	str	r3, [r5, #796]
 	bl	placeEnemy
 	mov	r0, r6
 	bl	placeAny
@@ -436,8 +424,8 @@ initDungeon:
 	.word	dungeon
 	.word	rand
 	.word	1374389535
+	.word	dungeon+8192
 	.word	enemyList
-	.word	dungeon+2204
 	.word	memcpy
 	.word	randomRare
 	.word	itemList
@@ -453,9 +441,9 @@ loadRoomData:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	ldr	r3, .L76
-	rsb	r0, r0, r0, lsl #3
-	rsb	r0, r0, r0, lsl #3
-	ldr	r3, [r3, r0, lsl #2]
+	add	r0, r0, r0, lsl #1
+	add	r0, r0, r0, lsl #5
+	ldr	r3, [r3, r0, lsl #3]
 	push	{r4, lr}
 	cmp	r3, #17
 	ldrls	pc, [pc, r3, asl #2]
@@ -944,25 +932,25 @@ checkSearch:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, lr}
-	ldr	r3, .L87
-	ldr	r0, .L87+4
+	ldr	r4, .L87
+	ldr	r3, .L87+4
+	mov	r0, r4
 	mov	lr, pc
 	bx	r3
 	ldr	r3, .L87+8
 	ldr	ip, [r3]
 	ldr	lr, .L87+12
-	rsb	r3, ip, ip, lsl #3
-	rsb	r3, r3, r3, lsl #3
-	add	r3, lr, r3, lsl #2
-	ldr	r3, [r3, #184]
+	add	r2, ip, ip, lsl #1
+	add	r2, r2, r2, lsl #5
+	add	r2, lr, r2, lsl #3
+	ldr	r3, [r2, #780]
 	cmp	r0, r3
 	blt	.L83
-	ldr	r4, .L87+16
-	mov	r3, #0
 	mov	r2, r4
-	lsl	r0, ip, #3
+	mov	r3, #0
+	lsl	r0, ip, #1
 .L82:
-	ldr	r1, [r2]
+	ldr	r1, [r2, #120]
 	cmp	r1, #32
 	beq	.L86
 	add	r3, r3, #1
@@ -975,13 +963,14 @@ checkSearch:
 	mov	r0, r3
 	bx	lr
 .L86:
-	sub	ip, r0, ip
-	rsb	ip, ip, ip, lsl #3
-	add	lr, lr, ip, lsl #2
+	add	ip, r0, ip
+	add	ip, ip, ip, lsl #5
+	add	lr, lr, ip, lsl #3
+	add	r3, r3, r3, lsl #2
 	add	lr, lr, #8
-	add	ip, r3, r3, lsl #2
+	add	ip, r4, r3, lsl #3
 	ldmia	lr!, {r0, r1, r2, r3}
-	add	ip, r4, ip, lsl #3
+	add	ip, ip, #120
 	stmia	ip!, {r0, r1, r2, r3}
 	ldmia	lr!, {r0, r1, r2, r3}
 	stmia	ip!, {r0, r1, r2, r3}
@@ -994,11 +983,10 @@ checkSearch:
 .L88:
 	.align	2
 .L87:
-	.word	intDiceRoll
 	.word	player
+	.word	intDiceRoll
 	.word	currRoom
 	.word	dungeon
-	.word	backpack
 	.size	checkSearch, .-checkSearch
 	.align	2
 	.global	checkTrap
@@ -1014,10 +1002,10 @@ checkTrap:
 	ldr	r5, .L98
 	ldr	r3, [r5]
 	ldr	r4, .L98+4
-	rsb	r3, r3, r3, lsl #3
-	rsb	r3, r3, r3, lsl #3
-	add	r3, r4, r3, lsl #2
-	ldr	r3, [r3, #180]
+	add	r3, r3, r3, lsl #1
+	add	r3, r3, r3, lsl #5
+	add	r3, r4, r3, lsl #3
+	ldr	r3, [r3, #776]
 	cmp	r3, #1
 	beq	.L96
 	cmp	r3, #0
@@ -1034,10 +1022,10 @@ checkTrap:
 	mov	lr, pc
 	bx	r3
 	ldr	r3, [r5]
-	rsb	r3, r3, r3, lsl #3
-	rsb	r3, r3, r3, lsl #3
-	add	r4, r4, r3, lsl #2
-	ldr	r3, [r4, #188]
+	add	r3, r3, r3, lsl #1
+	add	r3, r3, r3, lsl #5
+	add	r4, r4, r3, lsl #3
+	ldr	r3, [r4, #784]
 	cmp	r0, r3
 	bge	.L93
 	mov	r1, #6
@@ -1061,5 +1049,5 @@ checkTrap:
 	.word	damageChar
 	.word	intDiceRoll
 	.size	checkTrap, .-checkTrap
-	.comm	dungeon,2352,4
+	.comm	dungeon,9504,4
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

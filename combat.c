@@ -14,23 +14,12 @@ int turn;
 // Control Functions
 void initCombat(CHARACTER * enemy) {
     enemyChar = *enemy;
-
-    enemyChar.enemyid = enemy->enemyid;
-    enemyChar.intelligence = enemy->intelligence;
-    enemyChar.dexterity = enemy->dexterity;
-    enemyChar.strength = enemy->strength;
-    enemyChar.ac = enemy->ac;
-    enemyChar.hpMax = enemy->hpMax;
-    enemyChar.hpCurr = enemy->hpCurr;
-    enemyChar.dmg = enemy->dmg;
-    enemyChar.active = 1;
     turn = 0;
 }
 
 void updateCombat() {
     // Check if combat is won, handle defeating boss
-    if (enemyChar.hpCurr <= 0) {
-        enemyChar.active = 0;
+    if (enemyChar.hpCurr == 0) {
         if (dungeon[currRoom].adjective == BOSS) {
             goToWin();
         }
@@ -44,6 +33,8 @@ void updateCombat() {
             goToGame();
         }
     } else {
+
+
         // Check if player has died, handle revival items
         checkDeath();
 
@@ -52,22 +43,13 @@ void updateCombat() {
             if (BUTTON_PRESSED(BUTTON_A)) {
                 player.stance = OFFENSE;
                 attack(&player, &enemyChar);
-                for (volatile int timer = 0; timer <= TIMERWAIT; timer++) {
-                    if (timer == TIMERWAIT) {
-                        turn = 1;
-                    }
-                }
+                turn = 1;
             } else if (BUTTON_PRESSED(BUTTON_B)) {
                 player.stance = DEFENSE;
-                for (volatile int timer = 0; timer <= TIMERWAIT; timer++) {
-                    if (timer == TIMERWAIT) {
-                        turn = 1;
-                    }
-                }
+                turn = 1;
             } else if (BUTTON_PRESSED(BUTTON_START)) {
                 goToCombatPause();
             } else if (BUTTON_PRESSED(BUTTON_L) && dungeon[currRoom].adjective != BOSS) {
-                enemyChar.active = 0;
                 currRoom--;
                 goToGame();
             }
@@ -191,18 +173,15 @@ void updateCombat() {
 }
 
 void drawCombat() {
-    if (enemyChar.active) {
-        drawEnemy(enemyChar.enemyid, (SCREENWIDTH / 2) - 8, (SCREENHEIGHT / 2) - 8);
-    }
+    drawEnemy(enemyChar.enemyid, (SCREENWIDTH / 2) - 8, (SCREENHEIGHT / 2) - 8);
 }
 
 // Handle all possible attack combos (player to mob, boss to player, dragon boss to player, and moc to player), give players and bosses advantage
 void attack(CHARACTER * source, CHARACTER  * target) {
     // Handle player to mob attacks
     if (source->playerclass == MAGE) {
-        if ( 1 /*(rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance*/) {
-            // int damage = rollDmg(10, statMod(source, INTEL));
-            int damage = 1000;
+        if ((rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance) {
+            int damage = rollDmg(10, statMod(source, INTEL));
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -210,9 +189,8 @@ void attack(CHARACTER * source, CHARACTER  * target) {
             }
         }
     } else if (source->playerclass == ROGUE) {
-        if ( 1 /*(rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance*/) {
-            // int damage = rollDmg(10, statMod(source, DEX));
-            int damage = 1000;
+        if ((rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance) {
+            int damage = rollDmg(10, statMod(source, DEX));
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -220,9 +198,8 @@ void attack(CHARACTER * source, CHARACTER  * target) {
             }
         }
     } else if (source->playerclass == FIGHTER) {
-        if ( 1 /*(rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance*/) {
-            // int damage = rollDmg(10, statMod(source, STR));
-            int damage = 1000;
+        if ((rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance) {
+            int damage = rollDmg(10, statMod(source, STR));
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {

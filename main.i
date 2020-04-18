@@ -1469,8 +1469,8 @@ typedef struct character {
 
     ITEM weapon;
     ITEM armor;
+    ITEM backpack [15];
 
-    int active;
     int tilerow;
     int tilecol;
 } CHARACTER;
@@ -1478,7 +1478,7 @@ typedef struct character {
 
 
 
-enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
+enum {FIGHTER, MAGE, ROGUE};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1488,8 +1488,6 @@ enum {OFFENSE, DEFENSE = 4};
 
 
 extern CHARACTER player;
-extern ITEM backpack [15];
-extern int weaponSlider;
 
 
 
@@ -1615,9 +1613,6 @@ extern CHARACTER enemyChar;
 extern int turn;
 
 
-
-
-
 void initCombat(CHARACTER * enemy);
 void updateCombat();
 void drawCombat();
@@ -1627,7 +1622,7 @@ int rollDmg(int dice, int bonus);
 # 9 "main.c" 2
 # 1 "start.h" 1
 # 22 "start.h"
-extern const unsigned short startTiles[19232];
+extern const unsigned short startTiles[9616];
 
 
 extern const unsigned short startMap[1024];
@@ -1668,7 +1663,7 @@ extern const unsigned short losePal[256];
 
 # 1 "enemysheet.h" 1
 # 21 "enemysheet.h"
-extern const unsigned short enemysheetTiles[16384];
+extern const unsigned short enemysheetTiles[16896];
 
 
 extern const unsigned short enemysheetPal[256];
@@ -1773,13 +1768,14 @@ void goToStart() {
 
     DMANow(3, startPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, startMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-    DMANow(3, startTiles, &((charblock *)0x6000000)[0], 38464 / 2);
+    DMANow(3, startTiles, &((charblock *)0x6000000)[0], 19232 / 2);
 
     hideSprites();
-    (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (1<<7);
     (*(unsigned short *)0x4000000) = 0 | (1<<9);
 
+
     waitForVBlank();
+    flipPage();
 
     state = START;
 
@@ -1809,9 +1805,8 @@ void start() {
 
 
 void goToCharCreation() {
-# 159 "main.c"
+# 160 "main.c"
     hideSprites();
-    (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (0<<7);
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8) | (1<<9);
 
     state = CHARCREATE;
@@ -1822,7 +1817,9 @@ void charCreation() {
 
 
 
+
     waitForVBlank();
+    flipPage();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
 
@@ -1840,7 +1837,6 @@ void goToGame() {
 
 
     hideSprites();
-    (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (0<<7);
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
 
     state = GAME;
@@ -1851,7 +1847,9 @@ void game() {
     updateGame();
 
 
+
     waitForVBlank();
+    flipPage();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
 
@@ -1873,7 +1871,7 @@ void goToPause() {
 
 
     waitForVBlank();
-
+    flipPage();
 
 
     state = PAUSE;
@@ -1881,7 +1879,9 @@ void goToPause() {
 
 
 void pause() {
+
     waitForVBlank();
+    flipPage();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
 
@@ -1901,7 +1901,7 @@ void goToCombat(CHARACTER * enemy) {
     loadRoomData(currRoom);
 
     DMANow(3, enemysheetPal, ((unsigned short *)0x5000200), 256);
-    DMANow(3, enemysheetTiles, &((charblock *)0x6000000)[4], 32768 / 2);
+    DMANow(3, enemysheetTiles, &((charblock *)0x6000000)[4], 33792 / 2);
 
     hideSprites();
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
@@ -1915,7 +1915,9 @@ void combat() {
     updateCombat();
     drawCombat();
 
+
     waitForVBlank();
+    flipPage();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 }
 
@@ -1926,15 +1928,19 @@ void goToCombatPause() {
 
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
 
+
     waitForVBlank();
+    flipPage();
 
     state = COMBATPAUSE;
 }
 
 void combatPause() {
 
+
     hideSprites();
     waitForVBlank();
+    flipPage();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
 
@@ -1955,7 +1961,9 @@ void goToWin() {
 
     (*(unsigned short *)0x4000000) = 0 | (1<<9);
 
+
     waitForVBlank();
+    flipPage();
 
     state = WIN;
 }
@@ -1981,7 +1989,9 @@ void goToLose() {
 
     (*(unsigned short *)0x4000000) = 0 | (1<<9);
 
+
     waitForVBlank();
+    flipPage();
 
 
     state = LOSE;

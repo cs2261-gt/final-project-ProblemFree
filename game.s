@@ -94,9 +94,9 @@ updateGame:
 	ldr	r5, .L31
 	ldr	r2, [r5]
 	ldr	r4, .L31+4
-	rsb	r0, r2, r2, lsl #3
-	rsb	r0, r0, r0, lsl #3
-	add	r3, r4, r0, lsl #2
+	add	r0, r2, r2, lsl #1
+	add	r0, r0, r0, lsl #5
+	add	r3, r4, r0, lsl #3
 	ldr	r3, [r3, #4]
 	cmp	r3, #2
 	beq	.L29
@@ -104,7 +104,7 @@ updateGame:
 	cmp	r3, #6
 	cmpne	r1, #1
 	bne	.L9
-	lsl	r0, r0, #2
+	lsl	r0, r0, #3
 	add	r0, r0, #48
 	ldr	r3, .L31+8
 	add	r0, r4, r0
@@ -171,9 +171,9 @@ updateGame:
 	bx	r3
 	mov	r2, #0
 	ldr	r3, [r5]
-	rsb	r3, r3, r3, lsl #3
-	rsb	r3, r3, r3, lsl #3
-	add	r4, r4, r3, lsl #2
+	add	r3, r3, r3, lsl #1
+	add	r3, r3, r3, lsl #5
+	add	r4, r4, r3, lsl #3
 	str	r2, [r4, #4]
 	pop	{r4, r5, r6, lr}
 	bx	lr

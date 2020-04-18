@@ -78,6 +78,7 @@ void initDungeon() {
     }
 
     // Populate Dungeon rooms
+
     for (int i = 1; i < DUNGEONSIZE - 1; i++) {
         decider = rand() % 100;
 
@@ -138,14 +139,7 @@ void placeTrap(int i) {
 }
 
 void placeEnemy(int i) {
-    int decider = (rand() * rand() % MOBOPTIONS);
-    dungeon[i].enemy.enemyid = enemyList[decider].intelligence;
-    dungeon[i].enemy.intelligence = enemyList[decider].intelligence;
-    dungeon[i].enemy.dexterity = enemyList[decider].dexterity;
-    dungeon[i].enemy.strength = enemyList[decider].strength;
-    dungeon[i].enemy.ac = enemyList[decider].ac;
-    dungeon[i].enemy.hpMax = enemyList[decider].hpMax;
-    dungeon[i].enemy.hpCurr = enemyList[decider].hpCurr;
+    dungeon[i].enemy = enemyList[rand() % MOBOPTIONS];
 }
 
 // {ALCHEMYLAB, ATRIUM, BEDROOM, BREWERY, CIRCLES, CHESS, TELEPORTER, CRYSTAL, LIBRARY, MENAGERIE, TREASURY, GOLEMFAB, DINING, OBSERBVATORY, PRISON, GARDEN, ENTRANCE, BOSSROOM}
@@ -257,8 +251,8 @@ void drawRoom() {
 int checkSearch() {
     if (intDiceRoll(&player) >= dungeon[currRoom].searchSuccess) {
         for (int i = 0; i < INVSIZE; i++) {
-            if (backpack[i].id == WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS) {
-                backpack[i] = dungeon[currRoom].object;
+            if (player.backpack[i].id == WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS) {
+                player.backpack[i] = dungeon[currRoom].object;
                 return 1;
             }
         }

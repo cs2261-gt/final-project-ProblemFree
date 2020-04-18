@@ -1469,8 +1469,8 @@ typedef struct character {
 
     ITEM weapon;
     ITEM armor;
+    ITEM backpack [15];
 
-    int active;
     int tilerow;
     int tilecol;
 } CHARACTER;
@@ -1478,7 +1478,7 @@ typedef struct character {
 
 
 
-enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
+enum {FIGHTER, MAGE, ROGUE};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1488,8 +1488,6 @@ enum {OFFENSE, DEFENSE = 4};
 
 
 extern CHARACTER player;
-extern ITEM backpack [15];
-extern int weaponSlider;
 
 
 
@@ -1613,9 +1611,6 @@ int checkTrap();
 
 extern CHARACTER enemyChar;
 extern int turn;
-
-
-
 
 
 void initCombat(CHARACTER * enemy);
