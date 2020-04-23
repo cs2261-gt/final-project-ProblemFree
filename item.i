@@ -1668,7 +1668,9 @@ void initItems() {
     ITEM dragonheart = {.id = DRAGONHEART, .intelligenceEff = 1, .dexterityEff = 1, .strengthEff = 1, .acEff = 1, .specialEff = SUPERBUFF, .type = USABLE, .tilerow = 0, .tilecol = 0, .framecount = 0};
     ITEM vorpalblade = {.id = VORPALBLADE, .intelligenceEff = 3, .dexterityEff = 0, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
     ITEM artemisbow = {.id = ARTEMISBOW, .intelligenceEff = 0, .dexterityEff = 3, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
-    ITEM archwizardstaff = {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 0, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
+
+    ITEM archwizardstaff = {.id = ARCHWIZARDSTAFF, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 0, .specialEff = NONE, .type = WEAPON, .tilerow = 0, .tilecol = 0, .framecount = 0};
+
     ITEM royal = {.id = ROYAL, .intelligenceEff = 3, .dexterityEff = 3, .strengthEff = 3, .acEff = 3, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
     ITEM legendary = {.id = LEGENDARY, .intelligenceEff = 4, .dexterityEff = 4, .strengthEff = 4, .acEff = 4, .specialEff = NONE, .type = ARMOR, .tilerow = 0, .tilecol = 0, .framecount = 0};
 

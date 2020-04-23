@@ -32,6 +32,8 @@ void updateCombat() {
     // Check if combat is won, handle defeating boss
     if (enemyChar.hpCurr <= 0) {
         enemyChar.active = 0;
+        enemyChar.hpMax = 10;
+        enemyChar.hpCurr = 10;
         if (dungeon[currRoom].adjective == BOSS) {
             goToWin();
         }
@@ -69,6 +71,9 @@ void updateCombat() {
             }
             else if (BUTTON_PRESSED(BUTTON_START)) {
                 goToCombatPause();
+            }
+            else if (BUTTON_PRESSED(BUTTON_L)) {
+                player.hpCurr = player.hpMax;
             }
             // else if (BUTTON_PRESSED(BUTTON_L) && dungeon[currRoom].adjective != BOSS) {
             //     enemyChar.active = 0;

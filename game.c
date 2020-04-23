@@ -44,10 +44,15 @@ void updateGame() {
     } else if (dungeon[currRoom].adjective == MONSTER || dungeon[currRoom].adjective == GUARDED || dungeon[currRoom].adjective == BOSS) {
         goToCombat(&(dungeon[currRoom].enemy));
     } else {
-        // Search Room ability
-        if (BUTTON_PRESSED(BUTTON_A)) {
-            turnCount++;
-            checkSearch();
+
+        // // Search Room ability
+        // if (BUTTON_PRESSED(BUTTON_A)) {
+        //     turnCount++;
+        //     checkSearch();
+        // }
+
+        if (BUTTON_PRESSED(BUTTON_L)) {
+                player.hpCurr = player.hpMax;
         }
         
         // Room Traversal

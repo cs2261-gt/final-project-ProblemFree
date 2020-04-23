@@ -361,28 +361,31 @@ updateCombat:
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
-	ldr	r4, .L87
+	ldr	r4, .L94
 	ldr	r3, [r4, #16]
 	cmp	r3, #0
 	sub	sp, sp, #8
 	bgt	.L37
-	mov	r1, #0
-	ldr	r3, .L87+4
+	mov	r1, #10
+	mov	r0, #0
+	ldr	r3, .L94+4
 	ldr	r3, [r3]
-	ldr	r2, .L87+8
+	ldr	r2, .L94+8
 	add	r3, r3, r3, lsl #2
 	add	r3, r3, r3, lsl #2
 	add	r3, r2, r3, lsl #3
 	ldr	r2, [r3, #4]
 	cmp	r2, #6
-	str	r1, [r4, #124]
-	beq	.L85
+	str	r0, [r4, #124]
+	str	r1, [r4, #12]
+	str	r1, [r4, #16]
+	beq	.L91
 	cmp	r2, #3
 	moveq	ip, #4
 	movne	ip, #0
-	ldr	r1, .L87+12
+	ldr	r1, .L94+12
 	ldr	r2, [r1]
-	ldr	r0, .L87+16
+	ldr	r0, .L94+16
 	add	r2, r2, #1
 	str	ip, [r3, #4]
 	str	r2, [r1]
@@ -394,28 +397,28 @@ updateCombat:
 	pop	{r4, r5, r6, lr}
 	bx	lr
 .L37:
-	ldr	r5, .L87+20
-	ldr	r3, .L87+24
+	ldr	r5, .L94+20
+	ldr	r3, .L94+24
 	mov	lr, pc
 	bx	r3
 	ldr	r2, [r5]
 	cmp	r2, #0
 	bne	.L41
-	ldr	r3, .L87+28
-	ldrh	r0, [r3]
-	tst	r0, #1
-	bne	.L86
+	ldr	r3, .L94+28
+	ldrh	r3, [r3]
+	tst	r3, #1
+	bne	.L92
 .L42:
-	tst	r0, #2
+	tst	r3, #2
 	beq	.L47
-	ldr	r3, .L87+32
-	ldrh	r1, [r3]
+	ldr	r1, .L94+32
+	ldrh	r1, [r1]
 	ands	r1, r1, #2
 	bne	.L47
 	mov	r0, #4
 	str	r1, [sp, #4]
 	ldr	ip, [sp, #4]
-	ldr	r3, .L87+36
+	ldr	r3, .L94+36
 	cmp	ip, #1000
 	str	r0, [r3, #40]
 	bgt	.L36
@@ -430,16 +433,17 @@ updateCombat:
 	moveq	r2, r1
 	cmp	r3, #1000
 	ble	.L49
+.L90:
 	cmp	r1, #0
 	strne	r2, [r5]
 	b	.L36
 .L41:
 	cmp	r2, #1
 	bne	.L36
-	ldr	r3, .L87+40
+	ldr	r3, .L94+40
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L87+44
+	ldr	r3, .L94+44
 	smull	r2, r3, r0, r3
 	asr	r2, r0, #31
 	rsb	r3, r2, r3, asr #5
@@ -450,26 +454,26 @@ updateCombat:
 	sub	r3, r0, r3, lsl #2
 	cmp	r2, #3
 	ldrls	pc, [pc, r2, asl #2]
-	b	.L50
-.L52:
+	b	.L51
+.L53:
+	.word	.L56
 	.word	.L55
 	.word	.L54
-	.word	.L53
-	.word	.L51
-.L85:
-	ldr	r3, .L87+48
+	.word	.L52
+.L91:
+	ldr	r3, .L94+48
 	mov	lr, pc
 	bx	r3
 	add	sp, sp, #8
 	@ sp needed
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L86:
-	ldr	r3, .L87+32
-	ldrh	r3, [r3]
-	ands	r6, r3, #1
+.L92:
+	ldr	r1, .L94+32
+	ldrh	r1, [r1]
+	ands	r6, r1, #1
 	bne	.L42
-	ldr	r0, .L87+36
+	ldr	r0, .L94+36
 	mov	r1, r4
 	str	r6, [r0, #40]
 	bl	attack
@@ -477,112 +481,121 @@ updateCombat:
 	ldr	r3, [sp]
 	cmp	r3, #1000
 	bgt	.L36
-	mov	r2, r6
-	ldr	r1, [r5]
+	mov	r1, r6
+	ldr	r2, [r5]
 .L45:
 	ldr	r3, [sp]
 	cmp	r3, #1000
-	moveq	r2, #1
+	moveq	r1, #1
 	ldr	r3, [sp]
 	add	r3, r3, #1
 	str	r3, [sp]
 	ldr	r3, [sp]
-	moveq	r1, r2
+	moveq	r2, r1
 	cmp	r3, #1000
 	ble	.L45
-	cmp	r2, #0
-	strne	r1, [r5]
-	b	.L36
+	b	.L90
 .L47:
-	tst	r0, #8
-	beq	.L36
-	ldr	r3, .L87+32
-	ldrh	r3, [r3]
 	tst	r3, #8
-	bne	.L36
-	ldr	r3, .L87+52
+	beq	.L50
+	ldr	r2, .L94+32
+	ldrh	r2, [r2]
+	tst	r2, #8
+	beq	.L93
+.L50:
+	tst	r3, #512
+	beq	.L36
+	ldr	r3, .L94+32
+	ldrh	r3, [r3]
+	tst	r3, #512
+	ldreq	r3, .L94+36
+	ldreq	r2, [r3, #12]
+	streq	r2, [r3, #16]
+	b	.L36
+.L93:
+	ldr	r3, .L94+52
 	mov	lr, pc
 	bx	r3
 	b	.L36
-.L51:
+.L52:
 	ldr	r2, [r4, #12]
-	ldr	r1, .L87+56
+	ldr	r1, .L94+56
 	smull	r0, r1, r2, r1
 	ldr	r0, [r4, #16]
 	asr	r2, r2, #31
 	rsb	r2, r2, r1, asr #1
 	cmp	r0, r2
-	bgt	.L84
+	bgt	.L88
 	cmp	r3, #74
-	bgt	.L57
-.L58:
+	bgt	.L58
+.L59:
 	mov	r2, #4
 	mov	r3, #0
 	str	r2, [r4, #40]
 	str	r3, [r5]
 	b	.L36
-.L53:
+.L54:
 	ldr	r1, [r4, #12]
-	ldr	r2, .L87+60
+	ldr	r2, .L94+60
 	smull	r0, r2, r1, r2
 	ldr	r0, [r4, #16]
 	sub	r2, r2, r1, asr #31
 	cmp	r0, r2
-	bgt	.L83
-.L62:
+	bgt	.L87
+.L63:
 	cmp	r3, #59
-	ble	.L58
-.L57:
+	ble	.L59
+.L58:
 	mov	r6, #0
-	ldr	r1, .L87+36
-	ldr	r0, .L87
+	ldr	r1, .L94+36
+	ldr	r0, .L94
 	str	r6, [r4, #40]
 	bl	attack
 	str	r6, [r5]
 	b	.L36
-.L55:
+.L56:
 	ldr	r2, [r4, #12]
-	ldr	r1, .L87+56
+	ldr	r1, .L94+56
 	smull	r0, r1, r2, r1
 	ldr	r0, [r4, #16]
 	asr	r2, r2, #31
 	rsb	r2, r2, r1, asr #1
 	cmp	r0, r2
-	bgt	.L82
+	bgt	.L86
 	cmp	r3, #49
-	ble	.L58
-	b	.L57
-.L54:
+	ble	.L59
+	b	.L58
+.L55:
 	ldr	r2, [r4, #12]
 	add	r1, r2, #3
 	cmp	r2, #0
 	movlt	r2, r1
 	ldr	r1, [r4, #16]
 	cmp	r1, r2, asr #2
-	ble	.L83
-.L82:
+	ble	.L87
+.L86:
 	cmp	r3, #19
-	ble	.L58
-	b	.L57
-.L83:
+	ble	.L59
+	b	.L58
+.L87:
 	cmp	r3, #39
-	ble	.L58
-	b	.L57
-.L50:
+	ble	.L59
+	b	.L58
+.L51:
 	ldr	r2, [r4, #12]
 	add	r1, r2, #3
 	cmp	r2, #0
 	movlt	r2, r1
 	ldr	r1, [r4, #16]
 	cmp	r1, r2, asr #2
-	ble	.L62
-.L84:
-	cmp	r3, #29
-	ble	.L58
-	b	.L57
+	ble	.L63
 .L88:
+	cmp	r3, #29
+	ble	.L59
+	b	.L58
+.L95:
 	.align	2
-.L87:
+.L94:
 	.word	enemyChar
 	.word	currRoom
 	.word	dungeon
@@ -612,21 +625,21 @@ rollDmg:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
 	mov	r5, r0
-	ldr	r3, .L91
+	ldr	r3, .L98
 	mov	r4, r1
 	mov	lr, pc
 	bx	r3
 	mov	r1, r5
-	ldr	r3, .L91+4
+	ldr	r3, .L98+4
 	mov	lr, pc
 	bx	r3
 	add	r0, r1, #1
 	add	r0, r0, r4
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L92:
+.L99:
 	.align	2
-.L91:
+.L98:
 	.word	rand
 	.word	__aeabi_idivmod
 	.size	rollDmg, .-rollDmg

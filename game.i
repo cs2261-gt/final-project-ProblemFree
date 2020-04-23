@@ -1670,9 +1670,14 @@ void updateGame() {
         goToCombat(&(dungeon[currRoom].enemy));
     } else {
 
-        if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
-            turnCount++;
-            checkSearch();
+
+
+
+
+
+
+        if ((!(~(oldButtons)&((1<<9))) && (~buttons & ((1<<9))))) {
+                player.hpCurr = player.hpMax;
         }
 
 

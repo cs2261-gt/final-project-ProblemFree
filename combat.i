@@ -1657,6 +1657,8 @@ void updateCombat() {
 
     if (enemyChar.hpCurr <= 0) {
         enemyChar.active = 0;
+        enemyChar.hpMax = 10;
+        enemyChar.hpCurr = 10;
         if (dungeon[currRoom].adjective == BOSS) {
             goToWin();
         }
@@ -1694,6 +1696,9 @@ void updateCombat() {
             }
             else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
                 goToCombatPause();
+            }
+            else if ((!(~(oldButtons)&((1<<9))) && (~buttons & ((1<<9))))) {
+                player.hpCurr = player.hpMax;
             }
 
 

@@ -109,20 +109,15 @@ updateGame:
 .L9:
 	ldr	r3, .L31+12
 	ldrh	r3, [r3]
-	tst	r3, #1
+	tst	r3, #512
 	beq	.L10
 	ldr	r1, .L31+16
 	ldrh	r1, [r1]
-	tst	r1, #1
-	bne	.L10
-	ldr	r2, .L31+20
-	ldr	r3, [r2]
-	ldr	r1, .L31+24
-	add	r3, r3, #1
-	str	r3, [r2]
-	mov	lr, pc
-	bx	r1
-	b	.L6
+	tst	r1, #512
+	ldreq	r3, .L31+20
+	ldreq	r2, [r3, #12]
+	streq	r2, [r3, #16]
+	beq	.L6
 .L10:
 	tst	r3, #16
 	beq	.L11
@@ -147,7 +142,7 @@ updateGame:
 	andgt	r3, r3, #1
 	cmp	r3, #0
 	beq	.L6
-	ldr	r1, .L31+20
+	ldr	r1, .L31+24
 	ldr	r3, [r1]
 	sub	r2, r2, #1
 .L28:
@@ -171,7 +166,7 @@ updateGame:
 	pop	{r4, r5, r6, lr}
 	bx	lr
 .L30:
-	ldr	r1, .L31+20
+	ldr	r1, .L31+24
 	add	r2, r2, #1
 	ldr	r3, [r1]
 	b	.L28
@@ -183,8 +178,8 @@ updateGame:
 	.word	goToCombat
 	.word	oldButtons
 	.word	buttons
+	.word	player
 	.word	turnCount
-	.word	checkSearch
 	.word	goToGame
 	.word	checkTrap
 	.size	updateGame, .-updateGame
