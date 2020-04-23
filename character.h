@@ -91,7 +91,7 @@ enum {PHYSICAL, MAGICAL};
 
 // Prototypes
 void initPlayer();
-// void updatePlayer();
+void updatePlayer();
 void drawPlayer(int col, int row);
 void drawPlayerHealthbar(int max, int curr, int col, int row);
 

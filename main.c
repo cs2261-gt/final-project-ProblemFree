@@ -153,15 +153,16 @@ void start() {
 
         
         init();
+        volatile int t = 0;
+        while (t < 1000) {
+            t++;
+        }
         goToCharCreation();
     }
 }
 
 // Set up Character Creation Screen
 void goToCharCreation() {
-
-    DMANow(3, palettePal, SPRITEPALETTE, 256);
-    DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
 
     DMANow(3, palettePal, PALETTE, 256);
     DMANow(3, charcreatebgMap, &SCREENBLOCK[28], charcreatebgMapLen / 2);
@@ -171,8 +172,11 @@ void goToCharCreation() {
     DMANow(3, charcreateinstructionsMap, &SCREENBLOCK[30], charcreateinstructionsMapLen / 2);
     DMANow(3, charcreateinstructionsTiles, &CHARBLOCK[1], charcreateinstructionsTilesLen / 2);
 
+    DMANow(3, palettePal, SPRITEPALETTE, 256);
+    DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
+
     hideSprites();
-    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_WIDE | BG_8BPP;
+    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_WIDE | BG_4BPP;
     REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
 
@@ -182,38 +186,7 @@ void goToCharCreation() {
 // Run Character Creation Screen
 void charCreation() {
     
-    if (BUTTON_PRESSED(BUTTON_LEFT)) {
-        if (player.playerclass == MAGE) {
-            player.playerclass = FIGHTER;
-        } else if (player.playerclass == FIGHTER) {
-            player.playerclass = ROGUE;
-        } else if (player.playerclass == ROGUE) {
-            player.playerclass = MAGE;
-        }
-    } else if (BUTTON_PRESSED(BUTTON_LEFT)) {
-        if (player.playerclass == MAGE) {
-            player.playerclass = ROGUE;
-        } else if (player.playerclass == FIGHTER) {
-            player.playerclass = MAGE;
-        } else if (player.playerclass == ROGUE) {
-            player.playerclass = FIGHTER;
-        }
-    }
-    
-    if (BUTTON_PRESSED(BUTTON_UP)) {
-        if (player.sex == MALE) {
-            player.sex = FEMALE;
-        } else if (player.sex == FEMALE) {
-            player.stance = MALE;
-        }
-    } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
-        if (player.sex == MALE) {
-            player.sex = FEMALE;
-        } else if (player.sex == FEMALE) {
-            player.stance = MALE;
-        }
-    }
-
+    updatePlayer();
     drawPlayer((SCREENWIDTH / 2) - 16, (SCREENHEIGHT / 2) - 16);
 
     waitForVBlank();
@@ -238,7 +211,7 @@ void goToGame() {
     DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
 
     hideSprites();
-    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_WIDE | BG_8BPP;
+    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_WIDE | BG_4BPP;
     REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
     REG_BG2CNT = BG_CHARBLOCK(2) | BG_SCREENBLOCK(32) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE;
@@ -312,7 +285,7 @@ void goToCombat(CHARACTER * enemy) {
     DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
 
     hideSprites();
-    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_WIDE | BG_8BPP;
+    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_WIDE | BG_4BPP;
     REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
     REG_BG2CNT = BG_CHARBLOCK(2) | BG_SCREENBLOCK(26) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE |BG0_ENABLE | BG1_ENABLE | BG2_ENABLE;

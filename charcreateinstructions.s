@@ -18,22 +18,22 @@
 	.type	charcreateinstructionsPal, %object
 	.size	charcreateinstructionsPal, 512
 charcreateinstructionsPal:
-	.short	31775
+	.short	31774
 	.short	0
 	.short	26425
 	.short	32767
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
+	.short	4193
+	.short	8354
+	.short	10468
+	.short	12580
+	.short	13773
+	.short	7497
+	.short	12586
+	.short	24414
+	.short	18072
+	.short	15827
+	.short	14737
+	.short	12622
 	.short	0
 	.short	0
 	.short	0

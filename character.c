@@ -11,7 +11,7 @@
 
 CHARACTER player;
 ITEM backpack [INVSIZE];
-int weaponSlider = 209;
+// int weaponSlider = 209;
 
 CHARACTER abomination;
 CHARACTER apprentice;
@@ -73,7 +73,7 @@ void updatePlayer() {
         } else if (player.playerclass == ROGUE) {
             player.playerclass = MAGE;
         }
-    } else if (BUTTON_PRESSED(BUTTON_LEFT)) {
+    } else if (BUTTON_PRESSED(BUTTON_RIGHT)) {
         if (player.playerclass == MAGE) {
             player.playerclass = ROGUE;
         } else if (player.playerclass == FIGHTER) {
@@ -81,49 +81,35 @@ void updatePlayer() {
         } else if (player.playerclass == ROGUE) {
             player.playerclass = FIGHTER;
         }
-    }
-    
-    if (BUTTON_PRESSED(BUTTON_UP)) {
-        if (player.sex == MALE) {
-            player.sex = FEMALE;
-        } else if (player.sex == FEMALE) {
-            player.stance = MALE;
-        }
-    } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
-        if (player.sex == MALE) {
-            player.sex = FEMALE;
-        } else if (player.sex == FEMALE) {
-            player.stance = MALE;
-        }
+    } else if (BUTTON_PRESSED(BUTTON_UP)) {
+        player.sex = (player.sex == MALE ? FEMALE : MALE);
+    } else if (BUTTON_HELD(BUTTON_DOWN)) {
+        player.sex = (player.sex == MALE ? FEMALE : MALE);
     }
 }
 
 void drawPlayer(int col, int row) {
     shadowOAM[4].attr0 = row | ATTR0_SQUARE | ATTR0_4BPP;
     shadowOAM[4].attr1 = col | ATTR1_MEDIUM;
-    switch (player.playerclass)
-    {
-    case MAGE:
+
+    if (player.playerclass == MAGE) {
         if (player.sex == MALE) {
             shadowOAM[4].attr2 = ATTR2_TILEID(0, 20);
-        } else if (player.stance == FEMALE) {
+        } else if (player.sex == FEMALE) {
             shadowOAM[4].attr2 = ATTR2_TILEID(16, 20);
         }
-        break;
-    case FIGHTER:
+    } else if (player.playerclass == FIGHTER) {
         if (player.sex == MALE) {
             shadowOAM[4].attr2 = ATTR2_TILEID(0, 24);
-        } else if (player.stance == FEMALE) {
+        } else if (player.sex == FEMALE) {
             shadowOAM[4].attr2 = ATTR2_TILEID(16, 24);
         }
-        break;
-    case ROGUE:
+    } else if (player.playerclass == ROGUE) {
         if (player.sex == MALE) {
             shadowOAM[4].attr2 = ATTR2_TILEID(0, 28);
-        } else if (player.stance == FEMALE) {
+        } else if (player.sex == FEMALE) {
             shadowOAM[4].attr2 = ATTR2_TILEID(16, 28);
         }
-        break;
     }
 }
 

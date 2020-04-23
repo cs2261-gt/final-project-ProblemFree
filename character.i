@@ -1542,7 +1542,7 @@ enum {PHYSICAL, MAGICAL};
 
 
 void initPlayer();
-
+void updatePlayer();
 void drawPlayer(int col, int row);
 void drawPlayerHealthbar(int max, int curr, int col, int row);
 
@@ -1642,7 +1642,7 @@ extern const unsigned short spritesheetPal[256];
 
 CHARACTER player;
 ITEM backpack [15];
-int weaponSlider = 209;
+
 
 CHARACTER abomination;
 CHARACTER apprentice;
@@ -1704,7 +1704,7 @@ void updatePlayer() {
         } else if (player.playerclass == ROGUE) {
             player.playerclass = MAGE;
         }
-    } else if ((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+    } else if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
         if (player.playerclass == MAGE) {
             player.playerclass = ROGUE;
         } else if (player.playerclass == FIGHTER) {
@@ -1712,49 +1712,35 @@ void updatePlayer() {
         } else if (player.playerclass == ROGUE) {
             player.playerclass = FIGHTER;
         }
-    }
-
-    if ((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
-        if (player.sex == MALE) {
-            player.sex = FEMALE;
-        } else if (player.sex == FEMALE) {
-            player.stance = MALE;
-        }
-    } else if ((!(~(oldButtons)&((1<<7))) && (~buttons & ((1<<7))))) {
-        if (player.sex == MALE) {
-            player.sex = FEMALE;
-        } else if (player.sex == FEMALE) {
-            player.stance = MALE;
-        }
+    } else if ((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
+        player.sex = (player.sex == MALE ? FEMALE : MALE);
+    } else if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<7)))) {
+        player.sex = (player.sex == MALE ? FEMALE : MALE);
     }
 }
 
 void drawPlayer(int col, int row) {
     shadowOAM[4].attr0 = row | (0<<14) | (0<<13);
     shadowOAM[4].attr1 = col | (2<<14);
-    switch (player.playerclass)
-    {
-    case MAGE:
+
+    if (player.playerclass == MAGE) {
         if (player.sex == MALE) {
             shadowOAM[4].attr2 = ((20)*32+(0));
-        } else if (player.stance == FEMALE) {
+        } else if (player.sex == FEMALE) {
             shadowOAM[4].attr2 = ((20)*32+(16));
         }
-        break;
-    case FIGHTER:
+    } else if (player.playerclass == FIGHTER) {
         if (player.sex == MALE) {
             shadowOAM[4].attr2 = ((24)*32+(0));
-        } else if (player.stance == FEMALE) {
+        } else if (player.sex == FEMALE) {
             shadowOAM[4].attr2 = ((24)*32+(16));
         }
-        break;
-    case ROGUE:
+    } else if (player.playerclass == ROGUE) {
         if (player.sex == MALE) {
             shadowOAM[4].attr2 = ((28)*32+(0));
-        } else if (player.stance == FEMALE) {
+        } else if (player.sex == FEMALE) {
             shadowOAM[4].attr2 = ((28)*32+(16));
         }
-        break;
     }
 }
 
