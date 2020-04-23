@@ -53,7 +53,7 @@ void initPlayer() {
     player.dmg = 8;
 
     player.hpMax = 50;
-    player.hpCurr = player.hpMax;
+    player.hpCurr = 50;
 
     backpack[0] = player.weapon;
     backpack[1] = player.armor;
