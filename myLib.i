@@ -95,7 +95,7 @@ extern DMA *dma;
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
 # 342 "myLib.h"
 typedef struct{
-    const unsigned char* data;
+    const signed char* data;
     int length;
     int frequency;
     int isPlaying;

@@ -340,7 +340,7 @@ void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned 
 
 
 typedef struct{
-    const unsigned char* data;
+    const signed char* data;
     int length;
     int frequency;
     int isPlaying;

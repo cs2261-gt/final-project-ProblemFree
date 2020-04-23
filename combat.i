@@ -1317,7 +1317,7 @@ extern DMA *dma;
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
 # 342 "myLib.h"
 typedef struct{
-    const unsigned char* data;
+    const signed char* data;
     int length;
     int frequency;
     int isPlaying;
@@ -1454,6 +1454,7 @@ int randomRare();
 
 typedef struct character {
     int playerclass;
+    int sex;
     int enemyid;
 
     int hpMax;
@@ -1479,6 +1480,9 @@ typedef struct character {
 
 
 enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
+
+
+enum {MALE, FEMALE};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1540,9 +1544,11 @@ enum {PHYSICAL, MAGICAL};
 void initPlayer();
 
 void drawPlayer(int col, int row);
+void drawPlayerHealthbar(int max, int curr, int col, int row);
 
 void initEnemies();
 void drawEnemy(int enemyType, int col, int row);
+void drawEnemyHealthbar(int max, int curr, int col, int row);
 
 int damageChar(CHARACTER * target, int dice);
 int healChar (CHARACTER * target, int dice);
@@ -1648,6 +1654,7 @@ void initCombat(CHARACTER * enemy) {
 
 void updateCombat() {
 
+
     if (enemyChar.hpCurr <= 0) {
         enemyChar.active = 0;
         if (dungeon[currRoom].adjective == BOSS) {
@@ -1676,20 +1683,23 @@ void updateCombat() {
                         turn = 1;
                     }
                 }
-            } else if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
+            }
+            else if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
                 player.stance = DEFENSE;
                 for (volatile int timer = 0; timer <= 1000; timer++) {
                     if (timer == 1000) {
                         turn = 1;
                     }
                 }
-            } else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-                goToCombatPause();
-            } else if ((!(~(oldButtons)&((1<<9))) && (~buttons & ((1<<9)))) && dungeon[currRoom].adjective != BOSS) {
-                enemyChar.active = 0;
-                currRoom--;
-                goToGame();
             }
+            else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+                goToCombatPause();
+            }
+
+
+
+
+
         }
 
 
@@ -1810,8 +1820,11 @@ void updateCombat() {
 }
 
 void drawCombat() {
+    drawPlayer(24, (160 - 56 - 8 - 32));
+    drawPlayerHealthbar(player.hpMax, player.hpCurr, 24, (160 - 56 - 8));
     if (enemyChar.active) {
-        drawEnemy(enemyChar.enemyid, (240 / 2) - 8, (160 / 2) - 8);
+        drawEnemy(enemyChar.enemyid, (240 - 32) - 24, (160 - 56 - 8 - 32));
+        drawEnemyHealthbar(enemyChar.hpMax, enemyChar.hpCurr, (240 - 32) - 24, (160 - 56 - 8));
     }
 }
 
@@ -1819,9 +1832,9 @@ void drawCombat() {
 void attack(CHARACTER * source, CHARACTER * target) {
 
     if (source->playerclass == MAGE) {
-        if ( 1 ) {
+        if ((rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance) {
+            int damage = rollDmg(10, statMod(source, INTEL));
 
-            int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -1829,9 +1842,9 @@ void attack(CHARACTER * source, CHARACTER * target) {
             }
         }
     } else if (source->playerclass == ROGUE) {
-        if ( 1 ) {
+        if ((rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance) {
+            int damage = rollDmg(10, statMod(source, DEX));
 
-            int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -1839,9 +1852,9 @@ void attack(CHARACTER * source, CHARACTER * target) {
             }
         }
     } else if (source->playerclass == FIGHTER) {
-        if ( 1 ) {
+        if ((rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance) {
+            int damage = rollDmg(10, statMod(source, STR));
 
-            int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {

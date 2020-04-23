@@ -1317,7 +1317,7 @@ extern DMA *dma;
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
 # 342 "myLib.h"
 typedef struct{
-    const unsigned char* data;
+    const signed char* data;
     int length;
     int frequency;
     int isPlaying;
@@ -1454,6 +1454,7 @@ int randomRare();
 
 typedef struct character {
     int playerclass;
+    int sex;
     int enemyid;
 
     int hpMax;
@@ -1479,6 +1480,9 @@ typedef struct character {
 
 
 enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
+
+
+enum {MALE, FEMALE};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1540,9 +1544,11 @@ enum {PHYSICAL, MAGICAL};
 void initPlayer();
 
 void drawPlayer(int col, int row);
+void drawPlayerHealthbar(int max, int curr, int col, int row);
 
 void initEnemies();
 void drawEnemy(int enemyType, int col, int row);
+void drawEnemyHealthbar(int max, int curr, int col, int row);
 
 int damageChar(CHARACTER * target, int dice);
 int healChar (CHARACTER * target, int dice);
@@ -1626,12 +1632,12 @@ void attack(CHARACTER * source, CHARACTER * target);
 int rollDmg(int dice, int bonus);
 # 9 "character.c" 2
 
-# 1 "enemysheet.h" 1
-# 21 "enemysheet.h"
-extern const unsigned short enemysheetTiles[16384];
+# 1 "spritesheet.h" 1
+# 21 "spritesheet.h"
+extern const unsigned short spritesheetTiles[16384];
 
 
-extern const unsigned short enemysheetPal[256];
+extern const unsigned short spritesheetPal[256];
 # 11 "character.c" 2
 
 CHARACTER player;
@@ -1664,6 +1670,7 @@ CHARACTER enemyList [16 + 4];
 
 void initPlayer() {
     player.playerclass = MAGE;
+    player.sex = MALE;
     player.enemyid = 16 + 4;
 
     player.weapon = itemList[ARCHWIZARDSTAFF];
@@ -1708,23 +1715,72 @@ void updatePlayer() {
     }
 
     if ((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
-        weaponSlider++;
-        player.weapon = itemList[9 + (weaponSlider % 10)];
+        if (player.sex == MALE) {
+            player.sex = FEMALE;
+        } else if (player.sex == FEMALE) {
+            player.stance = MALE;
+        }
     } else if ((!(~(oldButtons)&((1<<7))) && (~buttons & ((1<<7))))) {
-        weaponSlider--;
-        player.weapon = itemList[9 + (weaponSlider % 10)];
+        if (player.sex == MALE) {
+            player.sex = FEMALE;
+        } else if (player.sex == FEMALE) {
+            player.stance = MALE;
+        }
     }
 }
 
 void drawPlayer(int col, int row) {
+    shadowOAM[4].attr0 = row | (0<<14) | (0<<13);
+    shadowOAM[4].attr1 = col | (2<<14);
     switch (player.playerclass)
     {
     case MAGE:
+        if (player.sex == MALE) {
+            shadowOAM[4].attr2 = ((20)*32+(0));
+        } else if (player.stance == FEMALE) {
+            shadowOAM[4].attr2 = ((20)*32+(16));
+        }
         break;
     case FIGHTER:
+        if (player.sex == MALE) {
+            shadowOAM[4].attr2 = ((24)*32+(0));
+        } else if (player.stance == FEMALE) {
+            shadowOAM[4].attr2 = ((24)*32+(16));
+        }
         break;
     case ROGUE:
+        if (player.sex == MALE) {
+            shadowOAM[4].attr2 = ((28)*32+(0));
+        } else if (player.stance == FEMALE) {
+            shadowOAM[4].attr2 = ((28)*32+(16));
+        }
         break;
+    }
+}
+
+void drawPlayerHealthbar(int max, int curr, int col, int row) {
+    shadowOAM[6].attr0 = row | (1<<14) | (0<<13);
+    shadowOAM[6].attr1 = col | (1<<14);
+    if (curr == (max / 10) * 10) {
+        shadowOAM[6].attr2 = ((12)*32+(0));
+    } else if (curr == (max / 10) * 9) {
+        shadowOAM[6].attr2 = ((12)*32+(4));
+    } else if (curr == (max / 10) * 8) {
+        shadowOAM[6].attr2 = ((12)*32+(8));
+    } else if (curr == (max / 10) * 7) {
+        shadowOAM[6].attr2 = ((12)*32+(12));
+    } else if (curr == (max / 10) * 6) {
+        shadowOAM[6].attr2 = ((12)*32+(16));
+    } else if (curr == (max / 10) * 5) {
+        shadowOAM[6].attr2 = ((14)*32+(0));
+    } else if (curr == (max / 10) * 4) {
+        shadowOAM[6].attr2 = ((14)*32+(4));
+    } else if (curr == (max / 10) * 3) {
+        shadowOAM[6].attr2 = ((14)*32+(8));
+    } else if (curr == (max / 10) * 2) {
+        shadowOAM[6].attr2 = ((14)*32+(12));
+    } else if (curr == (max / 10) * 1) {
+        shadowOAM[6].attr2 = ((14)*32+(16));
     }
 }
 
@@ -1769,77 +1825,123 @@ void initEnemies() {
     CHARACTER wizard = {.enemyid = WIZARD, .hpMax = 50, .hpCurr = 50, .dmg = 12, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 11, .tilerow = 0, .tilecol = 0};
     CHARACTER mindflayer = {.enemyid = MINDFLAYER, .hpMax = 60, .hpCurr = 60, .dmg = 12, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 11, .tilerow = 0, .tilecol = 0};
 
-    CHARACTER enemyList[] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
-# 169 "character.c"
+
+
+    enemyList[0] = abomination;
+    enemyList[1] = apprentice;
+    enemyList[2] = chimera;
+    enemyList[3] = drow;
+    enemyList[4] = elemental;
+    enemyList[5] = golem;
+    enemyList[6] = goblin;
+    enemyList[7] = homunculus;
+    enemyList[8] = kobold;
+    enemyList[9] = mimic;
+    enemyList[10] = orc;
+    enemyList[11] = slime;
+    enemyList[12] = skeleton;
+    enemyList[13] = troll;
+    enemyList[14] = vampire;
+    enemyList[15] = zombie;
+    enemyList[16] = beholder;
+    enemyList[17] = dragon;
+    enemyList[18] = wizard;
+    enemyList[19] = mindflayer;
 }
 
 
 
 void drawEnemy(int enemyType, int col, int row) {
     shadowOAM[2].attr0 = row | (0<<14) | (0<<13);
-    shadowOAM[2].attr1 = col | (1<<14);
+    shadowOAM[2].attr1 = col | (2<<14);
     switch (enemyType)
     {
     case ABOMINATION:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((0)*32+(0));
         break;
     case APPRENTICE:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((0)*32+(4));
         break;
     case CHIMERA:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((0)*32+(8));
         break;
     case DROW:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((0)*32+(12));
         break;
     case ELEMENTAL:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((0)*32+(16));
         break;
     case GOLEM:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((0)*32+(20));
         break;
     case GOBLIN:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((0)*32+(24));
         break;
     case HOMUNCULUS:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((0)*32+(28));
         break;
     case KOBOLD:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((4)*32+(0));
         break;
     case MIMIC:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((4)*32+(4));
         break;
     case ORC:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((4)*32+(8));
         break;
     case SLIME:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((4)*32+(12));
         break;
     case SKELETON:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((4)*32+(16));
         break;
     case TROLL:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((4)*32+(20));
         break;
     case VAMPIRE:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((4)*32+(24));
         break;
     case ZOMBIE:
-        shadowOAM[2].attr2 = ((0)*32+(enemyType * 2));
+        shadowOAM[2].attr2 = ((4)*32+(28));
         break;
     case BEHOLDER:
-        shadowOAM[2].attr2 = ((2)*32+(0));
+        shadowOAM[2].attr2 = ((8)*32+(0));
         break;
     case DRAGON:
-        shadowOAM[2].attr2 = ((2)*32+(2));
+        shadowOAM[2].attr2 = ((8)*32+(4));
         break;
     case WIZARD:
-        shadowOAM[2].attr2 = ((2)*32+(4));
+        shadowOAM[2].attr2 = ((8)*32+(8));
         break;
     case MINDFLAYER:
-        shadowOAM[2].attr2 = ((2)*32+(6));
+        shadowOAM[2].attr2 = ((8)*32+(12));
         break;
+    }
+}
+
+void drawEnemyHealthbar(int max, int curr, int col, int row) {
+    shadowOAM[8].attr0 = row | (1<<14) | (0<<13);
+    shadowOAM[8].attr1 = col | (1<<14);
+    if (curr == (max / 10) * 10) {
+        shadowOAM[8].attr2 = ((12)*32+(0));
+    } else if (curr == (max / 10) * 9) {
+        shadowOAM[8].attr2 = ((12)*32+(4));
+    } else if (curr == (max / 10) * 8) {
+        shadowOAM[8].attr2 = ((12)*32+(8));
+    } else if (curr == (max / 10) * 7) {
+        shadowOAM[8].attr2 = ((12)*32+(12));
+    } else if (curr == (max / 10) * 6) {
+        shadowOAM[8].attr2 = ((12)*32+(16));
+    } else if (curr == (max / 10) * 5) {
+        shadowOAM[8].attr2 = ((14)*32+(0));
+    } else if (curr == (max / 10) * 4) {
+        shadowOAM[8].attr2 = ((14)*32+(4));
+    } else if (curr == (max / 10) * 3) {
+        shadowOAM[8].attr2 = ((14)*32+(8));
+    } else if (curr == (max / 10) * 2) {
+        shadowOAM[8].attr2 = ((14)*32+(12));
+    } else if (curr == (max / 10) * 1) {
+        shadowOAM[8].attr2 = ((14)*32+(16));
     }
 }
 

@@ -1317,7 +1317,7 @@ extern DMA *dma;
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
 # 342 "myLib.h"
 typedef struct{
-    const unsigned char* data;
+    const signed char* data;
     int length;
     int frequency;
     int isPlaying;
@@ -1454,6 +1454,7 @@ int randomRare();
 
 typedef struct character {
     int playerclass;
+    int sex;
     int enemyid;
 
     int hpMax;
@@ -1479,6 +1480,9 @@ typedef struct character {
 
 
 enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
+
+
+enum {MALE, FEMALE};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1540,9 +1544,11 @@ enum {PHYSICAL, MAGICAL};
 void initPlayer();
 
 void drawPlayer(int col, int row);
+void drawPlayerHealthbar(int max, int curr, int col, int row);
 
 void initEnemies();
 void drawEnemy(int enemyType, int col, int row);
+void drawEnemyHealthbar(int max, int curr, int col, int row);
 
 int damageChar(CHARACTER * target, int dice);
 int healChar (CHARACTER * target, int dice);
@@ -1636,7 +1642,7 @@ int turnCount;
 
 
 void init() {
- srand(seed);
+
  currRoom = 0;
 
  initItems();
@@ -1681,4 +1687,10 @@ void updateGame() {
             goToGame();
         }
     }
+}
+
+
+void drawGame() {
+    drawPlayer(24, (160 - 56 - 8 - 32));
+    drawPlayerHealthbar(player.hpMax, player.hpCurr, 24, (160 - 56 - 8));
 }

@@ -3,6 +3,7 @@
 
 typedef struct character {
     int playerclass;
+    int sex;
     int enemyid;
 
     int hpMax;
@@ -28,6 +29,9 @@ typedef struct character {
 
 // Class Options
 enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
+
+// Sex Options
+enum {MALE, FEMALE};
 
 // Stat types
 enum {HP, STR, DEX, INTEL, AC};
@@ -89,9 +93,11 @@ enum {PHYSICAL, MAGICAL};
 void initPlayer();
 // void updatePlayer();
 void drawPlayer(int col, int row);
+void drawPlayerHealthbar(int max, int curr, int col, int row);
 
 void initEnemies();
 void drawEnemy(int enemyType, int col, int row);
+void drawEnemyHealthbar(int max, int curr, int col, int row);
 
 int damageChar(CHARACTER * target, int dice);
 int healChar (CHARACTER * target, int dice);

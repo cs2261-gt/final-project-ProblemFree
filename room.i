@@ -1317,7 +1317,7 @@ extern DMA *dma;
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
 # 342 "myLib.h"
 typedef struct{
-    const unsigned char* data;
+    const signed char* data;
     int length;
     int frequency;
     int isPlaying;
@@ -1454,6 +1454,7 @@ int randomRare();
 
 typedef struct character {
     int playerclass;
+    int sex;
     int enemyid;
 
     int hpMax;
@@ -1479,6 +1480,9 @@ typedef struct character {
 
 
 enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
+
+
+enum {MALE, FEMALE};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1540,9 +1544,11 @@ enum {PHYSICAL, MAGICAL};
 void initPlayer();
 
 void drawPlayer(int col, int row);
+void drawPlayerHealthbar(int max, int curr, int col, int row);
 
 void initEnemies();
 void drawEnemy(int enemyType, int col, int row);
+void drawEnemyHealthbar(int max, int curr, int col, int row);
 
 int damageChar(CHARACTER * target, int dice);
 int healChar (CHARACTER * target, int dice);
@@ -1626,16 +1632,21 @@ void attack(CHARACTER * source, CHARACTER * target);
 int rollDmg(int dice, int bonus);
 # 9 "room.c" 2
 
+# 1 "palette.h" 1
+# 20 "palette.h"
+extern const unsigned short palettePal[256];
+# 11 "room.c" 2
+
 # 1 "alchemybg.h" 1
 # 22 "alchemybg.h"
-extern const unsigned short alchemybgTiles[288];
+extern const unsigned short alchemybgTiles[5904];
 
 
 extern const unsigned short alchemybgMap[1024];
 
 
 extern const unsigned short alchemybgPal[256];
-# 11 "room.c" 2
+# 13 "room.c" 2
 # 1 "atriumbg.h" 1
 # 22 "atriumbg.h"
 extern const unsigned short atriumbgTiles[208];
@@ -1645,17 +1656,17 @@ extern const unsigned short atriumbgMap[1024];
 
 
 extern const unsigned short atriumbgPal[256];
-# 12 "room.c" 2
+# 14 "room.c" 2
 # 1 "bedroombg.h" 1
 # 22 "bedroombg.h"
-extern const unsigned short bedroombgTiles[272];
+extern const unsigned short bedroombgTiles[2688];
 
 
 extern const unsigned short bedroombgMap[1024];
 
 
 extern const unsigned short bedroombgPal[256];
-# 13 "room.c" 2
+# 15 "room.c" 2
 # 1 "brewerybg.h" 1
 # 22 "brewerybg.h"
 extern const unsigned short brewerybgTiles[240];
@@ -1665,17 +1676,17 @@ extern const unsigned short brewerybgMap[1024];
 
 
 extern const unsigned short brewerybgPal[256];
-# 14 "room.c" 2
+# 16 "room.c" 2
 # 1 "circlesbg.h" 1
 # 22 "circlesbg.h"
-extern const unsigned short circlesbgTiles[448];
+extern const unsigned short circlesbgTiles[6128];
 
 
 extern const unsigned short circlesbgMap[1024];
 
 
 extern const unsigned short circlesbgPal[256];
-# 15 "room.c" 2
+# 17 "room.c" 2
 # 1 "chessbg.h" 1
 # 22 "chessbg.h"
 extern const unsigned short chessbgTiles[480];
@@ -1685,17 +1696,17 @@ extern const unsigned short chessbgMap[1024];
 
 
 extern const unsigned short chessbgPal[256];
-# 16 "room.c" 2
+# 18 "room.c" 2
 # 1 "teleporterbg.h" 1
 # 22 "teleporterbg.h"
-extern const unsigned short teleporterbgTiles[352];
+extern const unsigned short teleporterbgTiles[2576];
 
 
 extern const unsigned short teleporterbgMap[1024];
 
 
 extern const unsigned short teleporterbgPal[256];
-# 17 "room.c" 2
+# 19 "room.c" 2
 # 1 "crystalbg.h" 1
 # 22 "crystalbg.h"
 extern const unsigned short crystalbgTiles[256];
@@ -1705,7 +1716,7 @@ extern const unsigned short crystalbgMap[1024];
 
 
 extern const unsigned short crystalbgPal[256];
-# 18 "room.c" 2
+# 20 "room.c" 2
 # 1 "librarybg.h" 1
 # 22 "librarybg.h"
 extern const unsigned short librarybgTiles[240];
@@ -1715,7 +1726,7 @@ extern const unsigned short librarybgMap[1024];
 
 
 extern const unsigned short librarybgPal[256];
-# 19 "room.c" 2
+# 21 "room.c" 2
 # 1 "menageriebg.h" 1
 # 22 "menageriebg.h"
 extern const unsigned short menageriebgTiles[320];
@@ -1725,7 +1736,7 @@ extern const unsigned short menageriebgMap[1024];
 
 
 extern const unsigned short menageriebgPal[256];
-# 20 "room.c" 2
+# 22 "room.c" 2
 # 1 "treasurybg.h" 1
 # 22 "treasurybg.h"
 extern const unsigned short treasurybgTiles[288];
@@ -1735,7 +1746,7 @@ extern const unsigned short treasurybgMap[1024];
 
 
 extern const unsigned short treasurybgPal[256];
-# 21 "room.c" 2
+# 23 "room.c" 2
 # 1 "golemfabbg.h" 1
 # 22 "golemfabbg.h"
 extern const unsigned short golemfabbgTiles[512];
@@ -1745,17 +1756,17 @@ extern const unsigned short golemfabbgMap[1024];
 
 
 extern const unsigned short golemfabbgPal[256];
-# 22 "room.c" 2
+# 24 "room.c" 2
 # 1 "diningbg.h" 1
 # 22 "diningbg.h"
-extern const unsigned short diningbgTiles[320];
+extern const unsigned short diningbgTiles[2464];
 
 
 extern const unsigned short diningbgMap[1024];
 
 
 extern const unsigned short diningbgPal[256];
-# 23 "room.c" 2
+# 25 "room.c" 2
 # 1 "observatorybg.h" 1
 # 22 "observatorybg.h"
 extern const unsigned short observatorybgTiles[1376];
@@ -1765,17 +1776,17 @@ extern const unsigned short observatorybgMap[1024];
 
 
 extern const unsigned short observatorybgPal[256];
-# 24 "room.c" 2
+# 26 "room.c" 2
 # 1 "prisonbg.h" 1
 # 22 "prisonbg.h"
-extern const unsigned short prisonbgTiles[224];
+extern const unsigned short prisonbgTiles[4688];
 
 
 extern const unsigned short prisonbgMap[1024];
 
 
 extern const unsigned short prisonbgPal[256];
-# 25 "room.c" 2
+# 27 "room.c" 2
 # 1 "gardenbg.h" 1
 # 22 "gardenbg.h"
 extern const unsigned short gardenbgTiles[240];
@@ -1785,27 +1796,37 @@ extern const unsigned short gardenbgMap[1024];
 
 
 extern const unsigned short gardenbgPal[256];
-# 26 "room.c" 2
+# 28 "room.c" 2
 # 1 "entrancebg.h" 1
 # 22 "entrancebg.h"
-extern const unsigned short entrancebgTiles[2272];
+extern const unsigned short entrancebgTiles[5296];
 
 
 extern const unsigned short entrancebgMap[1024];
 
 
 extern const unsigned short entrancebgPal[256];
-# 27 "room.c" 2
-# 1 "bossroombg.h" 1
-# 22 "bossroombg.h"
-extern const unsigned short bossroombgTiles[272];
+# 29 "room.c" 2
+# 1 "bossroombg1.h" 1
+# 22 "bossroombg1.h"
+extern const unsigned short bossroombg1Tiles[208];
 
 
-extern const unsigned short bossroombgMap[1024];
+extern const unsigned short bossroombg1Map[1024];
 
 
-extern const unsigned short bossroombgPal[256];
-# 28 "room.c" 2
+extern const unsigned short bossroombg1Pal[256];
+# 30 "room.c" 2
+# 1 "bossroombg2.h" 1
+# 22 "bossroombg2.h"
+extern const unsigned short bossroombg2Tiles[4720];
+
+
+extern const unsigned short bossroombg2Map[2048];
+
+
+extern const unsigned short bossroombg2Pal[256];
+# 31 "room.c" 2
 
 ROOM dungeon[12];
 
@@ -1832,7 +1853,14 @@ void initDungeon() {
     dungeon[12 - 1].adjective = BOSS;
 
     decider = (rand() % 4) + 16;
-    dungeon[12 - 1].enemy = enemyList[decider];
+    dungeon[12 - 1].enemy.enemyid = enemyList[decider].enemyid;
+    dungeon[12 - 1].enemy.intelligence = enemyList[decider].intelligence;
+    dungeon[12 - 1].enemy.dexterity = enemyList[decider].dexterity;
+    dungeon[12 - 1].enemy.strength = enemyList[decider].strength;
+    dungeon[12 - 1].enemy.ac = enemyList[decider].ac;
+    dungeon[12 - 1].enemy.hpMax = enemyList[decider].hpMax;
+    dungeon[12 - 1].enemy.hpCurr = enemyList[decider].hpCurr;
+    dungeon[12 - 1].enemy.dmg = enemyList[decider].dmg;
 
 
     int count = 0;
@@ -1860,17 +1888,17 @@ void initDungeon() {
 
 
     for (int i = 1; i < 12 - 1; i++) {
-        decider = rand() % 100;
+        decider = (rand() % 100) + 1;
 
-        if (decider < 10) {
+        if (decider >= 1 && decider <= 10) {
             dungeon[i].adjective = EMPTY;
-        } else if (decider < 30) {
+        } else if (decider > 10 && decider <= 30) {
             dungeon[i].adjective = MONSTER;
-        } else if (decider < 50) {
+        } else if (decider > 30 && decider <= 50) {
             dungeon[i].adjective = TRAP;
-        } else if (decider < 70) {
+        } else if (decider > 50 && decider <= 70) {
             dungeon[i].adjective = GUARDED;
-        } else if (decider < 95) {
+        } else if (decider > 70 && decider <= 95) {
             dungeon[i].adjective = TREASURE;
         } else {
             dungeon[i].adjective = RARETREASURE;
@@ -1919,7 +1947,7 @@ void placeTrap(int i) {
 }
 
 void placeEnemy(int i) {
-    int decider = (rand() * rand() % 16);
+    int decider = (rand() % 16);
     dungeon[i].enemy.enemyid = enemyList[decider].intelligence;
     dungeon[i].enemy.intelligence = enemyList[decider].intelligence;
     dungeon[i].enemy.dexterity = enemyList[decider].dexterity;
@@ -1927,101 +1955,105 @@ void placeEnemy(int i) {
     dungeon[i].enemy.ac = enemyList[decider].ac;
     dungeon[i].enemy.hpMax = enemyList[decider].hpMax;
     dungeon[i].enemy.hpCurr = enemyList[decider].hpCurr;
+    dungeon[i].enemy.dmg = enemyList[decider].dmg;
 }
-
-
-
+# 169 "room.c"
 void loadRoomData(int currentRoom) {
     switch (dungeon[currentRoom].roomType) {
         case ALCHEMYLAB:
-            DMANow(3, alchemybgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, alchemybgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-            DMANow(3, alchemybgTiles, &((charblock *)0x6000000)[0], 576 / 2);
+            DMANow(3, alchemybgTiles, &((charblock *)0x6000000)[0], 11808 / 2);
             break;
         case ATRIUM:
-            DMANow(3, atriumbgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, atriumbgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, atriumbgTiles, &((charblock *)0x6000000)[0], 416 / 2);
             break;
         case BEDROOM:
-            DMANow(3, bedroombgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, bedroombgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-            DMANow(3, bedroombgTiles, &((charblock *)0x6000000)[0], 544 / 2);
+            DMANow(3, bedroombgTiles, &((charblock *)0x6000000)[0], 5376 / 2);
             break;
         case BREWERY:
-            DMANow(3, brewerybgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, brewerybgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, brewerybgTiles, &((charblock *)0x6000000)[0], 480 / 2);
             break;
         case CIRCLES:
-            DMANow(3, circlesbgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, circlesbgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-            DMANow(3, circlesbgTiles, &((charblock *)0x6000000)[0], 896 / 2);
+            DMANow(3, circlesbgTiles, &((charblock *)0x6000000)[0], 12256 / 2);
             break;
         case CHESS:
-            DMANow(3, chessbgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, chessbgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, chessbgTiles, &((charblock *)0x6000000)[0], 960 / 2);
             break;
         case TELEPORTER:
-            DMANow(3, teleporterbgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, teleporterbgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-            DMANow(3, teleporterbgTiles, &((charblock *)0x6000000)[0], 704 / 2);
+            DMANow(3, teleporterbgTiles, &((charblock *)0x6000000)[0], 5152 / 2);
             break;
         case CRYSTAL:
-            DMANow(3, crystalbgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, crystalbgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, crystalbgTiles, &((charblock *)0x6000000)[0], 512 / 2);
             break;
         case LIBRARY:
-            DMANow(3, librarybgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, librarybgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, librarybgTiles, &((charblock *)0x6000000)[0], 480 / 2);
             break;
         case MENAGERIE:
-            DMANow(3, menageriebgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, menageriebgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, menageriebgTiles, &((charblock *)0x6000000)[0], 640 / 2);
             break;
         case TREASURY:
-            DMANow(3, treasurybgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, treasurybgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, treasurybgTiles, &((charblock *)0x6000000)[0], 576 / 2);
             break;
         case GOLEMFAB:
-            DMANow(3, golemfabbgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, golemfabbgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, golemfabbgTiles, &((charblock *)0x6000000)[0], 1024 / 2);
             break;
         case DINING:
-            DMANow(3, diningbgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, diningbgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-            DMANow(3, diningbgTiles, &((charblock *)0x6000000)[0], 640 / 2);
+            DMANow(3, diningbgTiles, &((charblock *)0x6000000)[0], 4928 / 2);
             break;
         case OBSERVATORY:
-            DMANow(3, observatorybgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, observatorybgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, observatorybgTiles, &((charblock *)0x6000000)[0], 2752 / 2);
             break;
         case PRISON:
-            DMANow(3, prisonbgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, prisonbgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-            DMANow(3, prisonbgTiles, &((charblock *)0x6000000)[0], 448 / 2);
+            DMANow(3, prisonbgTiles, &((charblock *)0x6000000)[0], 9376 / 2);
             break;
         case GARDEN:
-            DMANow(3, gardenbgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, gardenbgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
             DMANow(3, gardenbgTiles, &((charblock *)0x6000000)[0], 480 / 2);
             break;
         case ENTRANCE:
-            DMANow(3, entrancebgPal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
             DMANow(3, entrancebgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-            DMANow(3, entrancebgTiles, &((charblock *)0x6000000)[0], 4544 / 2);
+            DMANow(3, entrancebgTiles, &((charblock *)0x6000000)[0], 10592 / 2);
             break;
         case BOSSROOM:
-            DMANow(3, bossroombgPal, ((unsigned short *)0x5000000), 256);
-            DMANow(3, bossroombgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-            DMANow(3, bossroombgTiles, &((charblock *)0x6000000)[0], 544 / 2);
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, bossroombg1Map, &((screenblock *)0x6000000)[28], 2048 / 2);
+            DMANow(3, bossroombg1Tiles, &((charblock *)0x6000000)[0], 416 / 2);
+
+            DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
+            DMANow(3, bossroombg2Map, &((screenblock *)0x6000000)[26], 4096 / 2);
+            DMANow(3, bossroombg2Tiles, &((charblock *)0x6000000)[2], 9440 / 2);
+
             break;
     }
 }

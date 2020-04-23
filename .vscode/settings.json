@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "character.h": "c",
-        "item.h": "c"
+        "item.h": "c",
+        "charcreateinstructions.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

@@ -17,7 +17,7 @@
 	.type	enemysheetPal, %object
 	.size	enemysheetPal, 512
 enemysheetPal:
-	.short	30782
+	.short	31775
 	.short	31758
 	.short	514
 	.short	339
@@ -537,7 +537,7 @@ enemysheetTiles:
 	.short	21845
 	.short	21845
 	.short	21845
-	.short	21861
+	.short	21845
 	.short	21845
 	.short	21845
 	.short	21845

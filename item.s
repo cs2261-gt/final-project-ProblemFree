@@ -46,29 +46,36 @@ randomWeapon:
 	add	r3, r3, r3, lsl #2
 	sub	r3, r0, r3, lsl #2
 	cmp	r3, #10
-	movle	r0, #0
-	ble	.L3
-	cmp	r3, #21
-	movle	r0, #1
-	ble	.L3
-	cmp	r3, #32
-	movle	r0, #2
-	ble	.L3
-	cmp	r3, #43
-	movle	r0, #3
-	ble	.L3
-	cmp	r3, #54
-	movle	r0, #4
-	ble	.L3
-	cmp	r3, #65
-	movle	r0, #5
-	ble	.L3
-	cmp	r3, #76
-	movle	r0, #6
-	ble	.L3
-	cmp	r3, #88
-	movlt	r0, #7
-	movge	r0, #8
+	movls	r0, #0
+	bls	.L3
+	sub	r2, r3, #11
+	cmp	r2, #10
+	movls	r0, #1
+	bls	.L3
+	sub	r2, r3, #22
+	cmp	r2, #10
+	movls	r0, #2
+	bls	.L3
+	sub	r2, r3, #33
+	cmp	r2, #10
+	movls	r0, #3
+	bls	.L3
+	sub	r2, r3, #44
+	cmp	r2, #10
+	movls	r0, #4
+	bls	.L3
+	sub	r2, r3, #55
+	cmp	r2, #10
+	movls	r0, #5
+	bls	.L3
+	sub	r2, r3, #66
+	cmp	r2, #10
+	movls	r0, #6
+	bls	.L3
+	sub	r3, r3, #77
+	cmp	r3, #11
+	movcc	r0, #7
+	movcs	r0, #8
 .L3:
 	pop	{r4, lr}
 	bx	lr
@@ -100,29 +107,36 @@ randomArmor:
 	add	r3, r3, r3, lsl #2
 	sub	r3, r0, r3, lsl #2
 	cmp	r3, #14
-	movle	r0, #10
-	ble	.L16
-	cmp	r3, #29
-	movle	r0, #11
-	ble	.L16
-	cmp	r3, #44
-	movle	r0, #12
-	ble	.L16
-	cmp	r3, #54
-	movle	r0, #13
-	ble	.L16
-	cmp	r3, #64
-	movle	r0, #14
-	ble	.L16
-	cmp	r3, #74
-	movle	r0, #15
-	ble	.L16
-	cmp	r3, #84
-	movle	r0, #16
-	ble	.L16
-	cmp	r3, #95
-	movlt	r0, #17
-	movge	r0, #18
+	movls	r0, #10
+	bls	.L16
+	sub	r2, r3, #15
+	cmp	r2, #14
+	movls	r0, #11
+	bls	.L16
+	sub	r2, r3, #30
+	cmp	r2, #14
+	movls	r0, #12
+	bls	.L16
+	sub	r2, r3, #45
+	cmp	r2, #9
+	movls	r0, #13
+	bls	.L16
+	sub	r2, r3, #55
+	cmp	r2, #9
+	movls	r0, #14
+	bls	.L16
+	sub	r2, r3, #65
+	cmp	r2, #9
+	movls	r0, #15
+	bls	.L16
+	sub	r2, r3, #75
+	cmp	r2, #9
+	movls	r0, #16
+	bls	.L16
+	sub	r3, r3, #85
+	cmp	r3, #10
+	movcc	r0, #17
+	movcs	r0, #18
 .L16:
 	pop	{r4, lr}
 	bx	lr
@@ -154,20 +168,24 @@ randomCommon:
 	add	r3, r3, r3, lsl #2
 	sub	r3, r0, r3, lsl #2
 	cmp	r3, #49
-	movle	r0, #19
-	ble	.L29
-	cmp	r3, #59
-	movle	r0, #20
-	ble	.L29
-	cmp	r3, #69
-	movle	r0, #21
-	ble	.L29
-	cmp	r3, #79
-	movle	r0, #22
-	ble	.L29
-	cmp	r3, #90
-	movlt	r0, #23
-	movge	r0, #24
+	movls	r0, #19
+	bls	.L29
+	sub	r2, r3, #50
+	cmp	r2, #9
+	movls	r0, #20
+	bls	.L29
+	sub	r2, r3, #60
+	cmp	r2, #9
+	movls	r0, #21
+	bls	.L29
+	sub	r2, r3, #70
+	cmp	r2, #9
+	movls	r0, #22
+	bls	.L29
+	sub	r3, r3, #80
+	cmp	r3, #10
+	movcc	r0, #23
+	movcs	r0, #24
 .L29:
 	pop	{r4, lr}
 	bx	lr
@@ -199,10 +217,11 @@ randomNormal:
 	add	r3, r3, r3, lsl #2
 	sub	r3, r0, r3, lsl #2
 	cmp	r3, #49
-	ble	.L43
-	cmp	r3, #74
-	pople	{r4, lr}
-	ble	randomArmor
+	bls	.L43
+	sub	r3, r3, #50
+	cmp	r3, #24
+	popls	{r4, lr}
+	bls	randomArmor
 .L41:
 	pop	{r4, lr}
 	b	randomWeapon
@@ -237,23 +256,28 @@ randomRare:
 	add	r3, r3, r3, lsl #2
 	sub	r3, r0, r3, lsl #2
 	cmp	r3, #24
-	movle	r0, #25
-	ble	.L46
-	cmp	r3, #49
-	movle	r0, #26
-	ble	.L46
-	cmp	r3, #59
-	movle	r0, #27
-	ble	.L46
-	cmp	r3, #69
-	movle	r0, #28
-	ble	.L46
-	cmp	r3, #79
-	movle	r0, #29
-	ble	.L46
-	cmp	r3, #90
-	movlt	r0, #30
-	movge	r0, #31
+	movls	r0, #25
+	bls	.L46
+	sub	r2, r3, #25
+	cmp	r2, #24
+	movls	r0, #26
+	bls	.L46
+	sub	r2, r3, #50
+	cmp	r2, #9
+	movls	r0, #27
+	bls	.L46
+	sub	r2, r3, #60
+	cmp	r2, #9
+	movls	r0, #28
+	bls	.L46
+	sub	r2, r3, #70
+	cmp	r2, #9
+	movls	r0, #29
+	bls	.L46
+	sub	r3, r3, #80
+	cmp	r3, #10
+	movcc	r0, #30
+	movcs	r0, #31
 .L46:
 	pop	{r4, lr}
 	bx	lr
@@ -285,12 +309,14 @@ randomAll:
 	add	r3, r3, r3, lsl #2
 	sub	r3, r0, r3, lsl #2
 	cmp	r3, #49
-	ble	.L62
-	cmp	r3, #69
-	ble	.L63
-	cmp	r3, #89
-	pople	{r4, lr}
-	ble	randomWeapon
+	bls	.L62
+	sub	r2, r3, #50
+	cmp	r2, #19
+	bls	.L63
+	sub	r3, r3, #70
+	cmp	r3, #19
+	popls	{r4, lr}
+	bls	randomWeapon
 .L60:
 	pop	{r4, lr}
 	b	randomRare

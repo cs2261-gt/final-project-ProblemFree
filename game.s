@@ -21,33 +21,28 @@ init:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
+	mov	r1, #0
 	str	lr, [sp, #-4]!
 	ldr	r2, .L4
 	sub	sp, sp, #20
-	ldr	r0, [r2]
 	ldr	r3, .L4+4
+	str	r1, [r2]
 	mov	lr, pc
 	bx	r3
-	mov	r1, #0
-	ldr	r2, .L4+8
+	ldr	r3, .L4+8
+	mov	lr, pc
+	bx	r3
 	ldr	r3, .L4+12
-	str	r1, [r2]
 	mov	lr, pc
 	bx	r3
 	ldr	r3, .L4+16
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L4+20
-	mov	lr, pc
-	bx	r3
-	ldr	r3, .L4+24
-	mov	lr, pc
-	bx	r3
 	mov	ip, sp
-	ldr	r3, .L4+28
+	ldr	r3, .L4+20
 	ldm	r3, {r0, r1, r2, r3}
 	stmia	ip!, {r0, r1, r2}
-	ldr	r2, .L4+32
+	ldr	r2, .L4+24
 	ldrh	r1, [sp]
 	strh	r3, [ip]	@ movhi
 	strh	r1, [r2, #242]	@ movhi
@@ -70,8 +65,6 @@ init:
 .L5:
 	.align	2
 .L4:
-	.word	seed
-	.word	srand
 	.word	currRoom
 	.word	initItems
 	.word	initPlayer
@@ -94,9 +87,9 @@ updateGame:
 	ldr	r5, .L31
 	ldr	r2, [r5]
 	ldr	r4, .L31+4
-	rsb	r0, r2, r2, lsl #3
-	rsb	r0, r0, r0, lsl #3
-	add	r3, r4, r0, lsl #2
+	add	r0, r2, r2, lsl #2
+	add	r0, r0, r0, lsl #2
+	add	r3, r4, r0, lsl #3
 	ldr	r3, [r3, #4]
 	cmp	r3, #2
 	beq	.L29
@@ -104,7 +97,7 @@ updateGame:
 	cmp	r3, #6
 	cmpne	r1, #1
 	bne	.L9
-	lsl	r0, r0, #2
+	lsl	r0, r0, #3
 	add	r0, r0, #48
 	ldr	r3, .L31+8
 	add	r0, r4, r0
@@ -171,9 +164,9 @@ updateGame:
 	bx	r3
 	mov	r2, #0
 	ldr	r3, [r5]
-	rsb	r3, r3, r3, lsl #3
-	rsb	r3, r3, r3, lsl #3
-	add	r4, r4, r3, lsl #2
+	add	r3, r3, r3, lsl #2
+	add	r3, r3, r3, lsl #2
+	add	r4, r4, r3, lsl #3
 	str	r2, [r4, #4]
 	pop	{r4, r5, r6, lr}
 	bx	lr
@@ -195,6 +188,39 @@ updateGame:
 	.word	goToGame
 	.word	checkTrap
 	.size	updateGame, .-updateGame
+	.align	2
+	.global	drawGame
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	drawGame, %function
+drawGame:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, lr}
+	mov	r1, #64
+	mov	r0, #24
+	ldr	r3, .L35
+	mov	lr, pc
+	bx	r3
+	ldr	r2, .L35+4
+	add	r0, r2, #12
+	ldr	r4, .L35+8
+	mov	r3, #96
+	mov	r2, #24
+	ldm	r0, {r0, r1}
+	mov	lr, pc
+	bx	r4
+	pop	{r4, lr}
+	bx	lr
+.L36:
+	.align	2
+.L35:
+	.word	drawPlayer
+	.word	player
+	.word	drawPlayerHealthbar
+	.size	drawGame, .-drawGame
 	.comm	turnCount,4,4
 	.comm	currRoom,4,4
 	.comm	seed,4,4

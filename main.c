@@ -7,9 +7,17 @@
 #include "room.h"
 #include "combat.h"
 #include "start.h"
+#include "charcreatebg.h"
 #include "pause.h"
 #include "win.h"
 #include "lose.h"
+
+#include "palette.h"
+#include "spritesheet.h"
+
+#include "charcreateinstructions.h"
+#include "gameinstructions.h"
+#include "combatinstructions.h"
 
 #include "enemysheet.h"
 
@@ -43,6 +51,9 @@ int state;
 // Button Variables
 unsigned short buttons;
 unsigned short oldButtons;
+
+// hOff for Boss Battle
+unsigned short hOff = 0;
 
 // Random Seed
 int seed;
@@ -142,21 +153,26 @@ void start() {
 
         
         init();
-        goToGame();
+        goToCharCreation();
     }
 }
 
 // Set up Character Creation Screen
 void goToCharCreation() {
 
-    // DMANow(3, backgroundPal, PALETTE, 256);
-    // DMANow(3, backgroundMap, &SCREENBLOCK[28], backgroundMapLen / 2);
-    // DMANow(3, backgroundTiles, &CHARBLOCK[0], backgroundTilesLen / 2);
+    DMANow(3, palettePal, SPRITEPALETTE, 256);
+    DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
 
-    // DMANow(3, spriteSheetPal, SPRITEPALETTE, 256);
-    // DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
+    DMANow(3, palettePal, PALETTE, 256);
+    DMANow(3, charcreatebgMap, &SCREENBLOCK[28], charcreatebgMapLen / 2);
+    DMANow(3, charcreatebgTiles, &CHARBLOCK[0], charcreatebgTilesLen / 2);
+
+    DMANow(3, palettePal, PALETTE, 256);
+    DMANow(3, charcreateinstructionsMap, &SCREENBLOCK[30], charcreateinstructionsMapLen / 2);
+    DMANow(3, charcreateinstructionsTiles, &CHARBLOCK[1], charcreateinstructionsTilesLen / 2);
 
     hideSprites();
+    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_WIDE | BG_8BPP;
     REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
 
@@ -165,8 +181,40 @@ void goToCharCreation() {
 
 // Run Character Creation Screen
 void charCreation() {
-    // updatePlayer();
-    // drawPlayer();
+    
+    if (BUTTON_PRESSED(BUTTON_LEFT)) {
+        if (player.playerclass == MAGE) {
+            player.playerclass = FIGHTER;
+        } else if (player.playerclass == FIGHTER) {
+            player.playerclass = ROGUE;
+        } else if (player.playerclass == ROGUE) {
+            player.playerclass = MAGE;
+        }
+    } else if (BUTTON_PRESSED(BUTTON_LEFT)) {
+        if (player.playerclass == MAGE) {
+            player.playerclass = ROGUE;
+        } else if (player.playerclass == FIGHTER) {
+            player.playerclass = MAGE;
+        } else if (player.playerclass == ROGUE) {
+            player.playerclass = FIGHTER;
+        }
+    }
+    
+    if (BUTTON_PRESSED(BUTTON_UP)) {
+        if (player.sex == MALE) {
+            player.sex = FEMALE;
+        } else if (player.sex == FEMALE) {
+            player.stance = MALE;
+        }
+    } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
+        if (player.sex == MALE) {
+            player.sex = FEMALE;
+        } else if (player.sex == FEMALE) {
+            player.stance = MALE;
+        }
+    }
+
+    drawPlayer((SCREENWIDTH / 2) - 16, (SCREENHEIGHT / 2) - 16);
 
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
@@ -182,12 +230,18 @@ void goToGame() {
 
     loadRoomData(currRoom);
 
-    // DMANow(3, spriteSheetPal, SPRITEPALETTE, 256);
-    // DMANow(3, spriteSheetTiles, &CHARBLOCK[4], spriteSheetTilesLen / 2);
+    DMANow(3, palettePal, PALETTE, 256);
+    DMANow(3, gameinstructionsMap, &SCREENBLOCK[30], gameinstructionsMapLen / 2);
+    DMANow(3, gameinstructionsTiles, &CHARBLOCK[1], gameinstructionsTilesLen / 2);
+
+    DMANow(3, palettePal, SPRITEPALETTE, 256);
+    DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
 
     hideSprites();
+    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_WIDE | BG_8BPP;
     REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
-    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG1_ENABLE;
+    REG_BG2CNT = BG_CHARBLOCK(2) | BG_SCREENBLOCK(32) | BG_SIZE_WIDE | BG_4BPP;
+    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE;
 
     state = GAME;
 }
@@ -195,10 +249,14 @@ void goToGame() {
 // Runs every frame of the game state
 void game() {
     updateGame();
-    // drawGame();
+    drawGame();
+
+    hOff++;
 
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
+    
+    REG_BG2HOFF = hOff / 2;
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
@@ -241,16 +299,23 @@ void pause() {
 
 // Set up Combat state
 void goToCombat(CHARACTER * enemy) {
-    initCombat(&enemy);
+    initCombat(enemy);
 
 
     loadRoomData(currRoom);
 
-    DMANow(3, enemysheetPal, SPRITEPALETTE, 256);
-    DMANow(3, enemysheetTiles, &CHARBLOCK[4], enemysheetTilesLen / 2);
+    DMANow(3, palettePal, PALETTE, 256);
+    DMANow(3, combatinstructionsMap, &SCREENBLOCK[30], combatinstructionsMapLen / 2);
+    DMANow(3, combatinstructionsTiles, &CHARBLOCK[1], combatinstructionsTilesLen / 2);
+
+    DMANow(3, palettePal, SPRITEPALETTE, 256);
+    DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
 
     hideSprites();
-    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG1_ENABLE;
+    REG_BG0CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_WIDE | BG_8BPP;
+    REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
+    REG_BG2CNT = BG_CHARBLOCK(2) | BG_SCREENBLOCK(26) | BG_SIZE_WIDE | BG_4BPP;
+    REG_DISPCTL =   MODE0 | SPRITE_ENABLE |BG0_ENABLE | BG1_ENABLE | BG2_ENABLE;
 
     state = COMBAT;
 
@@ -261,8 +326,12 @@ void combat() {
     updateCombat();
     drawCombat();
 
+    hOff++;
+
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
+
+    REG_BG2HOFF = hOff / 2;
 }
 
 void goToCombatPause() {

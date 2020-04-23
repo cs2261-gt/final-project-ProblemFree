@@ -52,11 +52,11 @@ void initItems() {
 
 // Randomizers
 int randomNormal() {
-    int decider = rand() % 100;
+    int decider = (rand() % 100) + 1;
 
-    if (decider < 50) {
+    if (decider >= 1 && decider <= 50) {
         return randomCommon();
-    } else if (decider < 75) {
+    } else if (decider > 50 && decider <= 75) {
         return randomArmor();
     } else {
         return randomWeapon();
@@ -64,13 +64,13 @@ int randomNormal() {
 }
 
 int randomAll() {
-    int decider = rand() % 100;
+    int decider = (rand() % 100) + 1;
 
-    if (decider < 50) {
+    if (decider >= 1 && decider <= 50) {
         return randomCommon();
-    } else if (decider < 70) {
+    } else if (decider > 50 && decider <= 70) {
         return randomArmor();
-    } else if (decider < 90) {
+    } else if (decider > 70 && decider <= 90) {
         return randomWeapon();
     } else {
         return randomRare();
@@ -80,23 +80,23 @@ int randomAll() {
 
 
 int randomWeapon() {
-    int decider = rand() % 100;
+    int decider = (rand() % 100) + 1;
 
-    if (decider < 11) {
+    if (decider >= 1 && decider <= 11) {
         return GREATSWORD;
-    } else if (decider < 22) {
+    } else if (decider > 11 && decider <= 22) {
         return LONGSWORD;
-    } else if (decider < 33) {
+    } else if (decider > 22 && decider <= 33) {
         return SPEAR;
-    } else if (decider < 44) {
+    } else if (decider > 33 && decider <= 44) {
         return BOW;
-    } else if (decider < 55) {
+    } else if (decider > 44 && decider <= 55) {
         return DAGGER;
-    } else if (decider < 66) {
+    } else if (decider > 55 && decider <= 66) {
         return MAGESTAFF;
-    } else if (decider < 77) {
+    } else if (decider > 66 && decider <= 77) {
         return SPELLBOOK;
-    } else if (decider < 88) {
+    } else if (decider > 77 && decider <= 88) {
         return TRIDENT;
     } else {
         return SICKLE;
@@ -104,23 +104,23 @@ int randomWeapon() {
 }
 
 int randomArmor() {
-    int decider = rand() % 100;
+    int decider = (rand() % 100) + 1;
 
-    if (decider < 15) {
+    if (decider >= 1 && decider <= 15) {
         return CHAINMAIL;
-    } else if (decider < 30) {
+    } else if (decider > 15 && decider <= 30) {
         return LEATHER;
-    } else if (decider < 45) {
+    } else if (decider > 30 && decider <= 45) {
         return MAGEARMOR;
-    } else if (decider < 55) {
+    } else if (decider > 45 && decider <= 55) {
         return PLATE;
-    } else if (decider < 65) {
+    } else if (decider > 55 && decider <= 65) {
         return GLADIATORS;
-    } else if (decider < 75) {
+    } else if (decider > 65 && decider <= 75) {
         return THIEVES;
-    } else if (decider < 85) {
+    } else if (decider > 75 && decider <= 85) {
         return MAGEROBES;
-    } else if (decider < 95) {
+    } else if (decider > 85 && decider <= 95) {
         return TRAVELERS;
     } else {
         return HEROS;
@@ -128,17 +128,17 @@ int randomArmor() {
 }
 
 int randomCommon() {
-    int decider = rand() % 100;
+    int decider = (rand() % 100) + 1;
 
-    if (decider < 50) {
+    if (decider >= 1 && decider <= 50) {
         return HEALTHPOTION;
-    } else if (decider < 60) {
+    } else if (decider > 50 && decider <= 60) {
         return STONESCALE;
-    } else if (decider < 70) {
+    } else if (decider > 60 && decider <= 70) {
         return MUTAGEN;
-    } else if (decider < 80) {
+    } else if (decider > 70 && decider <= 80) {
         return CATSEYE;
-    } else if (decider < 90) {
+    } else if (decider > 80 && decider <= 90) {
         return SMOKELEAF;
     } else {
         return VITAE;
@@ -146,19 +146,19 @@ int randomCommon() {
 }
 
 int randomRare() {
-    int decider = rand() % 100;
+    int decider = (rand() % 100) + 1;
 
-    if (decider < 25) {
+    if (decider >= 1 && decider <= 25) {
         return REVIVALORB;
-    } else if (decider < 50) {
+    } else if (decider > 25 && decider <= 50) {
         return DRAGONHEART;
-    } else if (decider < 60) {
+    } else if (decider > 50 && decider <= 60) {
         return VORPALBLADE;
-    } else if (decider < 70) {
+    } else if (decider > 60 && decider <= 70) {
         return ARTEMISBOW;
-    } else if (decider < 80) {
+    } else if (decider > 70 && decider <= 80) {
         return ARCHWIZARDSTAFF;
-    } else if (decider < 90) {
+    } else if (decider > 80 && decider <= 90) {
         return ROYAL;
     } else {
         return LEGENDARY;

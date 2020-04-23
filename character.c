@@ -7,7 +7,7 @@
 #include "room.h"
 #include "combat.h"
 
-#include "enemysheet.h"
+#include "spritesheet.h"
 
 CHARACTER player;
 ITEM backpack [INVSIZE];
@@ -39,6 +39,7 @@ CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS];
 
 void initPlayer() {
     player.playerclass = MAGE;
+    player.sex = MALE;
     player.enemyid = MOBOPTIONS + BOSSOPTIONS;
 
     player.weapon = itemList[ARCHWIZARDSTAFF];
@@ -83,23 +84,72 @@ void updatePlayer() {
     }
     
     if (BUTTON_PRESSED(BUTTON_UP)) {
-        weaponSlider++;
-        player.weapon = itemList[ARMOROPTIONS + (weaponSlider % WEAPONOPTIONS)];
+        if (player.sex == MALE) {
+            player.sex = FEMALE;
+        } else if (player.sex == FEMALE) {
+            player.stance = MALE;
+        }
     } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
-        weaponSlider--;
-        player.weapon = itemList[ARMOROPTIONS + (weaponSlider % WEAPONOPTIONS)];
+        if (player.sex == MALE) {
+            player.sex = FEMALE;
+        } else if (player.sex == FEMALE) {
+            player.stance = MALE;
+        }
     }
 }
 
 void drawPlayer(int col, int row) {
+    shadowOAM[4].attr0 = row | ATTR0_SQUARE | ATTR0_4BPP;
+    shadowOAM[4].attr1 = col | ATTR1_MEDIUM;
     switch (player.playerclass)
     {
     case MAGE:
+        if (player.sex == MALE) {
+            shadowOAM[4].attr2 = ATTR2_TILEID(0, 20);
+        } else if (player.stance == FEMALE) {
+            shadowOAM[4].attr2 = ATTR2_TILEID(16, 20);
+        }
         break;
     case FIGHTER:
+        if (player.sex == MALE) {
+            shadowOAM[4].attr2 = ATTR2_TILEID(0, 24);
+        } else if (player.stance == FEMALE) {
+            shadowOAM[4].attr2 = ATTR2_TILEID(16, 24);
+        }
         break;
     case ROGUE:
+        if (player.sex == MALE) {
+            shadowOAM[4].attr2 = ATTR2_TILEID(0, 28);
+        } else if (player.stance == FEMALE) {
+            shadowOAM[4].attr2 = ATTR2_TILEID(16, 28);
+        }
         break;
+    }
+}
+
+void drawPlayerHealthbar(int max, int curr, int col, int row) {
+    shadowOAM[6].attr0 = row | ATTR0_WIDE | ATTR0_4BPP;
+    shadowOAM[6].attr1 = col | ATTR1_SMALL;
+    if (curr == (max / 10) * 10) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(0, 12);
+    } else if (curr == (max / 10) * 9) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(4, 12);
+    } else if (curr == (max / 10) * 8) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(8, 12);
+    } else if (curr == (max / 10) * 7) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(12, 12);
+    } else if (curr == (max / 10) * 6) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(16, 12);
+    } else if (curr == (max / 10) * 5) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(0, 14);
+    } else if (curr == (max / 10) * 4) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(4, 14);
+    } else if (curr == (max / 10) * 3) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(8, 14);
+    } else if (curr == (max / 10) * 2) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(12, 14);
+    } else if (curr == (max / 10) * 1) {
+        shadowOAM[6].attr2 = ATTR2_TILEID(16, 14);
     }
 }
 
@@ -144,97 +194,123 @@ void initEnemies() {
     CHARACTER wizard =          {.enemyid = WIZARD,         .hpMax = 50, .hpCurr = 50, .dmg = 12, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 11, .tilerow = 0, .tilecol = 0};
     CHARACTER mindflayer =      {.enemyid = MINDFLAYER,     .hpMax = 60, .hpCurr = 60, .dmg = 12, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 11, .tilerow = 0, .tilecol = 0};
      
-    CHARACTER enemyList[] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
+    // CHARACTER enemyList[] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
     
-//     enemyList[0] = abomination;
-//     enemyList[1] = apprentice;
-//     enemyList[2] = chimera;
-//     enemyList[3] = drow;
-//     enemyList[4] = elemental;
-//     enemyList[5] = golem;
-//     enemyList[6] = goblin;
-//     enemyList[7] = homunculus;
-//     enemyList[8] = kobold;
-//     enemyList[9] = mimic;
-//     enemyList[10] = orc;
-//     enemyList[11] = slime;
-//     enemyList[12] = skeleton;
-//     enemyList[13] = troll;
-//     enemyList[14] = vampire;
-//     enemyList[15] = zombie;
-//     enemyList[16] = beholder;
-//     enemyList[17] = dragon;
-//     enemyList[18] = wizard;
-//     enemyList[19] = mindflayer;
+    enemyList[0] = abomination;
+    enemyList[1] = apprentice;
+    enemyList[2] = chimera;
+    enemyList[3] = drow;
+    enemyList[4] = elemental;
+    enemyList[5] = golem;
+    enemyList[6] = goblin;
+    enemyList[7] = homunculus;
+    enemyList[8] = kobold;
+    enemyList[9] = mimic;
+    enemyList[10] = orc;
+    enemyList[11] = slime;
+    enemyList[12] = skeleton;
+    enemyList[13] = troll;
+    enemyList[14] = vampire;
+    enemyList[15] = zombie;
+    enemyList[16] = beholder;
+    enemyList[17] = dragon;
+    enemyList[18] = wizard;
+    enemyList[19] = mindflayer;
 }
 
 // to export spritesheets: make sure the spritesheet is 256x256 at 16 colors at per sprite
 // tipe 4bpp, no map, pal checked -> 256
 void drawEnemy(int enemyType, int col, int row) {
     shadowOAM[2].attr0 = row | ATTR0_SQUARE | ATTR0_4BPP;
-    shadowOAM[2].attr1 = col | ATTR1_SMALL;
+    shadowOAM[2].attr1 = col | ATTR1_MEDIUM;
     switch (enemyType)
     {
     case ABOMINATION:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(0, 0);
         break;
     case APPRENTICE:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(4, 0);
         break;
     case CHIMERA:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(8, 0);
         break;
     case DROW:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(12, 0);
         break;
     case ELEMENTAL:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(16, 0);
         break;
     case GOLEM:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(20, 0);
         break;
     case GOBLIN:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(24, 0);
         break;
     case HOMUNCULUS:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(28, 0);
         break;
     case KOBOLD:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(0, 4);
         break;
     case MIMIC:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(4, 4);
         break;
     case ORC:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(8, 4);
         break;
     case SLIME:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(12, 4);
         break;
     case SKELETON:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(16, 4);
         break;
     case TROLL:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(20, 4);
         break;
     case VAMPIRE:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(24, 4);
         break;
     case ZOMBIE:
-        shadowOAM[2].attr2 = ATTR2_TILEID(enemyType * 2, 0);
+        shadowOAM[2].attr2 = ATTR2_TILEID(28, 4);
         break;
     case BEHOLDER:
-        shadowOAM[2].attr2 = ATTR2_TILEID(0, 2);
+        shadowOAM[2].attr2 = ATTR2_TILEID(0, 8);
         break;
     case DRAGON:
-        shadowOAM[2].attr2 = ATTR2_TILEID(2, 2);
+        shadowOAM[2].attr2 = ATTR2_TILEID(4, 8);
         break;
     case WIZARD:
-        shadowOAM[2].attr2 = ATTR2_TILEID(4, 2);
+        shadowOAM[2].attr2 = ATTR2_TILEID(8, 8);
         break;
     case MINDFLAYER:
-        shadowOAM[2].attr2 = ATTR2_TILEID(6, 2);
+        shadowOAM[2].attr2 = ATTR2_TILEID(12, 8);
         break;
+    }
+}
+
+void drawEnemyHealthbar(int max, int curr, int col, int row) {
+    shadowOAM[8].attr0 = row | ATTR0_WIDE | ATTR0_4BPP;
+    shadowOAM[8].attr1 = col | ATTR1_SMALL;
+    if (curr == (max / 10) * 10) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(0, 12);
+    } else if (curr == (max / 10) * 9) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(4, 12);
+    } else if (curr == (max / 10) * 8) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(8, 12);
+    } else if (curr == (max / 10) * 7) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(12, 12);
+    } else if (curr == (max / 10) * 6) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(16, 12);
+    } else if (curr == (max / 10) * 5) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(0, 14);
+    } else if (curr == (max / 10) * 4) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(4, 14);
+    } else if (curr == (max / 10) * 3) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(8, 14);
+    } else if (curr == (max / 10) * 2) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(12, 14);
+    } else if (curr == (max / 10) * 1) {
+        shadowOAM[8].attr2 = ATTR2_TILEID(16, 14);
     }
 }
 

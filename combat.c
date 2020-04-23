@@ -28,6 +28,7 @@ void initCombat(CHARACTER * enemy) {
 }
 
 void updateCombat() {
+
     // Check if combat is won, handle defeating boss
     if (enemyChar.hpCurr <= 0) {
         enemyChar.active = 0;
@@ -57,20 +58,23 @@ void updateCombat() {
                         turn = 1;
                     }
                 }
-            } else if (BUTTON_PRESSED(BUTTON_B)) {
+            }
+            else if (BUTTON_PRESSED(BUTTON_B)) {
                 player.stance = DEFENSE;
                 for (volatile int timer = 0; timer <= TIMERWAIT; timer++) {
                     if (timer == TIMERWAIT) {
                         turn = 1;
                     }
                 }
-            } else if (BUTTON_PRESSED(BUTTON_START)) {
-                goToCombatPause();
-            } else if (BUTTON_PRESSED(BUTTON_L) && dungeon[currRoom].adjective != BOSS) {
-                enemyChar.active = 0;
-                currRoom--;
-                goToGame();
             }
+            else if (BUTTON_PRESSED(BUTTON_START)) {
+                goToCombatPause();
+            }
+            // else if (BUTTON_PRESSED(BUTTON_L) && dungeon[currRoom].adjective != BOSS) {
+            //     enemyChar.active = 0;
+            //     currRoom--;
+            //     goToGame();
+            // }
         } 
 
         // Handle enemy turn
@@ -191,8 +195,11 @@ void updateCombat() {
 }
 
 void drawCombat() {
+    drawPlayer(24, (SCREENHEIGHT - 56 - 8 - 32));
+    drawPlayerHealthbar(player.hpMax, player.hpCurr, 24, (SCREENHEIGHT - 56 - 8));
     if (enemyChar.active) {
-        drawEnemy(enemyChar.enemyid, (SCREENWIDTH / 2) - 8, (SCREENHEIGHT / 2) - 8);
+        drawEnemy(enemyChar.enemyid, (SCREENWIDTH - 32) - 24, (SCREENHEIGHT - 56 - 8 - 32));
+        drawEnemyHealthbar(enemyChar.hpMax, enemyChar.hpCurr, (SCREENWIDTH - 32) - 24, (SCREENHEIGHT - 56 - 8));
     }
 }
 
@@ -200,9 +207,9 @@ void drawCombat() {
 void attack(CHARACTER * source, CHARACTER  * target) {
     // Handle player to mob attacks
     if (source->playerclass == MAGE) {
-        if ( 1 /*(rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance*/) {
-            // int damage = rollDmg(10, statMod(source, INTEL));
-            int damage = 1000;
+        if ((rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance) {
+            int damage = rollDmg(10, statMod(source, INTEL));
+            // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -210,9 +217,9 @@ void attack(CHARACTER * source, CHARACTER  * target) {
             }
         }
     } else if (source->playerclass == ROGUE) {
-        if ( 1 /*(rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance*/) {
-            // int damage = rollDmg(10, statMod(source, DEX));
-            int damage = 1000;
+        if ((rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance) {
+            int damage = rollDmg(10, statMod(source, DEX));
+            // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -220,9 +227,9 @@ void attack(CHARACTER * source, CHARACTER  * target) {
             }
         }
     } else if (source->playerclass == FIGHTER) {
-        if ( 1 /*(rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance*/) {
-            // int damage = rollDmg(10, statMod(source, STR));
-            int damage = 1000;
+        if ((rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance) {
+            int damage = rollDmg(10, statMod(source, STR));
+            // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {

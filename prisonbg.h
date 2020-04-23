@@ -5,11 +5,11 @@
 //
 //	prisonbg, 256x256@4, 
 //	+ palette 256 entries, not compressed
-//	+ 14 tiles (t|f|p reduced) not compressed
+//	+ 293 tiles (t|f|p reduced) not compressed
 //	+ regular map (in SBBs), not compressed, 32x32 
-//	Total size: 512 + 448 + 2048 = 3008
+//	Total size: 512 + 9376 + 2048 = 11936
 //
-//	Time-stamp: 2020-04-08, 21:37:00
+//	Time-stamp: 2020-04-22, 03:29:16
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,8 +18,8 @@
 #ifndef GRIT_PRISONBG_H
 #define GRIT_PRISONBG_H
 
-#define prisonbgTilesLen 448
-extern const unsigned short prisonbgTiles[224];
+#define prisonbgTilesLen 9376
+extern const unsigned short prisonbgTiles[4688];
 
 #define prisonbgMapLen 2048
 extern const unsigned short prisonbgMap[1024];

@@ -17,7 +17,7 @@ int turnCount;
 
 // Initialize the game
 void init() {
-	srand(seed);
+	// srand(seed);
 	currRoom = 0;
 
 	initItems();
@@ -64,11 +64,11 @@ void updateGame() {
     }
 }
 
-// // Draws the game each frame
-// void drawGame() {
-// 	drawPlayer(col, row);
-// 	drawRoom();
-// }
+// Draws the game each frame
+void drawGame() {
+    drawPlayer(24, (SCREENHEIGHT - 56 - 8 - 32));
+    drawPlayerHealthbar(player.hpMax, player.hpCurr, 24, (SCREENHEIGHT - 56 - 8));
+}
 
 
 

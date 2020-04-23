@@ -1317,7 +1317,7 @@ extern DMA *dma;
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
 # 342 "myLib.h"
 typedef struct{
-    const unsigned char* data;
+    const signed char* data;
     int length;
     int frequency;
     int isPlaying;
@@ -1454,6 +1454,7 @@ int randomRare();
 
 typedef struct character {
     int playerclass;
+    int sex;
     int enemyid;
 
     int hpMax;
@@ -1479,6 +1480,9 @@ typedef struct character {
 
 
 enum {FIGHTER = 1, MAGE = 2, ROGUE = 3};
+
+
+enum {MALE, FEMALE};
 
 
 enum {HP, STR, DEX, INTEL, AC};
@@ -1540,9 +1544,11 @@ enum {PHYSICAL, MAGICAL};
 void initPlayer();
 
 void drawPlayer(int col, int row);
+void drawPlayerHealthbar(int max, int curr, int col, int row);
 
 void initEnemies();
 void drawEnemy(int enemyType, int col, int row);
+void drawEnemyHealthbar(int max, int curr, int col, int row);
 
 int damageChar(CHARACTER * target, int dice);
 int healChar (CHARACTER * target, int dice);
@@ -1635,6 +1641,16 @@ extern const unsigned short startMap[1024];
 
 extern const unsigned short startPal[256];
 # 10 "main.c" 2
+# 1 "charcreatebg.h" 1
+# 22 "charcreatebg.h"
+extern const unsigned short charcreatebgTiles[192];
+
+
+extern const unsigned short charcreatebgMap[1024];
+
+
+extern const unsigned short charcreatebgPal[256];
+# 11 "main.c" 2
 # 1 "pause.h" 1
 # 22 "pause.h"
 extern const unsigned short pauseTiles[752];
@@ -1644,7 +1660,7 @@ extern const unsigned short pauseMap[1024];
 
 
 extern const unsigned short pausePal[256];
-# 11 "main.c" 2
+# 12 "main.c" 2
 # 1 "win.h" 1
 # 22 "win.h"
 extern const unsigned short winTiles[656];
@@ -1654,7 +1670,7 @@ extern const unsigned short winMap[1024];
 
 
 extern const unsigned short winPal[256];
-# 12 "main.c" 2
+# 13 "main.c" 2
 # 1 "lose.h" 1
 # 22 "lose.h"
 extern const unsigned short loseTiles[688];
@@ -1664,7 +1680,50 @@ extern const unsigned short loseMap[1024];
 
 
 extern const unsigned short losePal[256];
-# 13 "main.c" 2
+# 14 "main.c" 2
+
+# 1 "palette.h" 1
+# 20 "palette.h"
+extern const unsigned short palettePal[256];
+# 16 "main.c" 2
+# 1 "spritesheet.h" 1
+# 21 "spritesheet.h"
+extern const unsigned short spritesheetTiles[16384];
+
+
+extern const unsigned short spritesheetPal[256];
+# 17 "main.c" 2
+
+# 1 "charcreateinstructions.h" 1
+# 22 "charcreateinstructions.h"
+extern const unsigned short charcreateinstructionsTiles[768];
+
+
+extern const unsigned short charcreateinstructionsMap[1024];
+
+
+extern const unsigned short charcreateinstructionsPal[256];
+# 19 "main.c" 2
+# 1 "gameinstructions.h" 1
+# 22 "gameinstructions.h"
+extern const unsigned short gameinstructionsTiles[1344];
+
+
+extern const unsigned short gameinstructionsMap[1024];
+
+
+extern const unsigned short gameinstructionsPal[256];
+# 20 "main.c" 2
+# 1 "combatinstructions.h" 1
+# 22 "combatinstructions.h"
+extern const unsigned short combatinstructionsTiles[1152];
+
+
+extern const unsigned short combatinstructionsMap[1024];
+
+
+extern const unsigned short combatinstructionsPal[256];
+# 21 "main.c" 2
 
 # 1 "enemysheet.h" 1
 # 21 "enemysheet.h"
@@ -1672,7 +1731,7 @@ extern const unsigned short enemysheetTiles[16384];
 
 
 extern const unsigned short enemysheetPal[256];
-# 15 "main.c" 2
+# 23 "main.c" 2
 
 
 void initialize();
@@ -1704,6 +1763,9 @@ int state;
 
 unsigned short buttons;
 unsigned short oldButtons;
+
+
+unsigned short hOff = 0;
 
 
 int seed;
@@ -1803,14 +1865,26 @@ void start() {
 
 
         init();
-        goToGame();
+        goToCharCreation();
     }
 }
 
 
 void goToCharCreation() {
-# 159 "main.c"
+
+    DMANow(3, palettePal, ((unsigned short *)0x5000200), 256);
+    DMANow(3, spritesheetTiles, &((charblock *)0x6000000)[4], 32768 / 2);
+
+    DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, charcreatebgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    DMANow(3, charcreatebgTiles, &((charblock *)0x6000000)[0], 384 / 2);
+
+    DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, charcreateinstructionsMap, &((screenblock *)0x6000000)[30], 2048 / 2);
+    DMANow(3, charcreateinstructionsTiles, &((charblock *)0x6000000)[1], 1536 / 2);
+
     hideSprites();
+    (*(volatile unsigned short*)0x4000008) = ((1)<<2) | ((30)<<8) | (1<<14) | (1<<7);
     (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (0<<7);
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8) | (1<<9);
 
@@ -1820,7 +1894,39 @@ void goToCharCreation() {
 
 void charCreation() {
 
+    if ((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+        if (player.playerclass == MAGE) {
+            player.playerclass = FIGHTER;
+        } else if (player.playerclass == FIGHTER) {
+            player.playerclass = ROGUE;
+        } else if (player.playerclass == ROGUE) {
+            player.playerclass = MAGE;
+        }
+    } else if ((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
+        if (player.playerclass == MAGE) {
+            player.playerclass = ROGUE;
+        } else if (player.playerclass == FIGHTER) {
+            player.playerclass = MAGE;
+        } else if (player.playerclass == ROGUE) {
+            player.playerclass = FIGHTER;
+        }
+    }
 
+    if ((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
+        if (player.sex == MALE) {
+            player.sex = FEMALE;
+        } else if (player.sex == FEMALE) {
+            player.stance = MALE;
+        }
+    } else if ((!(~(oldButtons)&((1<<7))) && (~buttons & ((1<<7))))) {
+        if (player.sex == MALE) {
+            player.sex = FEMALE;
+        } else if (player.sex == FEMALE) {
+            player.stance = MALE;
+        }
+    }
+
+    drawPlayer((240 / 2) - 16, (160 / 2) - 16);
 
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
@@ -1836,12 +1942,18 @@ void goToGame() {
 
     loadRoomData(currRoom);
 
+    DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, gameinstructionsMap, &((screenblock *)0x6000000)[30], 2048 / 2);
+    DMANow(3, gameinstructionsTiles, &((charblock *)0x6000000)[1], 2688 / 2);
 
-
+    DMANow(3, palettePal, ((unsigned short *)0x5000200), 256);
+    DMANow(3, spritesheetTiles, &((charblock *)0x6000000)[4], 32768 / 2);
 
     hideSprites();
+    (*(volatile unsigned short*)0x4000008) = ((1)<<2) | ((30)<<8) | (1<<14) | (1<<7);
     (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (0<<7);
-    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
+    (*(volatile unsigned short*)0x400000C) = ((2)<<2) | ((32)<<8) | (1<<14) | (0<<7);
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8) | (1<<9) | (1<<10);
 
     state = GAME;
 }
@@ -1849,10 +1961,14 @@ void goToGame() {
 
 void game() {
     updateGame();
+    drawGame();
 
+    hOff++;
 
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
+
+    (*(volatile unsigned short *)0x04000018) = hOff / 2;
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
@@ -1895,16 +2011,23 @@ void pause() {
 
 
 void goToCombat(CHARACTER * enemy) {
-    initCombat(&enemy);
+    initCombat(enemy);
 
 
     loadRoomData(currRoom);
 
-    DMANow(3, enemysheetPal, ((unsigned short *)0x5000200), 256);
-    DMANow(3, enemysheetTiles, &((charblock *)0x6000000)[4], 32768 / 2);
+    DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, combatinstructionsMap, &((screenblock *)0x6000000)[30], 2048 / 2);
+    DMANow(3, combatinstructionsTiles, &((charblock *)0x6000000)[1], 2304 / 2);
+
+    DMANow(3, palettePal, ((unsigned short *)0x5000200), 256);
+    DMANow(3, spritesheetTiles, &((charblock *)0x6000000)[4], 32768 / 2);
 
     hideSprites();
-    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
+    (*(volatile unsigned short*)0x4000008) = ((1)<<2) | ((30)<<8) | (1<<14) | (1<<7);
+    (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (0<<7);
+    (*(volatile unsigned short*)0x400000C) = ((2)<<2) | ((26)<<8) | (1<<14) | (0<<7);
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) |(1<<8) | (1<<9) | (1<<10);
 
     state = COMBAT;
 
@@ -1915,8 +2038,12 @@ void combat() {
     updateCombat();
     drawCombat();
 
+    hOff++;
+
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
+
+    (*(volatile unsigned short *)0x04000018) = hOff / 2;
 }
 
 void goToCombatPause() {
