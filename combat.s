@@ -366,8 +366,7 @@ updateCombat:
 	cmp	r3, #0
 	sub	sp, sp, #8
 	bgt	.L37
-	mov	r1, #10
-	mov	r0, #0
+	mov	r1, #0
 	ldr	r3, .L94+4
 	ldr	r3, [r3]
 	ldr	r2, .L94+8
@@ -376,9 +375,7 @@ updateCombat:
 	add	r3, r2, r3, lsl #3
 	ldr	r2, [r3, #4]
 	cmp	r2, #6
-	str	r0, [r4, #124]
-	str	r1, [r4, #12]
-	str	r1, [r4, #16]
+	str	r1, [r4, #124]
 	beq	.L91
 	cmp	r2, #3
 	moveq	ip, #4

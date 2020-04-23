@@ -32,8 +32,6 @@ void updateCombat() {
     // Check if combat is won, handle defeating boss
     if (enemyChar.hpCurr <= 0) {
         enemyChar.active = 0;
-        enemyChar.hpMax = 10;
-        enemyChar.hpCurr = 10;
         if (dungeon[currRoom].adjective == BOSS) {
             goToWin();
         }
