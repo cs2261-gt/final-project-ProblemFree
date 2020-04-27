@@ -1472,6 +1472,8 @@ typedef struct character {
     ITEM armor;
 
     int active;
+    int tilerow;
+    int tilecol;
 } CHARACTER;
 
 
@@ -1497,7 +1499,7 @@ extern int weaponSlider;
 
 
 enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE,
-        BEHOLDER, DRAGON, WIZARD, MINDFLAYER, GOBLINQUEENMIMI};
+        BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
 
 
 extern CHARACTER abomination;
@@ -1525,13 +1527,12 @@ extern CHARACTER beholder;
 extern CHARACTER dragon;
 extern CHARACTER wizard;
 extern CHARACTER mindflayer;
-extern CHARACTER goblinqeeenmimi;
 
 
 
 
 
-extern CHARACTER enemyList [16 + 5];
+extern CHARACTER enemyList [16 + 4];
 
 
 
@@ -1588,9 +1589,6 @@ typedef struct room {
 extern ROOM dungeon[12];
 
 
-extern int goblinMode;
-
-
 
 enum{ALCHEMYLAB, ATRIUM, BEDROOM, BREWERY, CIRCLES, CHESS, TELEPORTER, CRYSTAL, LIBRARY, MENAGERIE, TREASURY, GOLEMFAB, DINING, OBSERVATORY, PRISON, GARDEN, ENTRANCE, BOSSROOM};
 
@@ -1607,7 +1605,6 @@ void placeRare(int i);
 void placeAny(int i);
 void placeTrap(int i);
 void placeEnemy(int i);
-void placeGoblinoid(int i);
 
 void loadRoomData(int currentRoom);
 
@@ -1866,21 +1863,6 @@ void start() {
 
         srand(seed);
 
-        goblinMode = 0;
-
-        init();
-        volatile int t = 0;
-        while (t < 1000) {
-            t++;
-        }
-        goToCharCreation();
-    }
-    else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
-
-
-        srand(seed);
-
-        goblinMode = 1;
 
         init();
         volatile int t = 0;

@@ -171,27 +171,6 @@ void updateCombat() {
                     }
                 }
                 break;
-            case GOBLINQUEENMIMI:
-                if (enemyChar.hpCurr > enemyChar.hpMax / 4) {
-                    if (enemydecider < 60) {
-                        enemyChar.stance = DEFENSE;
-                        turn = 0;
-                    } else {
-                        enemyChar.stance = OFFENSE;
-                        attack(&enemyChar, &player);
-                        turn = 0;
-                    }
-                } else {
-                    if (enemydecider < 20) {
-                        enemyChar.stance = DEFENSE;
-                        turn = 0;
-                    } else {
-                        enemyChar.stance = OFFENSE;
-                        attack(&enemyChar, &player);
-                        turn = 0;
-                    }
-                }
-                break;
             default:
                 if (enemyChar.hpCurr > enemyChar.hpMax / 4) {
                     if (enemydecider < 30) {

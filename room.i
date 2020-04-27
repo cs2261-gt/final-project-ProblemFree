@@ -1472,6 +1472,8 @@ typedef struct character {
     ITEM armor;
 
     int active;
+    int tilerow;
+    int tilecol;
 } CHARACTER;
 
 
@@ -1497,7 +1499,7 @@ extern int weaponSlider;
 
 
 enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE,
-        BEHOLDER, DRAGON, WIZARD, MINDFLAYER, GOBLINQUEENMIMI};
+        BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
 
 
 extern CHARACTER abomination;
@@ -1525,13 +1527,12 @@ extern CHARACTER beholder;
 extern CHARACTER dragon;
 extern CHARACTER wizard;
 extern CHARACTER mindflayer;
-extern CHARACTER goblinqeeenmimi;
 
 
 
 
 
-extern CHARACTER enemyList [16 + 5];
+extern CHARACTER enemyList [16 + 4];
 
 
 
@@ -1588,9 +1589,6 @@ typedef struct room {
 extern ROOM dungeon[12];
 
 
-extern int goblinMode;
-
-
 
 enum{ALCHEMYLAB, ATRIUM, BEDROOM, BREWERY, CIRCLES, CHESS, TELEPORTER, CRYSTAL, LIBRARY, MENAGERIE, TREASURY, GOLEMFAB, DINING, OBSERVATORY, PRISON, GARDEN, ENTRANCE, BOSSROOM};
 
@@ -1607,7 +1605,6 @@ void placeRare(int i);
 void placeAny(int i);
 void placeTrap(int i);
 void placeEnemy(int i);
-void placeGoblinoid(int i);
 
 void loadRoomData(int currentRoom);
 
@@ -1832,7 +1829,6 @@ extern const unsigned short bossroombg2Pal[256];
 # 31 "room.c" 2
 
 ROOM dungeon[12];
-int goblinMode;
 
 
 
@@ -1856,26 +1852,15 @@ void initDungeon() {
     dungeon[12 - 1].roomType = BOSSROOM;
     dungeon[12 - 1].adjective = BOSS;
 
-    if (goblinMode) {
-        dungeon[12 - 1].enemy.enemyid = enemyList[GOBLINQUEENMIMI].enemyid;
-        dungeon[12 - 1].enemy.intelligence = enemyList[GOBLINQUEENMIMI].intelligence;
-        dungeon[12 - 1].enemy.dexterity = enemyList[GOBLINQUEENMIMI].dexterity;
-        dungeon[12 - 1].enemy.strength = enemyList[GOBLINQUEENMIMI].strength;
-        dungeon[12 - 1].enemy.ac = enemyList[GOBLINQUEENMIMI].ac;
-        dungeon[12 - 1].enemy.hpMax = enemyList[GOBLINQUEENMIMI].hpMax;
-        dungeon[12 - 1].enemy.hpCurr = enemyList[GOBLINQUEENMIMI].hpCurr;
-        dungeon[12 - 1].enemy.dmg = enemyList[GOBLINQUEENMIMI].dmg;
-    } else {
-        decider = (rand() % (5 - 1)) + 16;
-        dungeon[12 - 1].enemy.enemyid = enemyList[decider].enemyid;
-        dungeon[12 - 1].enemy.intelligence = enemyList[decider].intelligence;
-        dungeon[12 - 1].enemy.dexterity = enemyList[decider].dexterity;
-        dungeon[12 - 1].enemy.strength = enemyList[decider].strength;
-        dungeon[12 - 1].enemy.ac = enemyList[decider].ac;
-        dungeon[12 - 1].enemy.hpMax = enemyList[decider].hpMax;
-        dungeon[12 - 1].enemy.hpCurr = enemyList[decider].hpCurr;
-        dungeon[12 - 1].enemy.dmg = enemyList[decider].dmg;
-    }
+    decider = (rand() % 4) + 16;
+    dungeon[12 - 1].enemy.enemyid = enemyList[decider].enemyid;
+    dungeon[12 - 1].enemy.intelligence = enemyList[decider].intelligence;
+    dungeon[12 - 1].enemy.dexterity = enemyList[decider].dexterity;
+    dungeon[12 - 1].enemy.strength = enemyList[decider].strength;
+    dungeon[12 - 1].enemy.ac = enemyList[decider].ac;
+    dungeon[12 - 1].enemy.hpMax = enemyList[decider].hpMax;
+    dungeon[12 - 1].enemy.hpCurr = enemyList[decider].hpCurr;
+    dungeon[12 - 1].enemy.dmg = enemyList[decider].dmg;
 
 
     int count = 0;
@@ -1919,32 +1904,17 @@ void initDungeon() {
             dungeon[i].adjective = RARETREASURE;
         }
 
-        if (goblinMode) {
-            if (dungeon[i].adjective == MONSTER) {
-                placeGoblinoid(i);
-            } else if (dungeon[i].adjective == TRAP) {
-                placeTrap(i);
-            } else if (dungeon[i].adjective == GUARDED) {
-                placeGoblinoid(i);
-                placeAny(i);
-            } else if (dungeon[i].adjective == TREASURE) {
-                placeCommon(i);
-            } else if (dungeon[i].adjective == RARETREASURE) {
-                placeRare(i);
-            }
-        } else {
-            if (dungeon[i].adjective == MONSTER) {
-                placeEnemy(i);
-            } else if (dungeon[i].adjective == TRAP) {
-                placeTrap(i);
-            } else if (dungeon[i].adjective == GUARDED) {
-                placeEnemy(i);
-                placeAny(i);
-            } else if (dungeon[i].adjective == TREASURE) {
-                placeCommon(i);
-            } else if (dungeon[i].adjective == RARETREASURE) {
-                placeRare(i);
-            }
+        if (dungeon[i].adjective == MONSTER) {
+            placeEnemy(i);
+        } else if (dungeon[i].adjective == TRAP) {
+            placeTrap(i);
+        } else if (dungeon[i].adjective == GUARDED) {
+            placeEnemy(i);
+            placeAny(i);
+        } else if (dungeon[i].adjective == TREASURE) {
+            placeCommon(i);
+        } else if (dungeon[i].adjective == RARETREASURE) {
+            placeRare(i);
         }
 
         if (dungeon[i].roomType == TREASURY) {
@@ -1978,7 +1948,7 @@ void placeTrap(int i) {
 
 void placeEnemy(int i) {
     int decider = (rand() % 16);
-    dungeon[i].enemy.enemyid = enemyList[decider].enemyid;
+    dungeon[i].enemy.enemyid = enemyList[decider].intelligence;
     dungeon[i].enemy.intelligence = enemyList[decider].intelligence;
     dungeon[i].enemy.dexterity = enemyList[decider].dexterity;
     dungeon[i].enemy.strength = enemyList[decider].strength;
@@ -1987,39 +1957,7 @@ void placeEnemy(int i) {
     dungeon[i].enemy.hpCurr = enemyList[decider].hpCurr;
     dungeon[i].enemy.dmg = enemyList[decider].dmg;
 }
-
-void placeGoblinoid(int i) {
-    int decider = (rand() % 3);
-    if (decider == 0) {
-        dungeon[i].enemy.enemyid = enemyList[GOBLIN].enemyid;
-        dungeon[i].enemy.intelligence = enemyList[GOBLIN].intelligence;
-        dungeon[i].enemy.dexterity = enemyList[GOBLIN].dexterity;
-        dungeon[i].enemy.strength = enemyList[GOBLIN].strength;
-        dungeon[i].enemy.ac = enemyList[GOBLIN].ac;
-        dungeon[i].enemy.hpMax = enemyList[GOBLIN].hpMax;
-        dungeon[i].enemy.hpCurr = enemyList[GOBLIN].hpCurr;
-        dungeon[i].enemy.dmg = enemyList[GOBLIN].dmg;
-    } else if (decider == 1) {
-        dungeon[i].enemy.enemyid = enemyList[ORC].enemyid;
-        dungeon[i].enemy.intelligence = enemyList[ORC].intelligence;
-        dungeon[i].enemy.dexterity = enemyList[ORC].dexterity;
-        dungeon[i].enemy.strength = enemyList[ORC].strength;
-        dungeon[i].enemy.ac = enemyList[ORC].ac;
-        dungeon[i].enemy.hpMax = enemyList[ORC].hpMax;
-        dungeon[i].enemy.hpCurr = enemyList[ORC].hpCurr;
-        dungeon[i].enemy.dmg = enemyList[ORC].dmg;
-    } else if (decider == 2) {
-        dungeon[i].enemy.enemyid = enemyList[TROLL].enemyid;
-        dungeon[i].enemy.intelligence = enemyList[TROLL].intelligence;
-        dungeon[i].enemy.dexterity = enemyList[TROLL].dexterity;
-        dungeon[i].enemy.strength = enemyList[TROLL].strength;
-        dungeon[i].enemy.ac = enemyList[TROLL].ac;
-        dungeon[i].enemy.hpMax = enemyList[TROLL].hpMax;
-        dungeon[i].enemy.hpCurr = enemyList[TROLL].hpCurr;
-        dungeon[i].enemy.dmg = enemyList[TROLL].dmg;
-    }
-}
-# 228 "room.c"
+# 169 "room.c"
 void loadRoomData(int currentRoom) {
     switch (dungeon[currentRoom].roomType) {
         case ALCHEMYLAB:
