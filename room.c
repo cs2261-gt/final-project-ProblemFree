@@ -30,6 +30,7 @@
 #include "bossroombg2.h"
 
 ROOM dungeon[DUNGEONSIZE];
+int goblinMode;
 
 // PRIMARY ROOM FUNCTIONS
 
@@ -53,15 +54,26 @@ void initDungeon() {
     dungeon[DUNGEONSIZE - 1].roomType = BOSSROOM;
     dungeon[DUNGEONSIZE - 1].adjective = BOSS;
     
-    decider = (rand() % BOSSOPTIONS) + MOBOPTIONS;
-    dungeon[DUNGEONSIZE - 1].enemy.enemyid = enemyList[decider].enemyid;
-    dungeon[DUNGEONSIZE - 1].enemy.intelligence = enemyList[decider].intelligence;
-    dungeon[DUNGEONSIZE - 1].enemy.dexterity = enemyList[decider].dexterity;
-    dungeon[DUNGEONSIZE - 1].enemy.strength = enemyList[decider].strength;
-    dungeon[DUNGEONSIZE - 1].enemy.ac = enemyList[decider].ac;
-    dungeon[DUNGEONSIZE - 1].enemy.hpMax = enemyList[decider].hpMax;
-    dungeon[DUNGEONSIZE - 1].enemy.hpCurr = enemyList[decider].hpCurr;
-    dungeon[DUNGEONSIZE - 1].enemy.dmg = enemyList[decider].dmg;
+    if (goblinMode) {
+        dungeon[DUNGEONSIZE - 1].enemy.enemyid = enemyList[GOBLINQUEENMIMI].enemyid;
+        dungeon[DUNGEONSIZE - 1].enemy.intelligence = enemyList[GOBLINQUEENMIMI].intelligence;
+        dungeon[DUNGEONSIZE - 1].enemy.dexterity = enemyList[GOBLINQUEENMIMI].dexterity;
+        dungeon[DUNGEONSIZE - 1].enemy.strength = enemyList[GOBLINQUEENMIMI].strength;
+        dungeon[DUNGEONSIZE - 1].enemy.ac = enemyList[GOBLINQUEENMIMI].ac;
+        dungeon[DUNGEONSIZE - 1].enemy.hpMax = enemyList[GOBLINQUEENMIMI].hpMax;
+        dungeon[DUNGEONSIZE - 1].enemy.hpCurr = enemyList[GOBLINQUEENMIMI].hpCurr;
+        dungeon[DUNGEONSIZE - 1].enemy.dmg = enemyList[GOBLINQUEENMIMI].dmg;
+    } else {
+        decider = (rand() % (BOSSOPTIONS - 1)) + MOBOPTIONS;
+        dungeon[DUNGEONSIZE - 1].enemy.enemyid = enemyList[decider].enemyid;
+        dungeon[DUNGEONSIZE - 1].enemy.intelligence = enemyList[decider].intelligence;
+        dungeon[DUNGEONSIZE - 1].enemy.dexterity = enemyList[decider].dexterity;
+        dungeon[DUNGEONSIZE - 1].enemy.strength = enemyList[decider].strength;
+        dungeon[DUNGEONSIZE - 1].enemy.ac = enemyList[decider].ac;
+        dungeon[DUNGEONSIZE - 1].enemy.hpMax = enemyList[decider].hpMax;
+        dungeon[DUNGEONSIZE - 1].enemy.hpCurr = enemyList[decider].hpCurr;
+        dungeon[DUNGEONSIZE - 1].enemy.dmg = enemyList[decider].dmg;
+    }
 
     // Create dungeon room order without duplicates.
     int count = 0;
@@ -105,19 +117,34 @@ void initDungeon() {
             dungeon[i].adjective = RARETREASURE;
         }
 
-        if (dungeon[i].adjective == MONSTER) {
-            placeEnemy(i);
-        } else if (dungeon[i].adjective == TRAP) {
-            placeTrap(i);
-        } else if (dungeon[i].adjective == GUARDED) {
-            placeEnemy(i);
-            placeAny(i);
-        } else if (dungeon[i].adjective == TREASURE) {
-            placeCommon(i);
-        } else if (dungeon[i].adjective == RARETREASURE) {
-            placeRare(i);
+        if (goblinMode) {
+            if (dungeon[i].adjective == MONSTER) {
+                placeGoblinoid(i);
+            } else if (dungeon[i].adjective == TRAP) {
+                placeTrap(i);
+            } else if (dungeon[i].adjective == GUARDED) {
+                placeGoblinoid(i);
+                placeAny(i);
+            } else if (dungeon[i].adjective == TREASURE) {
+                placeCommon(i);
+            } else if (dungeon[i].adjective == RARETREASURE) {
+                placeRare(i);
+            }
+        } else {
+            if (dungeon[i].adjective == MONSTER) {
+                placeEnemy(i);
+            } else if (dungeon[i].adjective == TRAP) {
+                placeTrap(i);
+            } else if (dungeon[i].adjective == GUARDED) {
+                placeEnemy(i);
+                placeAny(i);
+            } else if (dungeon[i].adjective == TREASURE) {
+                placeCommon(i);
+            } else if (dungeon[i].adjective == RARETREASURE) {
+                placeRare(i);
+            }
         }
-
+        
         if (dungeon[i].roomType == TREASURY) {
             dungeon[i].adjective = RARETREASURE;
             dungeon[i].object = itemList[randomRare()];
@@ -149,7 +176,7 @@ void placeTrap(int i) {
 
 void placeEnemy(int i) {
     int decider = (rand() % MOBOPTIONS);
-    dungeon[i].enemy.enemyid = enemyList[decider].intelligence;
+    dungeon[i].enemy.enemyid = enemyList[decider].enemyid;
     dungeon[i].enemy.intelligence = enemyList[decider].intelligence;
     dungeon[i].enemy.dexterity = enemyList[decider].dexterity;
     dungeon[i].enemy.strength = enemyList[decider].strength;
@@ -157,6 +184,38 @@ void placeEnemy(int i) {
     dungeon[i].enemy.hpMax = enemyList[decider].hpMax;
     dungeon[i].enemy.hpCurr = enemyList[decider].hpCurr;
     dungeon[i].enemy.dmg = enemyList[decider].dmg;
+}
+
+void placeGoblinoid(int i) {
+    int decider = (rand() % 3);
+    if (decider == 0) {
+        dungeon[i].enemy.enemyid = enemyList[GOBLIN].enemyid;
+        dungeon[i].enemy.intelligence = enemyList[GOBLIN].intelligence;
+        dungeon[i].enemy.dexterity = enemyList[GOBLIN].dexterity;
+        dungeon[i].enemy.strength = enemyList[GOBLIN].strength;
+        dungeon[i].enemy.ac = enemyList[GOBLIN].ac;
+        dungeon[i].enemy.hpMax = enemyList[GOBLIN].hpMax;
+        dungeon[i].enemy.hpCurr = enemyList[GOBLIN].hpCurr;
+        dungeon[i].enemy.dmg = enemyList[GOBLIN].dmg;
+    } else if (decider == 1) {
+        dungeon[i].enemy.enemyid = enemyList[ORC].enemyid;
+        dungeon[i].enemy.intelligence = enemyList[ORC].intelligence;
+        dungeon[i].enemy.dexterity = enemyList[ORC].dexterity;
+        dungeon[i].enemy.strength = enemyList[ORC].strength;
+        dungeon[i].enemy.ac = enemyList[ORC].ac;
+        dungeon[i].enemy.hpMax = enemyList[ORC].hpMax;
+        dungeon[i].enemy.hpCurr = enemyList[ORC].hpCurr;
+        dungeon[i].enemy.dmg = enemyList[ORC].dmg;
+    } else if (decider == 2) {
+        dungeon[i].enemy.enemyid = enemyList[TROLL].enemyid;
+        dungeon[i].enemy.intelligence = enemyList[TROLL].intelligence;
+        dungeon[i].enemy.dexterity = enemyList[TROLL].dexterity;
+        dungeon[i].enemy.strength = enemyList[TROLL].strength;
+        dungeon[i].enemy.ac = enemyList[TROLL].ac;
+        dungeon[i].enemy.hpMax = enemyList[TROLL].hpMax;
+        dungeon[i].enemy.hpCurr = enemyList[TROLL].hpCurr;
+        dungeon[i].enemy.dmg = enemyList[TROLL].dmg;
+    }
 }
 
 // {ALCHEMYLAB, ATRIUM, BEDROOM, BREWERY, CIRCLES, CHESS, TELEPORTER, CRYSTAL, LIBRARY, MENAGERIE, TREASURY, GOLEMFAB, DINING, OBSERBVATORY, PRISON, GARDEN, ENTRANCE, BOSSROOM}

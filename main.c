@@ -28,6 +28,8 @@ void initialize();
 // State Prototypes
 void goToStart();
 void start();
+void goToGuide();
+void guide();
 void goToCharCreation();
 void charCreation();
 void goToGame();
@@ -45,7 +47,7 @@ void lose();
 
 
 // States
-enum {START, CHARCREATE, GAME, PAUSE, COMBAT, COMBATPAUSE, WIN, LOSE};
+enum {START, GUIDE, CHARCREATE, GAME, PAUSE, COMBAT, COMBATPAUSE, WIN, LOSE};
 int state;
 
 // Button Variables
@@ -76,6 +78,9 @@ int main() {
 
             case START:
                 start();
+                break;
+            case GUIDE:
+                guide();
                 break;
             case CHARCREATE:
                 charCreation();
@@ -151,12 +156,51 @@ void start() {
         // Seed the random generator
         srand(seed);
 
-        
+        goblinMode = 0;
+
         init();
         volatile int t = 0;
         while (t < 1000) {
             t++;
         }
+        goToGuide();
+    }
+    else if (BUTTON_PRESSED(BUTTON_SELECT)) {
+
+        // Seed the random generator
+        srand(seed);
+
+        goblinMode = 1;
+
+        init();
+        volatile int t = 0;
+        while (t < 1000) {
+            t++;
+        }
+        goToGuide();
+    }
+}
+
+// Set Up Guide State
+void goToGuide() {
+    DMANow(3, palettePal, PALETTE, 256);
+    DMANow(3, charcreatebgMap, &SCREENBLOCK[28], charcreatebgMapLen / 2);
+    DMANow(3, charcreatebgTiles, &CHARBLOCK[0], charcreatebgTilesLen / 2);
+
+    hideSprites();
+    REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
+    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
+
+    state = GUIDE
+}
+
+// Run Every Frame of Guide Screen
+void guide() {
+    waitForVBlank();
+    DMANow(3, shadowOAM, OAM, 512);
+
+    // State transitions
+    if (BUTTON_PRESSED(BUTTON_START)) {
         goToCharCreation();
     }
 }

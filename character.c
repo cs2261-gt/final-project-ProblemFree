@@ -34,6 +34,7 @@ CHARACTER beholder;
 CHARACTER dragon;
 CHARACTER wizard;
 CHARACTER mindflayer;
+CHARACTER slicethescreamlord;
 
 CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS];
 
@@ -50,10 +51,10 @@ void initPlayer() {
     player.dexterity = 10;
     player.strength = 8;
 
-    player.dmg = 8;
+    player.dmg = 6;
 
-    player.hpMax = 50;
-    player.hpCurr = 50;
+    player.hpMax = 70;
+    player.hpCurr = 70;
 
     backpack[0] = player.weapon;
     backpack[1] = player.armor;
@@ -116,7 +117,7 @@ void drawPlayer(int col, int row) {
 void drawPlayerHealthbar(int max, int curr, int col, int row) {
     shadowOAM[6].attr0 = row | ATTR0_WIDE | ATTR0_4BPP;
     shadowOAM[6].attr1 = col | ATTR1_SMALL;
-    if (curr == (max / 10) * 10) {
+    if (curr == max) {
         shadowOAM[6].attr2 = ATTR2_TILEID(0, 12);
     } else if (curr == (max / 10) * 9) {
         shadowOAM[6].attr2 = ATTR2_TILEID(4, 12);
@@ -141,16 +142,14 @@ void drawPlayerHealthbar(int max, int curr, int col, int row) {
 
 void checkDeath() {
     if (player.hpCurr == 0) {
-        int revived = 0;
         for (int i = 0; i < INVSIZE; i++) {
             if (backpack[i].id == REVIVALORB) {
                 player.hpCurr = player.hpMax;
                 backpack[i].id = WEAPONOPTIONS + ARMOROPTIONS + COMMONOPTIONS + RAREOPTIONS;
-                revived = 1;
                 break;
             }
         }
-        if (!revived) {
+        if (player.hpCurr > 0) {
             goToLose();
         }
     }
@@ -158,29 +157,30 @@ void checkDeath() {
 
 
 void initEnemies() {
-    CHARACTER abomination =     {.enemyid = ABOMINATION,    .hpMax = 25, .hpCurr = 25, .dmg = 10, .intelligence = 8, .dexterity = 12, .strength = 16, .ac = 10, .tilerow = 0, .tilecol = 0};
-    CHARACTER apprentice =      {.enemyid = APPRENTICE,     .hpMax = 15, .hpCurr = 15, .dmg = 6, .intelligence = 16, .dexterity = 12, .strength = 10, .ac = 8, .tilerow = 0, .tilecol = 0};
-    CHARACTER chimera =         {.enemyid = CHIMERA,        .hpMax = 30, .hpCurr = 30, .dmg = 10, .intelligence = 10, .dexterity = 18, .strength = 14, .ac = 12, .tilerow = 0, .tilecol = 0};
-    CHARACTER drow =            {.enemyid = DROW,           .hpMax = 18, .hpCurr = 18, .dmg = 6, .intelligence = 14, .dexterity = 16, .strength = 14, .ac = 6, .tilerow = 0, .tilecol = 0};
-    CHARACTER elemental =       {.enemyid = ELEMENTAL,      .hpMax = 20, .hpCurr = 20, .dmg = 10, .intelligence = 14, .dexterity = 12, .strength = 12, .ac = 10, .tilerow = 0, .tilecol = 0};
-    CHARACTER golem =           {.enemyid = GOLEM,          .hpMax = 25, .hpCurr = 25, .dmg = 10, .intelligence = 8, .dexterity = 10, .strength = 18, .ac = 12, .tilerow = 0, .tilecol = 0};
-    CHARACTER goblin =          {.enemyid = GOBLIN,         .hpMax = 10, .hpCurr = 10, .dmg = 6, .intelligence = 8, .dexterity = 16, .strength = 12, .ac = 8, .tilerow = 0, .tilecol = 0};
-    CHARACTER homunculus =      {.enemyid = HOMUNCULUS,     .hpMax = 8, .hpCurr = 8, .dmg = 8, .intelligence = 18, .dexterity = 18, .strength = 6, .ac = 14, .tilerow = 0, .tilecol = 0};
-    CHARACTER kobold =          {.enemyid = KOBOLD,         .hpMax = 12, .hpCurr = 12, .dmg = 6, .intelligence = 10, .dexterity = 14, .strength = 14, .ac = 10, .tilerow = 0, .tilecol = 0};
-    CHARACTER mimic =           {.enemyid = MIMIC,          .hpMax = 16, .hpCurr = 16, .dmg = 8, .intelligence = 14, .dexterity = 12, .strength = 14, .ac = 10, .tilerow = 0, .tilecol = 0};
-    CHARACTER orc =             {.enemyid = ORC,            .hpMax = 18, .hpCurr = 18, .dmg = 10, .intelligence = 10, .dexterity = 16, .strength = 16, .ac = 10, .tilerow = 0, .tilecol = 0};
-    CHARACTER slime =           {.enemyid = SLIME,          .hpMax = 40, .hpCurr = 40, .dmg = 4, .intelligence = 10, .dexterity = 8, .strength = 10, .ac = 12, .tilerow = 0, .tilecol = 0};
-    CHARACTER skeleton =        {.enemyid = SKELETON,       .hpMax = 12, .hpCurr = 12, .dmg = 8, .intelligence = 8, .dexterity = 14, .strength = 10, .ac = 8, .tilerow = 0, .tilecol = 0};
-    CHARACTER troll =           {.enemyid = TROLL,          .hpMax = 35, .hpCurr = 35, .dmg = 12, .intelligence = 8, .dexterity = 12, .strength = 18, .ac = 12, .tilerow = 0, .tilecol = 0};
-    CHARACTER vampire =         {.enemyid = VAMPIRE,        .hpMax = 20, .hpCurr = 20, .dmg = 10, .intelligence = 16, .dexterity = 16, .strength = 16, .ac = 10, .tilerow = 0, .tilecol = 0};
-    CHARACTER zombie =          {.enemyid = ZOMBIE,         .hpMax = 15, .hpCurr = 15, .dmg = 6, .intelligence = 8, .dexterity = 10, .strength = 14, .ac = 8, .tilerow = 0, .tilecol = 0};
+    CHARACTER abomination =     {.enemyid = ABOMINATION,    .hpMax = 25, .hpCurr = 25, .dmg = 10, .intelligence = 8, .dexterity = 12, .strength = 16, .ac = 10};
+    CHARACTER apprentice =      {.enemyid = APPRENTICE,     .hpMax = 15, .hpCurr = 15, .dmg = 6, .intelligence = 16, .dexterity = 12, .strength = 10, .ac = 8};
+    CHARACTER chimera =         {.enemyid = CHIMERA,        .hpMax = 30, .hpCurr = 30, .dmg = 10, .intelligence = 10, .dexterity = 18, .strength = 14, .ac = 12};
+    CHARACTER drow =            {.enemyid = DROW,           .hpMax = 18, .hpCurr = 18, .dmg = 6, .intelligence = 14, .dexterity = 16, .strength = 14, .ac = 6};
+    CHARACTER elemental =       {.enemyid = ELEMENTAL,      .hpMax = 20, .hpCurr = 20, .dmg = 10, .intelligence = 14, .dexterity = 12, .strength = 12, .ac = 10};
+    CHARACTER golem =           {.enemyid = GOLEM,          .hpMax = 25, .hpCurr = 25, .dmg = 10, .intelligence = 8, .dexterity = 10, .strength = 18, .ac = 12};
+    CHARACTER goblin =          {.enemyid = GOBLIN,         .hpMax = 10, .hpCurr = 10, .dmg = 6, .intelligence = 8, .dexterity = 16, .strength = 12, .ac = 8};
+    CHARACTER homunculus =      {.enemyid = HOMUNCULUS,     .hpMax = 8, .hpCurr = 8, .dmg = 8, .intelligence = 18, .dexterity = 18, .strength = 6, .ac = 14};
+    CHARACTER kobold =          {.enemyid = KOBOLD,         .hpMax = 12, .hpCurr = 12, .dmg = 6, .intelligence = 10, .dexterity = 14, .strength = 14, .ac = 10};
+    CHARACTER mimic =           {.enemyid = MIMIC,          .hpMax = 16, .hpCurr = 16, .dmg = 8, .intelligence = 14, .dexterity = 12, .strength = 14, .ac = 10};
+    CHARACTER orc =             {.enemyid = ORC,            .hpMax = 18, .hpCurr = 18, .dmg = 10, .intelligence = 10, .dexterity = 16, .strength = 16, .ac = 10};
+    CHARACTER slime =           {.enemyid = SLIME,          .hpMax = 40, .hpCurr = 40, .dmg = 4, .intelligence = 10, .dexterity = 8, .strength = 10, .ac = 12};
+    CHARACTER skeleton =        {.enemyid = SKELETON,       .hpMax = 12, .hpCurr = 12, .dmg = 8, .intelligence = 8, .dexterity = 14, .strength = 10, .ac = 8};
+    CHARACTER troll =           {.enemyid = TROLL,          .hpMax = 35, .hpCurr = 35, .dmg = 12, .intelligence = 8, .dexterity = 12, .strength = 18, .ac = 12};
+    CHARACTER vampire =         {.enemyid = VAMPIRE,        .hpMax = 20, .hpCurr = 20, .dmg = 10, .intelligence = 16, .dexterity = 16, .strength = 16, .ac = 10};
+    CHARACTER zombie =          {.enemyid = ZOMBIE,         .hpMax = 15, .hpCurr = 15, .dmg = 6, .intelligence = 8, .dexterity = 10, .strength = 14, .ac = 8};
 
-    CHARACTER beholder =        {.enemyid = BEHOLDER,       .hpMax = 60, .hpCurr = 60, .dmg = 12, .intelligence = 20, .dexterity = 18, .strength = 18, .ac = 13, .tilerow = 0, .tilecol = 0};
-    CHARACTER dragon =          {.enemyid = DRAGON,         .hpMax = 80, .hpCurr = 80, .dmg = 20, .intelligence = 20, .dexterity = 20, .strength = 20, .ac = 18, .tilerow = 0, .tilecol = 0};
-    CHARACTER wizard =          {.enemyid = WIZARD,         .hpMax = 50, .hpCurr = 50, .dmg = 12, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 11, .tilerow = 0, .tilecol = 0};
-    CHARACTER mindflayer =      {.enemyid = MINDFLAYER,     .hpMax = 60, .hpCurr = 60, .dmg = 12, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 11, .tilerow = 0, .tilecol = 0};
+    CHARACTER beholder =        {.enemyid = BEHOLDER,       .hpMax = 60, .hpCurr = 60, .dmg = 10, .intelligence = 20, .dexterity = 18, .strength = 18, .ac = 13};
+    CHARACTER dragon =          {.enemyid = DRAGON,         .hpMax = 80, .hpCurr = 80, .dmg = 10, .intelligence = 20, .dexterity = 18, .strength = 20, .ac = 15};
+    CHARACTER wizard =          {.enemyid = WIZARD,         .hpMax = 50, .hpCurr = 50, .dmg = 10, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 11};
+    CHARACTER mindflayer =      {.enemyid = MINDFLAYER,     .hpMax = 60, .hpCurr = 60, .dmg = 10, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 11};
+    CHARACTER goblinqueenmimi = {.enemyid = GOBLINQUEENMIMI, .hpMax = 100, .hpCurr = 100, .dmg = 12, .intelligence = 8, .dexterity = 20, .strength = 12, .ac = 11};
      
-    // CHARACTER enemyList[] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer};
+    // CHARACTER enemyList[] = {abomination, apprentice, chimera, drow, elemental, golem, goblin, homunculus, kobold, mimic, orc, slime, skeleton, troll, vampire, zombie, beholder, dragon, wizard, mindflayer, goblinqueenmimi};
     
     enemyList[0] = abomination;
     enemyList[1] = apprentice;
@@ -202,6 +202,7 @@ void initEnemies() {
     enemyList[17] = dragon;
     enemyList[18] = wizard;
     enemyList[19] = mindflayer;
+    enemyList[20] = goblinqueenmimi;
 }
 
 // to export spritesheets: make sure the spritesheet is 256x256 at 16 colors at per sprite
@@ -271,13 +272,15 @@ void drawEnemy(int enemyType, int col, int row) {
     case MINDFLAYER:
         shadowOAM[2].attr2 = ATTR2_TILEID(12, 8);
         break;
+    case GOBLINQUEENMIMI:
+        shadowOAM[2].attr2 = ATTR2_TILEID(16, 8);
     }
 }
 
 void drawEnemyHealthbar(int max, int curr, int col, int row) {
     shadowOAM[8].attr0 = row | ATTR0_WIDE | ATTR0_4BPP;
     shadowOAM[8].attr1 = col | ATTR1_SMALL;
-    if (curr == (max / 10) * 10) {
+    if (curr == max) {
         shadowOAM[8].attr2 = ATTR2_TILEID(0, 12);
     } else if (curr == (max / 10) * 9) {
         shadowOAM[8].attr2 = ATTR2_TILEID(4, 12);

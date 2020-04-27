@@ -21,8 +21,6 @@ typedef struct character {
     ITEM armor;
 
     int active;
-    int tilerow;
-    int tilecol;
 } CHARACTER;
 
 // PLAYER
@@ -48,7 +46,7 @@ extern int weaponSlider;
 // ENEMIES 
 
 enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE, 
-        BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
+        BEHOLDER, DRAGON, WIZARD, MINDFLAYER, GOBLINQUEENMIMI};
 
 // Common Mobs
 extern CHARACTER abomination;
@@ -76,9 +74,10 @@ extern CHARACTER beholder;
 extern CHARACTER dragon;
 extern CHARACTER wizard;
 extern CHARACTER mindflayer;
+extern CHARACTER goblinqeeenmimi;
 
-#define BOSSOPTIONS 4
-// int bosses [BOSSOPTIONS] = {BEHOLDER, DRAGON, WIZARD, MINDFLAYER};
+#define BOSSOPTIONS 5
+// int bosses [BOSSOPTIONS] = {BEHOLDER, DRAGON, WIZARD, MINDFLAYER, GOBLINQUEENMIMI};
 
 // Master Monster List
 extern CHARACTER enemyList [MOBOPTIONS + BOSSOPTIONS];
