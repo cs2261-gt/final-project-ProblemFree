@@ -50,10 +50,10 @@ initPlayer:
 	ldr	lr, .L6+8
 	ldmia	r9!, {r0, r1, r2, r3}
 	stmia	lr!, {r0, r1, r2, r3}
-	mov	r3, #8
-	str	r3, [ip, #28]
+	mov	r3, #10
+	str	r3, [ip, #24]
 	mov	r3, #6
-	mov	r6, #10
+	mov	r6, #8
 	mov	r5, #70
 	mov	r7, #12
 	mov	r8, #32
@@ -61,7 +61,7 @@ initPlayer:
 	ldmia	r9!, {r0, r1, r2, r3}
 	str	r7, [ip, #20]
 	str	r6, [ip, #32]
-	str	r6, [ip, #24]
+	str	r6, [ip, #28]
 	str	r5, [ip, #12]
 	str	r5, [ip, #16]
 	stmia	lr!, {r0, r1, r2, r3}
@@ -69,7 +69,7 @@ initPlayer:
 	add	ip, ip, #84
 	stm	lr, {r0, r1}
 	ldmia	ip!, {r0, r1, r2, r3}
-	add	r4, lr, #8
+	add	r4, lr, r6
 	stmia	r4!, {r0, r1, r2, r3}
 	ldmia	ip!, {r0, r1, r2, r3}
 	stmia	r4!, {r0, r1, r2, r3}

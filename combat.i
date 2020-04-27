@@ -1890,7 +1890,7 @@ void attack(CHARACTER * source, CHARACTER * target) {
         }
     }
 
-    else if (source->enemyid == BEHOLDER || source->enemyid == DRAGON || source->enemyid == WIZARD || source->enemyid == MINDFLAYER) {
+    else if (source->enemyid == BEHOLDER || source->enemyid == DRAGON || source->enemyid == WIZARD || source->enemyid == MINDFLAYER || source->enemyid == GOBLINQUEENMIMI) {
         if (((rand() % 20) + 1 + 2) >= statEquipped(target, AC) + target->stance) {
             int damage = rollDmg(source->dmg, 2);
             if (target->hpCurr - damage <= 0) {

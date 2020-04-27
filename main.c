@@ -191,7 +191,7 @@ void goToGuide() {
     REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
 
-    state = GUIDE
+    state = GUIDE;
 }
 
 // Run Every Frame of Guide Screen

@@ -1743,6 +1743,8 @@ void initialize();
 
 void goToStart();
 void start();
+void goToGuide();
+void guide();
 void goToCharCreation();
 void charCreation();
 void goToGame();
@@ -1760,7 +1762,7 @@ void lose();
 
 
 
-enum {START, CHARCREATE, GAME, PAUSE, COMBAT, COMBATPAUSE, WIN, LOSE};
+enum {START, GUIDE, CHARCREATE, GAME, PAUSE, COMBAT, COMBATPAUSE, WIN, LOSE};
 int state;
 
 
@@ -1791,6 +1793,9 @@ int main() {
 
             case START:
                 start();
+                break;
+            case GUIDE:
+                guide();
                 break;
             case CHARCREATE:
                 charCreation();
@@ -1873,7 +1878,7 @@ void start() {
         while (t < 1000) {
             t++;
         }
-        goToCharCreation();
+        goToGuide();
     }
     else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
 
@@ -1887,6 +1892,30 @@ void start() {
         while (t < 1000) {
             t++;
         }
+        goToGuide();
+    }
+}
+
+
+void goToGuide() {
+    DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, charcreatebgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    DMANow(3, charcreatebgTiles, &((charblock *)0x6000000)[0], 384 / 2);
+
+    hideSprites();
+    (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (0<<7);
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8) | (1<<9);
+
+    state = GUIDE;
+}
+
+
+void guide() {
+    waitForVBlank();
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
+
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         goToCharCreation();
     }
 }

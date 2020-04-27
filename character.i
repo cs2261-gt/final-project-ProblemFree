@@ -1680,7 +1680,7 @@ void initPlayer() {
     player.weapon = itemList[ARCHWIZARDSTAFF];
     player.armor = itemList[LEGENDARY];
 
-    player.ac = 10;
+    player.ac = 8;
     player.intelligence = 12;
     player.dexterity = 10;
     player.strength = 8;

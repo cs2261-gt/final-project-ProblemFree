@@ -140,7 +140,7 @@ attack:
 	beq	.L32
 	ldr	r3, [r0, #8]
 	sub	r3, r3, #16
-	cmp	r3, #3
+	cmp	r3, #4
 	ldr	r7, .L34
 	bhi	.L24
 	mov	lr, pc
