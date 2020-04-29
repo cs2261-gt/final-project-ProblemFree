@@ -204,22 +204,33 @@ placeEnemy:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r2, .L20
 	push	{r4, lr}
-	ldr	r3, .L20+4
-	ldr	lr, [r2, #2056]
-	ldr	ip, [r2, #2068]
-	ldr	r1, [r2, #2072]
-	add	r0, r0, r0, lsl #1
+	ldr	r3, .L20
+	mov	r4, r0
+	mov	lr, pc
+	bx	r3
+	ldr	r2, .L20+4
+	smull	r1, r3, r2, r0
+	asr	r2, r0, #31
+	rsb	r2, r2, r3, asr #3
+	ldr	r1, .L20+8
+	add	r2, r2, r2, lsl #4
+	sub	r2, r0, r2
+	add	r2, r1, r2, lsl #7
+	ldr	r3, .L20+12
+	ldr	lr, [r2, #8]
+	ldr	ip, [r2, #20]
+	ldr	r1, [r2, #24]
+	add	r0, r4, r4, lsl #1
 	add	r0, r3, r0, lsl #6
-	ldr	r4, [r2, #2076]
+	ldr	r4, [r2, #28]
 	str	lr, [r0, #56]
 	str	ip, [r0, #68]
-	ldr	lr, [r2, #2080]
-	ldr	ip, [r2, #2060]
+	ldr	lr, [r2, #32]
+	ldr	ip, [r2, #12]
 	str	r1, [r0, #72]
-	ldr	r3, [r2, #2084]
-	ldr	r1, [r2, #2064]
+	ldr	r3, [r2, #36]
+	ldr	r1, [r2, #16]
 	str	r4, [r0, #76]
 	str	lr, [r0, #80]
 	str	ip, [r0, #60]
@@ -230,6 +241,8 @@ placeEnemy:
 .L21:
 	.align	2
 .L20:
+	.word	rand
+	.word	2021161081
 	.word	enemyList
 	.word	dungeon
 	.size	placeEnemy, .-placeEnemy
@@ -336,12 +349,12 @@ initDungeon:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	mov	r3, #16
 	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
-	ldr	r4, .L78
-	ldr	r6, .L78+4
-	str	r3, [r4]
+	ldr	r6, .L78
+	ldr	r4, .L78+4
+	str	r3, [r6]
 	sub	sp, sp, #44
 	mov	lr, pc
-	bx	r6
+	bx	r4
 	ldr	r3, .L78+8
 	smull	r1, r2, r3, r0
 	asr	r3, r0, #31
@@ -351,44 +364,44 @@ initDungeon:
 	sub	r3, r0, r3, lsl #2
 	cmp	r3, #59
 	movle	r3, #0
-	strle	r3, [r4, #4]
+	strle	r3, [r6, #4]
 	ble	.L33
 	cmp	r3, #94
 	movle	r3, #4
 	movgt	r3, #5
-	str	r3, [r4, #4]
+	str	r3, [r6, #4]
 .L33:
 	mov	r2, #17
 	mov	r3, #6
-	ldr	r9, .L78+12
-	ldr	r1, [r9]
+	ldr	r5, .L78+12
+	ldr	r1, [r5]
 	cmp	r1, #0
-	str	r2, [r4, #2112]
-	str	r3, [r4, #2116]
+	str	r2, [r6, #2112]
+	str	r3, [r6, #2116]
 	beq	.L35
-	ldr	r7, .L78+16
-	ldr	r2, [r7, #2696]
-	ldr	r3, [r7, #2708]
-	str	r2, [r4, #2168]
-	str	r3, [r4, #2180]
-	ldr	r2, [r7, #2712]
-	ldr	r3, [r7, #2716]
-	str	r2, [r4, #2184]
-	str	r3, [r4, #2188]
-	ldr	r2, [r7, #2720]
-	ldr	r3, [r7, #2700]
-	str	r2, [r4, #2192]
-	str	r3, [r4, #2172]
-	ldr	r2, [r7, #2704]
-	ldr	r3, [r7, #2724]
-	str	r2, [r4, #2176]
-	str	r3, [r4, #2196]
+	ldr	r3, .L78+16
+	ldr	r2, [r3, #2696]
+	ldr	r1, [r3, #2708]
+	str	r2, [r6, #2168]
+	ldr	r2, [r3, #2712]
+	str	r1, [r6, #2180]
+	str	r2, [r6, #2184]
+	ldr	r1, [r3, #2716]
+	ldr	r2, [r3, #2720]
+	str	r1, [r6, #2188]
+	str	r2, [r6, #2192]
+	ldr	r1, [r3, #2700]
+	ldr	r2, [r3, #2704]
+	ldr	r3, [r3, #2724]
+	str	r1, [r6, #2172]
+	str	r2, [r6, #2176]
+	str	r3, [r6, #2196]
 .L37:
-	mov	r4, #0
-	add	r5, sp, #36
+	mov	r6, #0
+	add	r7, sp, #36
 .L36:
 	mov	lr, pc
-	bx	r6
+	bx	r4
 	sub	r1, sp, #4
 	mov	r3, r1
 	rsbs	r2, r0, #0
@@ -399,59 +412,46 @@ initDungeon:
 	ldr	r2, [r3, #4]!
 	cmp	r2, r0
 	beq	.L38
-	cmp	r3, r5
+	cmp	r3, r7
 	bne	.L39
 	add	r3, sp, #40
-	add	r3, r3, r4, lsl #2
-	add	r4, r4, #1
-	cmp	r4, #10
+	add	r3, r3, r6, lsl #2
+	add	r6, r6, #1
+	cmp	r6, #10
 	str	r0, [r3, #-40]
 	bne	.L36
 .L61:
-	ldr	r4, .L78
-	mov	r3, r4
+	ldr	r6, .L78
+	mov	r3, r6
 .L42:
 	ldr	r2, [r1, #4]!
-	cmp	r1, r5
+	cmp	r1, r7
 	str	r2, [r3, #192]!
 	bne	.L42
-	mov	r5, #1
+	mov	r7, #1
 	ldr	r8, .L78+8
 	ldr	r10, .L78+20
+	ldr	r9, .L78+24
 	b	.L60
 .L76:
 	mov	r3, #1
 	cmp	r2, #0
-	str	r3, [r4, #196]
+	str	r3, [r6, #196]
 	bne	.L73
-	ldr	r2, [r7, #2056]
-	ldr	r3, [r7, #2068]
-	str	r2, [r4, #248]
-	str	r3, [r4, #260]
-	ldr	r2, [r7, #2072]
-	ldr	r3, [r7, #2076]
-	str	r2, [r4, #264]
-	str	r3, [r4, #268]
-	ldr	r2, [r7, #2080]
-	ldr	r3, [r7, #2060]
-	str	r2, [r4, #272]
-	str	r3, [r4, #252]
-	ldr	r2, [r7, #2064]
-	ldr	r3, [r7, #2084]
-	str	r2, [r4, #256]
-	str	r3, [r4, #276]
+	mov	r0, r7
+	bl	placeEnemy
 .L44:
-	ldr	r3, [r4, #192]
+	ldr	r3, [r6, #192]
 	cmp	r3, #10
 	beq	.L74
 .L59:
-	add	r5, r5, #1
-	cmp	r5, #11
-	add	r4, r4, #192
+	add	r7, r7, #1
+	cmp	r7, #11
+	add	r6, r6, #192
 	beq	.L75
 .L60:
 	mov	lr, pc
-	bx	r6
+	bx	r4
 	smull	r3, r2, r8, r0
 	asr	r3, r0, #31
 	rsb	r3, r3, r2, asr #5
@@ -460,65 +460,50 @@ initDungeon:
 	sub	r3, r0, r3, lsl #2
 	cmp	r3, #9
 	movls	r3, #0
-	strls	r3, [r4, #196]
+	strls	r3, [r6, #196]
 	bls	.L44
 	sub	r2, r3, #10
 	cmp	r2, #19
-	ldr	r2, [r9]
+	ldr	r2, [r5]
 	bls	.L76
 	sub	r1, r3, #30
 	cmp	r1, #19
 	movls	r3, #2
-	strls	r3, [r4, #196]
+	strls	r3, [r6, #196]
 	bls	.L67
 	sub	r1, r3, #50
 	cmp	r1, #19
 	bhi	.L51
 	mov	r3, #3
 	cmp	r2, #0
-	str	r3, [r4, #196]
+	str	r3, [r6, #196]
 	bne	.L77
-	ldr	r2, [r7, #2056]
-	ldr	r3, [r7, #2068]
-	str	r2, [r4, #248]
-	str	r3, [r4, #260]
-	ldr	r2, [r7, #2072]
-	ldr	r3, [r7, #2076]
-	str	r2, [r4, #264]
-	str	r3, [r4, #268]
-	ldr	r2, [r7, #2080]
-	ldr	r3, [r7, #2060]
-	str	r2, [r4, #272]
-	str	r3, [r4, #252]
-	ldr	r2, [r7, #2064]
-	ldr	r3, [r7, #2084]
-	mov	r0, r5
-	str	r3, [r4, #276]
-	str	r2, [r4, #256]
+	mov	r0, r7
+	bl	placeEnemy
+	mov	r0, r7
 	bl	placeAny
-	ldr	r3, [r4, #192]
+	ldr	r3, [r6, #192]
 	cmp	r3, #10
 	bne	.L59
 .L74:
 	mov	r3, #5
-	str	r3, [r4, #196]
+	str	r3, [r6, #196]
 	mov	lr, pc
 	bx	r10
 	mov	lr, #0
-	ldr	r3, .L78+24
 	add	r0, r0, r0, lsl #2
-	add	ip, r3, r0, lsl #3
+	add	ip, r9, r0, lsl #3
 	ldmia	ip!, {r0, r1, r2, r3}
-	add	fp, r4, #200
+	add	fp, r6, #200
 	stmia	fp!, {r0, r1, r2, r3}
 	ldmia	ip!, {r0, r1, r2, r3}
 	stmia	fp!, {r0, r1, r2, r3}
-	add	r5, r5, #1
+	add	r7, r7, #1
 	ldm	ip, {r0, r1}
-	cmp	r5, #11
+	cmp	r7, #11
 	stm	fp, {r0, r1}
-	add	r4, r4, #192
-	str	lr, [r4, #180]
+	add	r6, r6, #192
+	str	lr, [r6, #180]
 	bne	.L60
 .L75:
 	add	sp, sp, #44
@@ -526,21 +511,21 @@ initDungeon:
 	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	bx	lr
 .L38:
-	cmp	r4, #9
+	cmp	r6, #9
 	ble	.L36
 	b	.L61
 .L67:
-	mov	r0, r5
+	mov	r0, r7
 	bl	placeTrap
 	b	.L44
 .L73:
-	mov	r0, r5
+	mov	r0, r7
 	bl	placeGoblinoid
 	b	.L44
 .L77:
-	mov	r0, r5
+	mov	r0, r7
 	bl	placeGoblinoid
-	mov	r0, r5
+	mov	r0, r7
 	bl	placeAny
 	b	.L44
 .L51:
@@ -548,42 +533,42 @@ initDungeon:
 	cmp	r3, #24
 	movls	r3, #4
 	movhi	r3, #5
-	strls	r3, [r4, #196]
-	strhi	r3, [r4, #196]
+	strls	r3, [r6, #196]
+	strhi	r3, [r6, #196]
 	bhi	.L70
-	mov	r0, r5
+	mov	r0, r7
 	bl	placeCommon
 	b	.L44
 .L70:
-	mov	r0, r5
+	mov	r0, r7
 	bl	placeRare
 	b	.L44
 .L35:
 	mov	lr, pc
-	bx	r6
+	bx	r4
 	rsbs	r2, r0, #0
 	and	r2, r2, #3
 	and	r3, r0, #3
-	ldr	r7, .L78+16
 	rsbpl	r3, r2, #0
+	ldr	r2, .L78+16
 	add	r3, r3, #17
-	add	r3, r7, r3, lsl #7
+	add	r3, r2, r3, lsl #7
 	ldr	r2, [r3, #8]
 	ldr	r1, [r3, #20]
-	str	r2, [r4, #2168]
+	str	r2, [r6, #2168]
 	ldr	r2, [r3, #24]
-	str	r1, [r4, #2180]
-	str	r2, [r4, #2184]
+	str	r1, [r6, #2180]
+	str	r2, [r6, #2184]
 	ldr	r1, [r3, #28]
 	ldr	r2, [r3, #32]
-	str	r1, [r4, #2188]
-	str	r2, [r4, #2192]
+	str	r1, [r6, #2188]
+	str	r2, [r6, #2192]
 	ldr	r1, [r3, #12]
 	ldr	r2, [r3, #16]
 	ldr	r3, [r3, #36]
-	str	r1, [r4, #2172]
-	str	r2, [r4, #2176]
-	str	r3, [r4, #2196]
+	str	r1, [r6, #2172]
+	str	r2, [r6, #2176]
+	str	r3, [r6, #2196]
 	b	.L37
 .L79:
 	.align	2

@@ -11,6 +11,13 @@
 
 #include "spritesheet.h"
 
+#include "charcreatebgaaron.h"
+#include "charcreatebgbianca.h"
+#include "charcreatebgchris.h"
+#include "charcreatebgjodianne.h"
+#include "charcreatebgmarie.h"
+#include "charcreatebgwilliam.h"
+
 CHARACTER player;
 ITEM backpack [INVSIZE];
 
@@ -74,36 +81,60 @@ void updatePlayer() {
     if (BUTTON_PRESSED(BUTTON_LEFT)) {
         if (player.playerclass == MAGE) {
             player.playerclass = FIGHTER;
-            player.intelligence = 8;
-            player.dexterity = 10;
-            player.strength = 12;
+            player.intelligence = 10;
+            player.dexterity = 12;
+            player.strength = 14;
+            player.hpMax = 75;
+            player.hpCurr = 75;
+            player.dmg = 10;
+            player.ac = 14;
         } else if (player.playerclass == FIGHTER) {
             player.playerclass = ROGUE;
             player.intelligence = 10;
-            player.dexterity = 12;
-            player.strength = 8;
+            player.dexterity = 16;
+            player.strength = 12;
+            player.hpMax = 65;
+            player.hpCurr = 65;
+            player.dmg = 6;
+            player.ac = 12;
         } else if (player.playerclass == ROGUE) {
             player.playerclass = MAGE;
-            player.intelligence = 12;
-            player.dexterity = 10;
+            player.intelligence = 18;
+            player.dexterity = 14;
             player.strength = 8;
+            player.hpMax = 60;
+            player.hpCurr = 60;
+            player.dmg = 8;
+            player.ac = 12;
         }
     } else if (BUTTON_PRESSED(BUTTON_RIGHT)) {
         if (player.playerclass == MAGE) {
             player.playerclass = ROGUE;
             player.intelligence = 10;
-            player.dexterity = 12;
-            player.strength = 8;
+            player.dexterity = 16;
+            player.strength = 12;
+            player.hpMax = 65;
+            player.hpCurr = 65;
+            player.dmg = 6;
+            player.ac = 12;
         } else if (player.playerclass == FIGHTER) {
             player.playerclass = MAGE;
-            player.intelligence = 12;
-            player.dexterity = 10;
+            player.intelligence = 18;
+            player.dexterity = 14;
             player.strength = 8;
+            player.hpMax = 60;
+            player.hpCurr = 60;
+            player.dmg = 8;
+            player.ac = 12;
         } else if (player.playerclass == ROGUE) {
             player.playerclass = FIGHTER;
-            player.intelligence = 8;
-            player.dexterity = 10;
-            player.strength = 12;
+            player.intelligence = 10;
+            player.dexterity = 12;
+            player.strength = 14;
+            player.hpMax = 75;
+            player.hpCurr = 75;
+            player.dmg = 10;
+            player.ac = 14;
         }
     } else if (BUTTON_PRESSED(BUTTON_UP)) {
         player.sex = (player.sex == MALE ? FEMALE : MALE);
@@ -133,6 +164,34 @@ void drawPlayer(int col, int row) {
             shadowOAM[4].attr2 = ATTR2_TILEID(0, 28);
         } else if (player.sex == FEMALE) {
             shadowOAM[4].attr2 = ATTR2_TILEID(16, 28);
+        }
+    }
+}
+
+void drawPlayerName() {
+    if (player.playerclass == MAGE) {
+        if (player.sex == MALE) {
+            DMANow(3, charcreatebgaaronMap, &SCREENBLOCK[28], charcreatebgaaronMapLen / 2);
+            DMANow(3, charcreatebgaaronTiles, &CHARBLOCK[0], charcreatebgaaronTilesLen / 2);
+        } else if (player.sex == FEMALE) {
+            DMANow(3, charcreatebgmarieMap, &SCREENBLOCK[28], charcreatebgmarieMapLen / 2);
+            DMANow(3, charcreatebgmarieTiles, &CHARBLOCK[0], charcreatebgmarieTilesLen / 2);
+        }
+    } else if (player.playerclass == FIGHTER) {
+        if (player.sex == MALE) {
+            DMANow(3, charcreatebgwilliamMap, &SCREENBLOCK[28], charcreatebgwilliamMapLen / 2);
+            DMANow(3, charcreatebgwilliamTiles, &CHARBLOCK[0], charcreatebgwilliamTilesLen / 2);
+        } else if (player.sex == FEMALE) {
+            DMANow(3, charcreatebgjodianneMap, &SCREENBLOCK[28], charcreatebgjodianneMapLen / 2);
+            DMANow(3, charcreatebgjodianneTiles, &CHARBLOCK[0], charcreatebgjodianneTilesLen / 2);
+        }
+    } else if (player.playerclass == ROGUE) {
+        if (player.sex == MALE) {
+            DMANow(3, charcreatebgchrisMap, &SCREENBLOCK[28], charcreatebgchrisMapLen / 2);
+            DMANow(3, charcreatebgchrisTiles, &CHARBLOCK[0], charcreatebgchrisTilesLen / 2);
+        } else if (player.sex == FEMALE) {
+            DMANow(3, charcreatebgbiancaMap, &SCREENBLOCK[28], charcreatebgbiancaMapLen / 2);
+            DMANow(3, charcreatebgbiancaTiles, &CHARBLOCK[0], charcreatebgbiancaTilesLen / 2);
         }
     }
 }

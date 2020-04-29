@@ -1550,6 +1550,7 @@ extern int anicounter;
 void initPlayer();
 void updatePlayer();
 void drawPlayer(int col, int row);
+void drawPlayerName();
 void drawPlayerHealthbar(int max, int curr, int col, int row);
 
 void initEnemies();
@@ -2038,10 +2039,6 @@ void guide() {
 void goToCharCreation() {
 
     DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, charcreatebgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-    DMANow(3, charcreatebgTiles, &((charblock *)0x6000000)[0], 384 / 2);
-
-    DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
     DMANow(3, charcreateinstructionsMap, &((screenblock *)0x6000000)[30], 2048 / 2);
     DMANow(3, charcreateinstructionsTiles, &((charblock *)0x6000000)[1], 1536 / 2);
 
@@ -2058,9 +2055,9 @@ void goToCharCreation() {
 
 
 void charCreation() {
-
     updatePlayer();
     drawPlayer((240 / 2) - 16, (160 / 2) - 16);
+    drawPlayerName();
 
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);

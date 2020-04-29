@@ -1550,6 +1550,7 @@ extern int anicounter;
 void initPlayer();
 void updatePlayer();
 void drawPlayer(int col, int row);
+void drawPlayerName();
 void drawPlayerHealthbar(int max, int curr, int col, int row);
 
 void initEnemies();
@@ -1676,6 +1677,67 @@ extern const unsigned short spritesheetTiles[16384];
 extern const unsigned short spritesheetPal[256];
 # 13 "character.c" 2
 
+# 1 "charcreatebgaaron.h" 1
+# 22 "charcreatebgaaron.h"
+extern const unsigned short charcreatebgaaronTiles[736];
+
+
+extern const unsigned short charcreatebgaaronMap[1024];
+
+
+extern const unsigned short charcreatebgaaronPal[256];
+# 15 "character.c" 2
+# 1 "charcreatebgbianca.h" 1
+# 22 "charcreatebgbianca.h"
+extern const unsigned short charcreatebgbiancaTiles[560];
+
+
+extern const unsigned short charcreatebgbiancaMap[1024];
+
+
+extern const unsigned short charcreatebgbiancaPal[256];
+# 16 "character.c" 2
+# 1 "charcreatebgchris.h" 1
+# 22 "charcreatebgchris.h"
+extern const unsigned short charcreatebgchrisTiles[576];
+
+
+extern const unsigned short charcreatebgchrisMap[1024];
+
+
+extern const unsigned short charcreatebgchrisPal[256];
+# 17 "character.c" 2
+# 1 "charcreatebgjodianne.h" 1
+# 22 "charcreatebgjodianne.h"
+extern const unsigned short charcreatebgjodianneTiles[656];
+
+
+extern const unsigned short charcreatebgjodianneMap[1024];
+
+
+extern const unsigned short charcreatebgjodiannePal[256];
+# 18 "character.c" 2
+# 1 "charcreatebgmarie.h" 1
+# 22 "charcreatebgmarie.h"
+extern const unsigned short charcreatebgmarieTiles[608];
+
+
+extern const unsigned short charcreatebgmarieMap[1024];
+
+
+extern const unsigned short charcreatebgmariePal[256];
+# 19 "character.c" 2
+# 1 "charcreatebgwilliam.h" 1
+# 22 "charcreatebgwilliam.h"
+extern const unsigned short charcreatebgwilliamTiles[704];
+
+
+extern const unsigned short charcreatebgwilliamMap[1024];
+
+
+extern const unsigned short charcreatebgwilliamPal[256];
+# 20 "character.c" 2
+
 CHARACTER player;
 ITEM backpack [15];
 
@@ -1798,6 +1860,34 @@ void drawPlayer(int col, int row) {
             shadowOAM[4].attr2 = ((28)*32+(0));
         } else if (player.sex == FEMALE) {
             shadowOAM[4].attr2 = ((28)*32+(16));
+        }
+    }
+}
+
+void drawPlayerName() {
+    if (player.playerclass == MAGE) {
+        if (player.sex == MALE) {
+            DMANow(3, charcreatebgaaronMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+            DMANow(3, charcreatebgaaronTiles, &((charblock *)0x6000000)[0], 1472 / 2);
+        } else if (player.sex == FEMALE) {
+            DMANow(3, charcreatebgmarieMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+            DMANow(3, charcreatebgmarieTiles, &((charblock *)0x6000000)[0], 1216 / 2);
+        }
+    } else if (player.playerclass == FIGHTER) {
+        if (player.sex == MALE) {
+            DMANow(3, charcreatebgwilliamMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+            DMANow(3, charcreatebgwilliamTiles, &((charblock *)0x6000000)[0], 1408 / 2);
+        } else if (player.sex == FEMALE) {
+            DMANow(3, charcreatebgjodianneMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+            DMANow(3, charcreatebgjodianneTiles, &((charblock *)0x6000000)[0], 1312 / 2);
+        }
+    } else if (player.playerclass == ROGUE) {
+        if (player.sex == MALE) {
+            DMANow(3, charcreatebgchrisMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+            DMANow(3, charcreatebgchrisTiles, &((charblock *)0x6000000)[0], 1152 / 2);
+        } else if (player.sex == FEMALE) {
+            DMANow(3, charcreatebgbiancaMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+            DMANow(3, charcreatebgbiancaTiles, &((charblock *)0x6000000)[0], 1120 / 2);
         }
     }
 }

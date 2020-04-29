@@ -303,51 +303,33 @@ goToCharCreation:
 	ldr	r1, .L35+12
 	mov	lr, pc
 	bx	r4
-	mov	r3, #192
-	mov	r2, #100663296
+	mov	r3, #768
 	mov	r0, #3
-	ldr	r1, .L35+16
+	ldr	r2, .L35+16
+	ldr	r1, .L35+20
 	mov	lr, pc
 	bx	r4
 	mov	r1, r5
 	mov	r3, #256
-	mov	r2, #83886080
 	mov	r0, #3
+	ldr	r2, .L35+24
 	mov	lr, pc
 	bx	r4
-	mov	r3, #1024
-	mov	r0, #3
-	ldr	r2, .L35+20
-	ldr	r1, .L35+24
-	mov	lr, pc
-	bx	r4
-	mov	r3, #768
 	mov	r0, #3
 	ldr	r2, .L35+28
 	ldr	r1, .L35+32
-	mov	lr, pc
-	bx	r4
-	mov	r1, r5
-	mov	r3, #256
-	mov	r0, #3
-	ldr	r2, .L35+36
-	mov	lr, pc
-	bx	r4
-	mov	r0, #3
-	ldr	r2, .L35+40
-	ldr	r1, .L35+44
 	mov	r3, #16384
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L35+48
+	ldr	r3, .L35+36
 	mov	lr, pc
 	bx	r3
 	mov	r3, #67108864
 	mov	r0, #23552
 	mov	ip, #4864
 	mov	r1, #2
-	ldr	lr, .L35+52
-	ldr	r2, .L35+56
+	ldr	lr, .L35+40
+	ldr	r2, .L35+44
 	strh	lr, [r3, #8]	@ movhi
 	strh	ip, [r3]	@ movhi
 	strh	r0, [r3, #10]	@ movhi
@@ -359,9 +341,6 @@ goToCharCreation:
 .L35:
 	.word	palettePal
 	.word	DMANow
-	.word	100720640
-	.word	charcreatebgMap
-	.word	charcreatebgTiles
 	.word	100724736
 	.word	charcreateinstructionsMap
 	.word	100679680
@@ -537,18 +516,21 @@ charCreation:
 	ldr	r3, .L59+8
 	mov	lr, pc
 	bx	r3
-	ldr	r4, .L59+12
+	ldr	r3, .L59+12
+	mov	lr, pc
+	bx	r3
+	ldr	r4, .L59+16
 	mov	r3, #512
 	mov	r2, #117440512
 	mov	r0, #3
-	ldr	r1, .L59+16
+	ldr	r1, .L59+20
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L59+20
+	ldr	r3, .L59+24
 	ldrh	r3, [r3]
 	tst	r3, #8
 	beq	.L52
-	ldr	r3, .L59+24
+	ldr	r3, .L59+28
 	ldrh	r3, [r3]
 	tst	r3, #8
 	beq	.L58
@@ -556,7 +538,7 @@ charCreation:
 	pop	{r4, lr}
 	bx	lr
 .L58:
-	ldr	r3, .L59+28
+	ldr	r3, .L59+32
 	mov	lr, pc
 	bx	r3
 	pop	{r4, lr}
@@ -566,6 +548,7 @@ charCreation:
 .L59:
 	.word	updatePlayer
 	.word	drawPlayer
+	.word	drawPlayerName
 	.word	waitForVBlank
 	.word	DMANow
 	.word	shadowOAM

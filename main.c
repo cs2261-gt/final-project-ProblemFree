@@ -229,10 +229,6 @@ void guide() {
 void goToCharCreation() {
 
     DMANow(3, palettePal, PALETTE, 256);
-    DMANow(3, charcreatebgMap, &SCREENBLOCK[28], charcreatebgMapLen / 2);
-    DMANow(3, charcreatebgTiles, &CHARBLOCK[0], charcreatebgTilesLen / 2);
-
-    DMANow(3, palettePal, PALETTE, 256);
     DMANow(3, charcreateinstructionsMap, &SCREENBLOCK[30], charcreateinstructionsMapLen / 2);
     DMANow(3, charcreateinstructionsTiles, &CHARBLOCK[1], charcreateinstructionsTilesLen / 2);
 
@@ -248,10 +244,10 @@ void goToCharCreation() {
 }
 
 // Run Character Creation Screen
-void charCreation() {
-    
+void charCreation() {    
     updatePlayer();
     drawPlayer((SCREENWIDTH / 2) - 16, (SCREENHEIGHT / 2) - 16);
+    drawPlayerName();
 
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);

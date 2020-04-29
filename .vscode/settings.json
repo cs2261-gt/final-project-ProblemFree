@@ -4,7 +4,8 @@
         "item.h": "c",
         "charcreateinstructions.h": "c",
         "winsound.h": "c",
-        "backgroundmusic.h": "c"
+        "backgroundmusic.h": "c",
+        "charcreatebgaaron.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

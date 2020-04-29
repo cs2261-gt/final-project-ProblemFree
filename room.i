@@ -1550,6 +1550,7 @@ extern int anicounter;
 void initPlayer();
 void updatePlayer();
 void drawPlayer(int col, int row);
+void drawPlayerName();
 void drawPlayerHealthbar(int max, int curr, int col, int row);
 
 void initEnemies();
@@ -2032,8 +2033,9 @@ void placeTrap(int i) {
 }
 
 void placeEnemy(int i) {
-    int decider = (17 - 1);
 
+
+    int decider = (rand() % 17);
     dungeon[i].enemy.enemyid = enemyList[decider].enemyid;
     dungeon[i].enemy.intelligence = enemyList[decider].intelligence;
     dungeon[i].enemy.dexterity = enemyList[decider].dexterity;
@@ -2075,7 +2077,7 @@ void placeGoblinoid(int i) {
         dungeon[i].enemy.dmg = enemyList[TROLL].dmg;
     }
 }
-# 235 "room.c"
+# 236 "room.c"
 void loadRoomData(int currentRoom) {
     switch (dungeon[currentRoom].roomType) {
         case ALCHEMYLAB:
