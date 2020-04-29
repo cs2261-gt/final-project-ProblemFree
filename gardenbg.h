@@ -5,11 +5,11 @@
 //
 //	gardenbg, 256x256@4, 
 //	+ palette 256 entries, not compressed
-//	+ 15 tiles (t|f|p reduced) not compressed
+//	+ 420 tiles (t|f|p reduced) not compressed
 //	+ regular map (in SBBs), not compressed, 32x32 
-//	Total size: 512 + 480 + 2048 = 3040
+//	Total size: 512 + 13440 + 2048 = 16000
 //
-//	Time-stamp: 2020-04-08, 21:35:29
+//	Time-stamp: 2020-04-29, 01:44:41
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,8 +18,8 @@
 #ifndef GRIT_GARDENBG_H
 #define GRIT_GARDENBG_H
 
-#define gardenbgTilesLen 480
-extern const unsigned short gardenbgTiles[240];
+#define gardenbgTilesLen 13440
+extern const unsigned short gardenbgTiles[6720];
 
 #define gardenbgMapLen 2048
 extern const unsigned short gardenbgMap[1024];

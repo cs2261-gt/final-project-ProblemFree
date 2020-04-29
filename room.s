@@ -690,7 +690,7 @@ loadRoomData:
 	ldr	r1, .L102+56
 	mov	lr, pc
 	bx	r4
-	mov	r3, #208
+	mov	r3, #2176
 	mov	r2, #100663296
 	mov	r0, #3
 	ldr	r1, .L102+60
@@ -732,10 +732,10 @@ loadRoomData:
 	ldr	r1, .L102+72
 	mov	lr, pc
 	bx	r4
-	mov	r3, #240
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+76
+	ldr	r3, .L102+76
+	ldr	r1, .L102+80
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -750,13 +750,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+80
+	ldr	r1, .L102+84
 	mov	lr, pc
 	bx	r4
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r3, .L102+84
-	ldr	r1, .L102+88
+	ldr	r3, .L102+88
+	ldr	r1, .L102+92
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -771,13 +771,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+92
+	ldr	r1, .L102+96
 	mov	lr, pc
 	bx	r4
-	mov	r3, #480
+	mov	r3, #3024
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+96
+	ldr	r1, .L102+100
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -792,13 +792,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+100
+	ldr	r1, .L102+104
 	mov	lr, pc
 	bx	r4
 	mov	r3, #2576
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+104
+	ldr	r1, .L102+108
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -813,13 +813,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+108
+	ldr	r1, .L102+112
 	mov	lr, pc
 	bx	r4
-	mov	r3, #256
+	mov	r3, #2064
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+112
+	ldr	r1, .L102+116
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -834,13 +834,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+116
+	ldr	r1, .L102+120
 	mov	lr, pc
 	bx	r4
-	mov	r3, #240
+	mov	r3, #4608
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+120
+	ldr	r1, .L102+124
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -855,13 +855,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+124
+	ldr	r1, .L102+128
 	mov	lr, pc
 	bx	r4
-	mov	r3, #320
+	mov	r3, #3008
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+128
+	ldr	r1, .L102+132
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -876,13 +876,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+132
+	ldr	r1, .L102+136
 	mov	lr, pc
 	bx	r4
-	mov	r3, #288
+	mov	r3, #2688
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+136
+	ldr	r1, .L102+140
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -897,13 +897,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+140
+	ldr	r1, .L102+144
 	mov	lr, pc
 	bx	r4
-	mov	r3, #512
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+144
+	ldr	r3, .L102+148
+	ldr	r1, .L102+152
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -918,13 +918,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+148
+	ldr	r1, .L102+156
 	mov	lr, pc
 	bx	r4
 	mov	r3, #2464
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+152
+	ldr	r1, .L102+160
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -939,13 +939,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+156
+	ldr	r1, .L102+164
 	mov	lr, pc
 	bx	r4
-	mov	r3, #1376
+	mov	r3, #2432
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+160
+	ldr	r1, .L102+168
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -960,13 +960,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+164
+	ldr	r1, .L102+172
 	mov	lr, pc
 	bx	r4
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r3, .L102+168
-	ldr	r1, .L102+172
+	ldr	r3, .L102+176
+	ldr	r1, .L102+180
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -981,13 +981,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+176
+	ldr	r1, .L102+184
 	mov	lr, pc
 	bx	r4
-	mov	r3, #240
+	mov	r3, #6720
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L102+180
+	ldr	r1, .L102+188
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -1002,13 +1002,13 @@ loadRoomData:
 	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L102+12
-	ldr	r1, .L102+184
+	ldr	r1, .L102+192
 	mov	lr, pc
 	bx	r4
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r3, .L102+188
-	ldr	r1, .L102+192
+	ldr	r3, .L102+196
+	ldr	r1, .L102+200
 	mov	lr, pc
 	bx	r4
 	b	.L80
@@ -1034,6 +1034,7 @@ loadRoomData:
 	.word	bedroombgMap
 	.word	bedroombgTiles
 	.word	brewerybgMap
+	.word	5072
 	.word	brewerybgTiles
 	.word	circlesbgMap
 	.word	6128
@@ -1051,6 +1052,7 @@ loadRoomData:
 	.word	treasurybgMap
 	.word	treasurybgTiles
 	.word	golemfabbgMap
+	.word	5168
 	.word	golemfabbgTiles
 	.word	diningbgMap
 	.word	diningbgTiles

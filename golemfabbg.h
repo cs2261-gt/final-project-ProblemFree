@@ -5,11 +5,11 @@
 //
 //	golemfabbg, 256x256@4, 
 //	+ palette 256 entries, not compressed
-//	+ 32 tiles (t|f|p reduced) not compressed
+//	+ 323 tiles (t|f|p reduced) not compressed
 //	+ regular map (in SBBs), not compressed, 32x32 
-//	Total size: 512 + 1024 + 2048 = 3584
+//	Total size: 512 + 10336 + 2048 = 12896
 //
-//	Time-stamp: 2020-04-08, 21:35:42
+//	Time-stamp: 2020-04-29, 04:05:28
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,8 +18,8 @@
 #ifndef GRIT_GOLEMFABBG_H
 #define GRIT_GOLEMFABBG_H
 
-#define golemfabbgTilesLen 1024
-extern const unsigned short golemfabbgTiles[512];
+#define golemfabbgTilesLen 10336
+extern const unsigned short golemfabbgTiles[5168];
 
 #define golemfabbgMapLen 2048
 extern const unsigned short golemfabbgMap[1024];

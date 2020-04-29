@@ -232,7 +232,7 @@ void attack(CHARACTER * source, CHARACTER  * target) {
     // Handle player to mob attacks
     if (source->playerclass == MAGE) {
         if ((rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance) {
-            int damage = rollDmg(10, statMod(source, INTEL));
+            int damage = rollDmg(player.dmg, statMod(source, INTEL));
             // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
@@ -242,7 +242,7 @@ void attack(CHARACTER * source, CHARACTER  * target) {
         }
     } else if (source->playerclass == ROGUE) {
         if ((rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance) {
-            int damage = rollDmg(10, statMod(source, DEX));
+            int damage = rollDmg(player.dmg, statMod(source, DEX));
             // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
@@ -252,7 +252,7 @@ void attack(CHARACTER * source, CHARACTER  * target) {
         }
     } else if (source->playerclass == FIGHTER) {
         if ((rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance) {
-            int damage = rollDmg(10, statMod(source, STR));
+            int damage = rollDmg(player.dmg, statMod(source, STR));
             // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
@@ -264,7 +264,7 @@ void attack(CHARACTER * source, CHARACTER  * target) {
     // Handle Boss attacks
     else if (source->enemyid == BEHOLDER || source->enemyid == DRAGON || source->enemyid == WIZARD || source->enemyid == MINDFLAYER || source->enemyid == GOBLINQUEENMIMI) {
         if (((rand() % 20) + 1 + 2) >= statEquipped(target, AC) + target->stance)  {
-            int damage = rollDmg(source->dmg, 2);
+            int damage = rollDmg(source->dmg, 3);
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -272,8 +272,8 @@ void attack(CHARACTER * source, CHARACTER  * target) {
             }
         }
     } else if (source->enemyid == DRAGON) {
-        if (((rand() % 20) + 1 + 5) >= statEquipped(target, AC) + target->stance) {
-            int damage = rollDmg(source->dmg, 5);
+        if (((rand() % 20) + 1 + 3) >= statEquipped(target, AC) + target->stance) {
+            int damage = rollDmg(source->dmg, 3);
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
@@ -284,7 +284,7 @@ void attack(CHARACTER * source, CHARACTER  * target) {
     // Handle general mob attacks
     else {
         if (((rand() % 20) + 1 + 0) >= statEquipped(target, AC) + target->stance) {
-            int damage = rollDmg(source->dmg, 0);
+            int damage = rollDmg(source->dmg, 1);
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {

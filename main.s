@@ -45,16 +45,16 @@ goToStart:
 	mov	lr, pc
 	bx	r3
 	mov	r3, #67108864
-	mov	r1, #512
-	ldr	r2, .L4+28
-	strh	r1, [r3]	@ movhi
-	strh	r2, [r3, #10]	@ movhi
-	ldr	r3, .L4+32
+	mov	r1, #23552
+	mov	r2, #512
+	strh	r1, [r3, #10]	@ movhi
+	strh	r2, [r3]	@ movhi
+	ldr	r3, .L4+28
 	mov	lr, pc
 	bx	r3
 	mov	r3, #0
-	ldr	r1, .L4+36
-	ldr	r2, .L4+40
+	ldr	r1, .L4+32
+	ldr	r2, .L4+36
 	str	r3, [r1]
 	str	r3, [r2]
 	pop	{r4, lr}
@@ -67,9 +67,8 @@ goToStart:
 	.word	100720640
 	.word	startMap
 	.word	startTiles
-	.word	19232
+	.word	4912
 	.word	hideSprites
-	.word	23680
 	.word	waitForVBlank
 	.word	state
 	.word	seed
@@ -131,7 +130,7 @@ goToGuide:
 	mov	r2, #100663296
 	mov	r0, #3
 	ldr	r1, .L11+16
-	mov	r3, #192
+	mov	r3, #4352
 	mov	lr, pc
 	bx	r4
 	ldr	r3, .L11+20
@@ -139,7 +138,7 @@ goToGuide:
 	bx	r3
 	mov	r3, #67108864
 	mov	ip, #23552
-	mov	r0, #4864
+	mov	r0, #512
 	mov	r1, #1
 	ldr	r2, .L11+24
 	strh	ip, [r3, #10]	@ movhi
@@ -153,8 +152,8 @@ goToGuide:
 	.word	DMANow
 	.word	palettePal
 	.word	100720640
-	.word	charcreatebgMap
-	.word	charcreatebgTiles
+	.word	guideScreenMap
+	.word	guideScreenTiles
 	.word	hideSprites
 	.word	state
 	.size	goToGuide, .-goToGuide
@@ -564,7 +563,7 @@ goToPause:
 	mov	r2, #100663296
 	mov	r0, #3
 	ldr	r1, .L60+16
-	mov	r3, #752
+	mov	r3, #688
 	mov	lr, pc
 	bx	r4
 	ldr	r3, .L60+20
@@ -867,7 +866,7 @@ goToCombatPause:
 	ldr	r1, .L95+12
 	mov	lr, pc
 	bx	r4
-	mov	r3, #752
+	mov	r3, #688
 	mov	r2, #100663296
 	mov	r0, #3
 	ldr	r1, .L95+16
@@ -979,7 +978,7 @@ goToWin:
 	ldr	r1, .L113+12
 	mov	lr, pc
 	bx	r4
-	mov	r3, #656
+	mov	r3, #608
 	mov	r2, #100663296
 	mov	r0, #3
 	ldr	r1, .L113+16
@@ -1178,7 +1177,7 @@ goToLose:
 	ldr	r1, .L143+12
 	mov	lr, pc
 	bx	r4
-	mov	r3, #688
+	mov	r3, #512
 	mov	r2, #100663296
 	mov	r0, #3
 	ldr	r1, .L143+16

@@ -1315,7 +1315,9 @@ typedef volatile struct {
 extern DMA *dma;
 # 251 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 342 "myLib.h"
+# 292 "myLib.h"
+typedef void (*ihp)(void);
+# 347 "myLib.h"
 typedef struct{
     const signed char* data;
     int length;
@@ -1636,7 +1638,7 @@ int rollDmg(int dice, int bonus);
 # 9 "main.c" 2
 # 1 "start.h" 1
 # 22 "start.h"
-extern const unsigned short startTiles[19232];
+extern const unsigned short startTiles[4912];
 
 
 extern const unsigned short startMap[1024];
@@ -1644,6 +1646,16 @@ extern const unsigned short startMap[1024];
 
 extern const unsigned short startPal[256];
 # 10 "main.c" 2
+# 1 "guideScreen.h" 1
+# 22 "guideScreen.h"
+extern const unsigned short guideScreenTiles[4352];
+
+
+extern const unsigned short guideScreenMap[1024];
+
+
+extern const unsigned short guideScreenPal[256];
+# 11 "main.c" 2
 # 1 "charcreatebg.h" 1
 # 22 "charcreatebg.h"
 extern const unsigned short charcreatebgTiles[192];
@@ -1653,49 +1665,49 @@ extern const unsigned short charcreatebgMap[1024];
 
 
 extern const unsigned short charcreatebgPal[256];
-# 11 "main.c" 2
+# 12 "main.c" 2
 # 1 "pause.h" 1
 # 22 "pause.h"
-extern const unsigned short pauseTiles[752];
+extern const unsigned short pauseTiles[688];
 
 
 extern const unsigned short pauseMap[1024];
 
 
 extern const unsigned short pausePal[256];
-# 12 "main.c" 2
+# 13 "main.c" 2
 # 1 "win.h" 1
 # 22 "win.h"
-extern const unsigned short winTiles[656];
+extern const unsigned short winTiles[608];
 
 
 extern const unsigned short winMap[1024];
 
 
 extern const unsigned short winPal[256];
-# 13 "main.c" 2
+# 14 "main.c" 2
 # 1 "lose.h" 1
 # 22 "lose.h"
-extern const unsigned short loseTiles[688];
+extern const unsigned short loseTiles[512];
 
 
 extern const unsigned short loseMap[1024];
 
 
 extern const unsigned short losePal[256];
-# 14 "main.c" 2
+# 15 "main.c" 2
 
 # 1 "palette.h" 1
 # 20 "palette.h"
 extern const unsigned short palettePal[256];
-# 16 "main.c" 2
+# 17 "main.c" 2
 # 1 "spritesheet.h" 1
 # 21 "spritesheet.h"
 extern const unsigned short spritesheetTiles[16384];
 
 
 extern const unsigned short spritesheetPal[256];
-# 17 "main.c" 2
+# 18 "main.c" 2
 
 # 1 "charcreateinstructions.h" 1
 # 22 "charcreateinstructions.h"
@@ -1706,7 +1718,7 @@ extern const unsigned short charcreateinstructionsMap[1024];
 
 
 extern const unsigned short charcreateinstructionsPal[256];
-# 19 "main.c" 2
+# 20 "main.c" 2
 # 1 "gameinstructions.h" 1
 # 22 "gameinstructions.h"
 extern const unsigned short gameinstructionsTiles[672];
@@ -1716,7 +1728,7 @@ extern const unsigned short gameinstructionsMap[1024];
 
 
 extern const unsigned short gameinstructionsPal[256];
-# 20 "main.c" 2
+# 21 "main.c" 2
 # 1 "combatinstructions.h" 1
 # 22 "combatinstructions.h"
 extern const unsigned short combatinstructionsTiles[576];
@@ -1726,7 +1738,7 @@ extern const unsigned short combatinstructionsMap[1024];
 
 
 extern const unsigned short combatinstructionsPal[256];
-# 21 "main.c" 2
+# 22 "main.c" 2
 
 # 1 "enemysheet.h" 1
 # 21 "enemysheet.h"
@@ -1734,7 +1746,7 @@ extern const unsigned short enemysheetTiles[16384];
 
 
 extern const unsigned short enemysheetPal[256];
-# 23 "main.c" 2
+# 24 "main.c" 2
 
 
 void initialize();
@@ -1843,10 +1855,10 @@ void goToStart() {
 
     DMANow(3, startPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, startMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-    DMANow(3, startTiles, &((charblock *)0x6000000)[0], 38464 / 2);
+    DMANow(3, startTiles, &((charblock *)0x6000000)[0], 9824 / 2);
 
     hideSprites();
-    (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (1<<7);
+    (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (0<<7);
     (*(unsigned short *)0x4000000) = 0 | (1<<9);
 
     waitForVBlank();
@@ -1899,12 +1911,12 @@ void start() {
 
 void goToGuide() {
     DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, charcreatebgMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-    DMANow(3, charcreatebgTiles, &((charblock *)0x6000000)[0], 384 / 2);
+    DMANow(3, guideScreenMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    DMANow(3, guideScreenTiles, &((charblock *)0x6000000)[0], 8704 / 2);
 
     hideSprites();
     (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (0<<7);
-    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8) | (1<<9);
+    (*(unsigned short *)0x4000000) = 0 | (1<<9);
 
     state = GUIDE;
 }
@@ -2002,7 +2014,7 @@ void goToPause() {
 
     DMANow(3, pausePal, ((unsigned short *)0x5000000), 256);
     DMANow(3, pauseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-    DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 1504 / 2);
+    DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 1376 / 2);
 
     hideSprites();
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
@@ -2069,7 +2081,7 @@ void combat() {
 void goToCombatPause() {
     DMANow(3, pausePal, ((unsigned short *)0x5000000), 256);
     DMANow(3, pauseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-    DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 1504 / 2);
+    DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 1376 / 2);
 
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<9);
 
@@ -2098,7 +2110,7 @@ void goToWin() {
 
     DMANow(3, winPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, winMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-    DMANow(3, winTiles, &((charblock *)0x6000000)[0], 1312 / 2);
+    DMANow(3, winTiles, &((charblock *)0x6000000)[0], 1216 / 2);
 
     (*(unsigned short *)0x4000000) = 0 | (1<<9);
 
@@ -2124,7 +2136,7 @@ void goToLose() {
 
     DMANow(3, losePal, ((unsigned short *)0x5000000), 256);
     DMANow(3, loseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-    DMANow(3, loseTiles, &((charblock *)0x6000000)[0], 1376 / 2);
+    DMANow(3, loseTiles, &((charblock *)0x6000000)[0], 1024 / 2);
 
     (*(unsigned short *)0x4000000) = 0 | (1<<9);
 

@@ -18,22 +18,22 @@
 	.type	losePal, %object
 	.size	losePal, 512
 losePal:
+	.short	31774
 	.short	0
-	.short	255
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
+	.short	26425
+	.short	32767
+	.short	4193
+	.short	8354
+	.short	10468
+	.short	12580
+	.short	13773
+	.short	7497
+	.short	12586
+	.short	24414
+	.short	18072
+	.short	15827
+	.short	14737
+	.short	12622
 	.short	0
 	.short	0
 	.short	0
@@ -475,119 +475,173 @@ loseMap:
 	.short	1
 	.short	1
 	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	0
+	.short	0
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	2
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	0
-	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	3
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	4
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
+	.short	2
 	.short	5
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	0
-	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	6
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	7
 	.short	8
-	.short	1
 	.short	9
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	0
+	.short	0
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	10
-	.short	1
-	.short	1
 	.short	11
-	.short	1028
-	.short	1
-	.short	1
 	.short	12
 	.short	13
 	.short	14
 	.short	15
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	0
-	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	16
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	17
-	.short	1
 	.short	18
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	0
+	.short	0
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	1
 	.short	19
 	.short	20
+	.short	20
+	.short	20
+	.short	20
+	.short	20
+	.short	20
+	.short	20
 	.short	21
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	0
+	.short	0
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	22
 	.short	23
+	.short	1046
 	.short	1
 	.short	1
-	.short	4
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	0
+	.short	0
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	24
 	.short	25
 	.short	26
@@ -595,8 +649,25 @@ loseMap:
 	.short	1
 	.short	1
 	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	0
 	.short	0
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	1
 	.short	1
 	.short	1
@@ -604,142 +675,71 @@ loseMap:
 	.short	1
 	.short	1
 	.short	27
-	.short	1
-	.short	1
 	.short	28
+	.short	1051
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	0
+	.short	0
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	1
 	.short	29
 	.short	30
+	.short	1053
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	0
+	.short	0
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	1
 	.short	31
-	.short	32
-	.short	3079
-	.short	33
-	.short	1
-	.short	34
-	.short	35
-	.short	1
-	.short	36
-	.short	1
-	.short	37
-	.short	1028
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	0
-	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	38
-	.short	39
-	.short	40
-	.short	41
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1050
-	.short	42
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	0
-	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	0
-	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	0
-	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	1
 	.short	1
 	.short	1
@@ -1302,7 +1302,7 @@ loseMap:
 	.short	0
 	.short	0
 	.type	loseTiles, %object
-	.size	loseTiles, 1376
+	.size	loseTiles, 1024
 loseTiles:
 	.short	0
 	.short	0
@@ -1345,30 +1345,29 @@ loseTiles:
 	.short	4369
 	.short	4369
 	.short	4369
-	.short	4368
 	.short	4369
-	.short	4368
+	.short	12561
+	.short	4403
+	.short	-32495
+	.short	4483
 	.short	4369
-	.short	4368
+	.short	4371
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	273
 	.short	4369
+	.short	4915
+	.short	13073
+	.short	6200
+	.short	-30671
+	.short	4483
+	.short	4483
 	.short	4369
 	.short	4369
 	.short	4369
@@ -1379,17 +1378,27 @@ loseTiles:
 	.short	4369
 	.short	4369
 	.short	4369
+	.short	4403
+	.short	13105
+	.short	5000
+	.short	-31871
+	.short	14353
+	.short	4881
 	.short	4369
 	.short	4369
 	.short	4369
 	.short	4369
-	.short	273
 	.short	4369
 	.short	4369
 	.short	4369
 	.short	4369
 	.short	4369
 	.short	4369
+	.short	13073
+	.short	13107
+	.short	14353
+	.short	-30584
+	.short	12561
 	.short	4369
 	.short	4369
 	.short	4369
@@ -1399,28 +1408,30 @@ loseTiles:
 	.short	4369
 	.short	4369
 	.short	4369
-	.short	4097
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
+	.short	13105
+	.short	4371
+	.short	-31871
+	.short	4408
+	.short	4881
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
 	.short	4369
 	.short	4369
 	.short	4369
 	.short	4369
 	.short	4369
+	.short	13105
+	.short	13107
+	.short	-31871
+	.short	14472
+	.short	4881
+	.short	-32495
 	.short	4369
 	.short	4369
 	.short	4369
@@ -1429,10 +1440,14 @@ loseTiles:
 	.short	4369
 	.short	4369
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
 	.short	4369
+	.short	13105
+	.short	4915
+	.short	-31871
+	.short	14472
+	.short	4881
+	.short	-32495
 	.short	4369
 	.short	4369
 	.short	4369
@@ -1440,90 +1455,167 @@ loseTiles:
 	.short	4369
 	.short	4369
 	.short	4369
-	.short	0
-	.short	4368
-	.short	4368
-	.short	4097
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
 	.short	4369
 	.short	4369
 	.short	4369
 	.short	4369
 	.short	4369
+	.short	4371
 	.short	4369
 	.short	4369
+	.short	4408
 	.short	4369
+	.short	12593
 	.short	4369
-	.short	273
+	.short	-31871
 	.short	4369
-	.short	4113
+	.short	4881
 	.short	4369
-	.short	4352
-	.short	273
-	.short	0
+	.short	4881
 	.short	4369
-	.short	4097
+	.short	4881
 	.short	4369
-	.short	4368
-	.short	17
+	.short	13105
 	.short	4369
-	.short	4353
+	.short	-30591
+	.short	4371
+	.short	4371
+	.short	4376
+	.short	4371
 	.short	4369
-	.short	4368
+	.short	4371
 	.short	4369
+	.short	4371
 	.short	4369
+	.short	4371
 	.short	4369
+	.short	4408
 	.short	4369
+	.short	13185
 	.short	4369
-	.short	0
+	.short	-30703
+	.short	12561
+	.short	4881
+	.short	12561
+	.short	4881
+	.short	12561
+	.short	4881
+	.short	12561
+	.short	4881
+	.short	12561
+	.short	4881
+	.short	-31983
+	.short	14353
+	.short	6195
+	.short	-32495
+	.short	4488
 	.short	4369
 	.short	4369
+	.short	4371
 	.short	4369
+	.short	4371
 	.short	4369
+	.short	4371
 	.short	4369
+	.short	4371
 	.short	4369
+	.short	4371
+	.short	12561
+	.short	4376
+	.short	-31949
 	.short	4369
+	.short	6280
 	.short	4369
+	.short	12561
 	.short	4369
+	.short	12561
 	.short	4369
+	.short	12561
 	.short	4369
+	.short	12561
 	.short	4369
+	.short	12561
 	.short	4369
+	.short	12561
 	.short	4369
+	.short	13073
+	.short	13107
+	.short	-30703
+	.short	-30584
+	.short	4993
+	.short	4881
+	.short	4881
+	.short	4881
+	.short	4881
+	.short	4881
+	.short	4881
+	.short	4881
+	.short	6193
+	.short	4881
+	.short	4483
+	.short	4881
+	.short	4376
+	.short	13105
 	.short	4369
-	.short	273
-	.short	0
+	.short	-30591
+	.short	4881
+	.short	4401
+	.short	13073
+	.short	4403
+	.short	-31983
+	.short	4408
+	.short	4881
+	.short	4481
+	.short	4881
 	.short	4369
-	.short	0
+	.short	4881
 	.short	4369
-	.short	272
+	.short	13105
+	.short	13107
+	.short	-30591
+	.short	-30584
+	.short	4881
 	.short	4369
-	.short	256
+	.short	4881
 	.short	4369
-	.short	1
+	.short	4881
 	.short	4369
-	.short	273
+	.short	4881
 	.short	4369
-	.short	273
+	.short	4881
 	.short	4369
+	.short	4883
+	.short	12561
+	.short	13112
+	.short	-31949
+	.short	-30591
+	.short	6280
+	.short	4408
 	.short	4369
+	.short	4401
 	.short	4369
+	.short	4401
 	.short	4369
+	.short	4401
 	.short	4369
+	.short	4483
 	.short	4369
+	.short	4376
 	.short	4369
 	.short	4369
-	.short	4352
+	.short	4371
 	.short	4369
-	.short	4368
+	.short	4376
 	.short	4369
 	.short	4369
 	.short	4369
-	.short	4368
 	.short	4369
+	.short	12561
+	.short	13107
+	.short	-32495
+	.short	-30584
 	.short	4369
 	.short	4369
 	.short	4369
@@ -1536,14 +1628,15 @@ loseTiles:
 	.short	4369
 	.short	4369
 	.short	4369
+	.short	13107
+	.short	13107
+	.short	-30584
+	.short	-30584
 	.short	4369
 	.short	4369
 	.short	4369
-	.short	17
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	1
 	.short	4369
 	.short	4369
 	.short	4369
@@ -1551,435 +1644,166 @@ loseTiles:
 	.short	4369
 	.short	4369
 	.short	4369
+	.short	13107
+	.short	4403
+	.short	-30584
+	.short	4488
 	.short	4369
-	.short	4096
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	17
 	.short	4369
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	273
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4353
-	.short	4113
-	.short	4353
-	.short	4113
-	.short	4368
-	.short	4368
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4353
+	.short	13073
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4353
 	.short	4369
-	.short	4368
 	.short	4369
 	.short	4369
-	.short	4368
 	.short	4369
-	.short	4097
 	.short	4369
-	.short	4113
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
 	.short	4369
-	.short	273
+	.short	8721
+	.short	4386
+	.short	13090
+	.short	8754
+	.short	9011
+	.short	13106
 	.short	4369
-	.short	273
+	.short	13105
 	.short	4369
+	.short	13107
+	.short	12561
+	.short	13107
+	.short	13073
+	.short	13107
+	.short	13073
+	.short	13107
+	.short	13073
+	.short	13107
+	.short	13073
+	.short	13107
+	.short	13073
+	.short	8739
+	.short	9011
+	.short	13107
+	.short	9011
+	.short	13106
+	.short	13107
+	.short	13106
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13090
+	.short	8755
+	.short	4915
 	.short	4369
+	.short	13107
 	.short	4369
+	.short	13107
+	.short	4371
+	.short	13107
+	.short	4371
+	.short	13107
+	.short	4403
+	.short	13107
+	.short	4403
+	.short	13107
+	.short	4403
+	.short	12834
+	.short	4403
+	.short	13073
+	.short	13106
+	.short	13073
+	.short	8755
+	.short	12561
+	.short	4659
 	.short	4369
+	.short	16947
+	.short	12561
+	.short	9011
+	.short	12561
+	.short	9011
+	.short	8465
+	.short	13107
 	.short	4369
+	.short	13090
+	.short	12851
+	.short	13091
+	.short	13090
+	.short	8755
+	.short	12836
+	.short	16931
+	.short	13092
+	.short	16947
+	.short	13092
+	.short	16946
+	.short	8994
+	.short	8754
+	.short	9011
+	.short	13106
+	.short	8755
+	.short	13090
 	.short	4369
+	.short	13073
 	.short	4369
+	.short	12817
 	.short	4369
+	.short	12817
 	.short	4369
+	.short	8721
 	.short	4369
+	.short	12817
 	.short	4369
+	.short	8721
 	.short	4369
+	.short	8465
 	.short	4369
-	.short	17
 	.short	4369
+	.short	13107
+	.short	13107
+	.short	9010
+	.short	9010
+	.short	9010
+	.short	9010
+	.short	8738
+	.short	8738
+	.short	12851
+	.short	13091
+	.short	12850
+	.short	8995
+	.short	8738
+	.short	8738
+	.short	8737
+	.short	16930
+	.short	16657
 	.short	4369
-	.short	4368
 	.short	4369
 	.short	4369
-	.short	4369
-	.short	4369
-	.short	273
-	.short	4369
-	.short	273
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	4353
-	.short	4352
-	.short	4353
-	.short	17
-	.short	0
-	.short	273
-	.short	4368
-	.short	4096
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	273
-	.short	4368
-	.short	4113
-	.short	1
-	.short	4352
-	.short	4368
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	1
-	.short	17
-	.short	272
-	.short	4352
-	.short	4369
-	.short	4369
-	.short	0
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	4096
-	.short	4369
-	.short	4096
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	17
-	.short	4113
-	.short	4368
-	.short	4113
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	273
-	.short	4369
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	1
-	.short	4369
-	.short	273
-	.short	4369
-	.short	273
-	.short	4369
-	.short	273
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	4353
-	.short	273
-	.short	4368
-	.short	4096
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	1
-	.short	0
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	273
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	4353
-	.short	273
-	.short	4368
-	.short	4096
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	273
-	.short	4369
-	.short	273
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	273
-	.short	4369
-	.short	273
-	.short	4368
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	17
-	.short	4369
-	.short	4113
-	.short	273
-	.short	4352
-	.short	4096
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4368
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4097
-	.short	17
-	.short	4368
-	.short	4352
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	17
-	.short	4369
-	.short	273
-	.short	4368
-	.short	4369
-	.short	4352
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4097
-	.short	4369
-	.short	4113
-	.short	4369
-	.short	17
-	.short	4369
-	.short	273
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	4353
-	.short	4369
-	.short	1
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	273
-	.short	273
-	.short	4096
-	.short	4096
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	0
-	.short	0
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4352
-	.short	17
-	.short	4369
-	.short	4352
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	4369
-	.short	1
-	.short	0
-	.short	4368
 	.short	4369
 	.short	4369
 	.short	4369

@@ -7,6 +7,7 @@
 #include "room.h"
 #include "combat.h"
 #include "start.h"
+#include "guideScreen.h"
 #include "charcreatebg.h"
 #include "pause.h"
 #include "win.h"
@@ -131,7 +132,7 @@ void goToStart() {
     DMANow(3, startTiles, &CHARBLOCK[0], startTilesLen / 2);
 
     hideSprites();
-    REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_8BPP;
+    REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | BG1_ENABLE;
 
     waitForVBlank();
@@ -184,12 +185,12 @@ void start() {
 // Set Up Guide State
 void goToGuide() {
     DMANow(3, palettePal, PALETTE, 256);
-    DMANow(3, charcreatebgMap, &SCREENBLOCK[28], charcreatebgMapLen / 2);
-    DMANow(3, charcreatebgTiles, &CHARBLOCK[0], charcreatebgTilesLen / 2);
+    DMANow(3, guideScreenMap, &SCREENBLOCK[28], guideScreenMapLen / 2);
+    DMANow(3, guideScreenTiles, &CHARBLOCK[0], guideScreenTilesLen / 2);
 
     hideSprites();
     REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_SIZE_WIDE | BG_4BPP;
-    REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE;
+    REG_DISPCTL =   MODE0 | BG1_ENABLE;
 
     state = GUIDE;
 }

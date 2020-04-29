@@ -1315,7 +1315,9 @@ typedef volatile struct {
 extern DMA *dma;
 # 251 "myLib.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-# 342 "myLib.h"
+# 292 "myLib.h"
+typedef void (*ihp)(void);
+# 347 "myLib.h"
 typedef struct{
     const signed char* data;
     int length;
@@ -1678,17 +1680,17 @@ void initPlayer() {
     player.enemyid = 16 + 5;
 
     player.weapon = itemList[ARCHWIZARDSTAFF];
-    player.armor = itemList[LEGENDARY];
+    player.armor = itemList[HEROS];
 
-    player.ac = 8;
+    player.ac = 12;
     player.intelligence = 12;
     player.dexterity = 10;
     player.strength = 8;
 
     player.dmg = 6;
 
-    player.hpMax = 70;
-    player.hpCurr = 70;
+    player.hpMax = 60;
+    player.hpCurr = 60;
 
     backpack[0] = player.weapon;
     backpack[1] = player.armor;
@@ -1703,18 +1705,36 @@ void updatePlayer() {
     if ((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
         if (player.playerclass == MAGE) {
             player.playerclass = FIGHTER;
+            player.intelligence = 8;
+            player.dexterity = 10;
+            player.strength = 12;
         } else if (player.playerclass == FIGHTER) {
             player.playerclass = ROGUE;
+            player.intelligence = 10;
+            player.dexterity = 12;
+            player.strength = 8;
         } else if (player.playerclass == ROGUE) {
             player.playerclass = MAGE;
+            player.intelligence = 12;
+            player.dexterity = 10;
+            player.strength = 8;
         }
     } else if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
         if (player.playerclass == MAGE) {
             player.playerclass = ROGUE;
+            player.intelligence = 10;
+            player.dexterity = 12;
+            player.strength = 8;
         } else if (player.playerclass == FIGHTER) {
             player.playerclass = MAGE;
+            player.intelligence = 12;
+            player.dexterity = 10;
+            player.strength = 8;
         } else if (player.playerclass == ROGUE) {
             player.playerclass = FIGHTER;
+            player.intelligence = 8;
+            player.dexterity = 10;
+            player.strength = 12;
         }
     } else if ((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
         player.sex = (player.sex == MALE ? FEMALE : MALE);
@@ -1783,7 +1803,7 @@ void checkDeath() {
                 break;
             }
         }
-        if (player.hpCurr > 0) {
+        if (player.hpCurr <= 0) {
             goToLose();
         }
     }
@@ -1808,11 +1828,11 @@ void initEnemies() {
     CHARACTER vampire = {.enemyid = VAMPIRE, .hpMax = 20, .hpCurr = 20, .dmg = 10, .intelligence = 16, .dexterity = 16, .strength = 16, .ac = 10};
     CHARACTER zombie = {.enemyid = ZOMBIE, .hpMax = 15, .hpCurr = 15, .dmg = 6, .intelligence = 8, .dexterity = 10, .strength = 14, .ac = 8};
 
-    CHARACTER beholder = {.enemyid = BEHOLDER, .hpMax = 60, .hpCurr = 60, .dmg = 10, .intelligence = 20, .dexterity = 18, .strength = 18, .ac = 13};
-    CHARACTER dragon = {.enemyid = DRAGON, .hpMax = 80, .hpCurr = 80, .dmg = 10, .intelligence = 20, .dexterity = 18, .strength = 20, .ac = 15};
+    CHARACTER beholder = {.enemyid = BEHOLDER, .hpMax = 60, .hpCurr = 60, .dmg = 10, .intelligence = 20, .dexterity = 16, .strength = 18, .ac = 13};
+    CHARACTER dragon = {.enemyid = DRAGON, .hpMax = 80, .hpCurr = 80, .dmg = 10, .intelligence = 20, .dexterity = 16, .strength = 20, .ac = 15};
     CHARACTER wizard = {.enemyid = WIZARD, .hpMax = 50, .hpCurr = 50, .dmg = 10, .intelligence = 20, .dexterity = 16, .strength = 14, .ac = 11};
     CHARACTER mindflayer = {.enemyid = MINDFLAYER, .hpMax = 60, .hpCurr = 60, .dmg = 10, .intelligence = 24, .dexterity = 14, .strength = 16, .ac = 11};
-    CHARACTER goblinqueenmimi = {.enemyid = GOBLINQUEENMIMI, .hpMax = 100, .hpCurr = 100, .dmg = 12, .intelligence = 8, .dexterity = 20, .strength = 12, .ac = 11};
+    CHARACTER goblinqueenmimi = {.enemyid = GOBLINQUEENMIMI, .hpMax = 100, .hpCurr = 100, .dmg = 12, .intelligence = 8, .dexterity = 18, .strength = 12, .ac = 11};
 
 
 
@@ -1984,7 +2004,7 @@ int statEquipped(CHARACTER * target, int stat) {
         switch (stat)
     {
         case AC:
-            return (target->ac + target->armor.acEff);
+            return (target->ac + target->armor.acEff + statMod(target, DEX));
             break;
         case INTEL:
             return (target->intelligence + target->armor.intelligenceEff + target->weapon.intelligenceEff);
