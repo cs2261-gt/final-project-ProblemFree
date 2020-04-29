@@ -102,8 +102,8 @@ void updatePlayer() {
             player.intelligence = 18;
             player.dexterity = 14;
             player.strength = 8;
-            player.hpMax = 60;
-            player.hpCurr = 60;
+            player.hpMax = 50;
+            player.hpCurr = 50;
             player.dmg = 12;
             player.ac = 10;
         }
@@ -122,8 +122,8 @@ void updatePlayer() {
             player.intelligence = 18;
             player.dexterity = 14;
             player.strength = 8;
-            player.hpMax = 60;
-            player.hpCurr = 60;
+            player.hpMax = 50;
+            player.hpCurr = 50;
             player.dmg = 12;
             player.ac = 10;
         } else if (player.playerclass == ROGUE) {

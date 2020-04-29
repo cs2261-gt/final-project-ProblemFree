@@ -21,7 +21,6 @@
 
 #include "start.h"
 #include "guideScreen.h"
-#include "charcreatebg.h"
 #include "pause.h"
 #include "win.h"
 #include "lose.h"
