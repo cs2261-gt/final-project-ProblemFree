@@ -104,8 +104,8 @@ void updatePlayer() {
             player.strength = 8;
             player.hpMax = 60;
             player.hpCurr = 60;
-            player.dmg = 8;
-            player.ac = 12;
+            player.dmg = 12;
+            player.ac = 10;
         }
     } else if (BUTTON_PRESSED(BUTTON_RIGHT)) {
         if (player.playerclass == MAGE) {
@@ -124,8 +124,8 @@ void updatePlayer() {
             player.strength = 8;
             player.hpMax = 60;
             player.hpCurr = 60;
-            player.dmg = 8;
-            player.ac = 12;
+            player.dmg = 12;
+            player.ac = 10;
         } else if (player.playerclass == ROGUE) {
             player.playerclass = FIGHTER;
             player.intelligence = 10;
