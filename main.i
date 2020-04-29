@@ -1636,6 +1636,89 @@ void drawCombat();
 void attack(CHARACTER * source, CHARACTER * target);
 int rollDmg(int dice, int bonus);
 # 9 "main.c" 2
+
+# 1 "sound.h" 1
+SOUND soundA;
+SOUND soundB;
+
+
+
+void setupSounds();
+void playSoundA(const signed char* sound, int length, int loops);
+void playSoundB(const signed char* sound, int length, int loops);
+
+void setupInterrupts();
+void interruptHandler();
+
+void pauseSound();
+void unpauseSound();
+void stopSound();
+# 11 "main.c" 2
+
+# 1 "startmusic.h" 1
+
+
+
+
+extern const signed char startmusic[1296288];
+# 13 "main.c" 2
+# 1 "backgroundmusic.h" 1
+
+
+
+
+extern const signed char backgroundmusic[2294208];
+# 14 "main.c" 2
+# 1 "bossmusic.h" 1
+
+
+
+
+extern const signed char bossmusic[2389824];
+# 15 "main.c" 2
+# 1 "winsound.h" 1
+
+
+
+
+extern const signed char winsound[51264];
+# 16 "main.c" 2
+# 1 "losemusic.h" 1
+
+
+
+
+extern const signed char losemusic[1598688];
+# 17 "main.c" 2
+# 1 "pausesound.h" 1
+
+
+
+
+extern const signed char pausesound[81792];
+# 18 "main.c" 2
+# 1 "attacksound.h" 1
+
+
+
+
+extern const signed char attacksound[22180];
+# 19 "main.c" 2
+# 1 "dodgesound.h" 1
+
+
+
+
+extern const signed char dodgesound[22050];
+# 20 "main.c" 2
+# 1 "hitsound.h" 1
+
+
+
+
+extern const signed char hitsound[22180];
+# 21 "main.c" 2
+
 # 1 "start.h" 1
 # 22 "start.h"
 extern const unsigned short startTiles[4912];
@@ -1645,7 +1728,7 @@ extern const unsigned short startMap[1024];
 
 
 extern const unsigned short startPal[256];
-# 10 "main.c" 2
+# 23 "main.c" 2
 # 1 "guideScreen.h" 1
 # 22 "guideScreen.h"
 extern const unsigned short guideScreenTiles[4352];
@@ -1655,7 +1738,7 @@ extern const unsigned short guideScreenMap[1024];
 
 
 extern const unsigned short guideScreenPal[256];
-# 11 "main.c" 2
+# 24 "main.c" 2
 # 1 "charcreatebg.h" 1
 # 22 "charcreatebg.h"
 extern const unsigned short charcreatebgTiles[192];
@@ -1665,7 +1748,7 @@ extern const unsigned short charcreatebgMap[1024];
 
 
 extern const unsigned short charcreatebgPal[256];
-# 12 "main.c" 2
+# 25 "main.c" 2
 # 1 "pause.h" 1
 # 22 "pause.h"
 extern const unsigned short pauseTiles[688];
@@ -1675,7 +1758,7 @@ extern const unsigned short pauseMap[1024];
 
 
 extern const unsigned short pausePal[256];
-# 13 "main.c" 2
+# 26 "main.c" 2
 # 1 "win.h" 1
 # 22 "win.h"
 extern const unsigned short winTiles[608];
@@ -1685,7 +1768,7 @@ extern const unsigned short winMap[1024];
 
 
 extern const unsigned short winPal[256];
-# 14 "main.c" 2
+# 27 "main.c" 2
 # 1 "lose.h" 1
 # 22 "lose.h"
 extern const unsigned short loseTiles[512];
@@ -1695,19 +1778,19 @@ extern const unsigned short loseMap[1024];
 
 
 extern const unsigned short losePal[256];
-# 15 "main.c" 2
+# 28 "main.c" 2
 
 # 1 "palette.h" 1
 # 20 "palette.h"
 extern const unsigned short palettePal[256];
-# 17 "main.c" 2
+# 30 "main.c" 2
 # 1 "spritesheet.h" 1
 # 21 "spritesheet.h"
 extern const unsigned short spritesheetTiles[16384];
 
 
 extern const unsigned short spritesheetPal[256];
-# 18 "main.c" 2
+# 31 "main.c" 2
 
 # 1 "charcreateinstructions.h" 1
 # 22 "charcreateinstructions.h"
@@ -1718,7 +1801,7 @@ extern const unsigned short charcreateinstructionsMap[1024];
 
 
 extern const unsigned short charcreateinstructionsPal[256];
-# 20 "main.c" 2
+# 33 "main.c" 2
 # 1 "gameinstructions.h" 1
 # 22 "gameinstructions.h"
 extern const unsigned short gameinstructionsTiles[672];
@@ -1728,7 +1811,7 @@ extern const unsigned short gameinstructionsMap[1024];
 
 
 extern const unsigned short gameinstructionsPal[256];
-# 21 "main.c" 2
+# 34 "main.c" 2
 # 1 "combatinstructions.h" 1
 # 22 "combatinstructions.h"
 extern const unsigned short combatinstructionsTiles[576];
@@ -1738,7 +1821,7 @@ extern const unsigned short combatinstructionsMap[1024];
 
 
 extern const unsigned short combatinstructionsPal[256];
-# 22 "main.c" 2
+# 35 "main.c" 2
 
 # 1 "enemysheet.h" 1
 # 21 "enemysheet.h"
@@ -1746,7 +1829,7 @@ extern const unsigned short enemysheetTiles[16384];
 
 
 extern const unsigned short enemysheetPal[256];
-# 24 "main.c" 2
+# 37 "main.c" 2
 
 
 void initialize();
@@ -1846,6 +1929,9 @@ void initialize() {
 
     buttons = (*(volatile unsigned short *)0x04000130);
 
+    setupSounds();
+ setupInterrupts();
+
     goToStart();
 }
 
@@ -1876,6 +1962,9 @@ void start() {
 
 
     waitForVBlank();
+
+
+    playSoundA(startmusic, 1296288, 1);
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
@@ -1926,6 +2015,8 @@ void guide() {
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
+    playSoundA(startmusic, 1296288, 1);
+
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         goToCharCreation();
@@ -1963,8 +2054,12 @@ void charCreation() {
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
+    playSoundA(startmusic, 1296288, 1);
+
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+
+        stopSound();
         goToGame();
 
 }
@@ -2000,10 +2095,13 @@ void game() {
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
+    playSoundA(backgroundmusic, 2294208, 1);
+
     (*(volatile unsigned short *)0x04000018) = hOff / 2;
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        pauseSound();
         goToPause();
     }
 
@@ -2033,10 +2131,15 @@ void pause() {
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
 
+    playSoundB(pausesound, 81792, 0);
+
+
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        unpauseSound();
         goToGame();
     }
     else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+        stopSound();
         goToStart();
     }
 }
@@ -2076,6 +2179,14 @@ void combat() {
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
     (*(volatile unsigned short *)0x04000018) = hOff / 2;
+
+
+
+    if (enemyChar.enemyid == BEHOLDER || enemyChar.enemyid == DRAGON || enemyChar.enemyid == WIZARD || enemyChar.enemyid == MINDFLAYER || enemyChar.enemyid == GOBLINQUEENMIMI) {
+        playSoundA(bossmusic, 2389824, 1);
+    } else {
+        playSoundA(backgroundmusic, 2294208, 1);
+    }
 }
 
 void goToCombatPause() {
@@ -2096,11 +2207,15 @@ void combatPause() {
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
+    playSoundB(pausesound, 81792, 0);
+
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        unpauseSound();
         goToCombat(&enemyChar);
     }
     else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+        stopSound();
         goToStart();
     }
 }
@@ -2125,6 +2240,8 @@ void win() {
 
     hideSprites();
     waitForVBlank();
+
+    playSoundB(winsound, 51264, 0);
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
@@ -2153,7 +2270,11 @@ void lose() {
     hideSprites();
     waitForVBlank();
 
+    stopSound();
+    playSoundA(losemusic, 1598688, 1);
+
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+        stopSound();
         goToStart();
 }

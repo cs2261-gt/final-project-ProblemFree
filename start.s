@@ -3801,52 +3801,52 @@ startTiles:
 	.short	17460
 	.short	13108
 	.short	26214
-	.short	13107
-	.short	26214
-	.short	13090
+	.short	18022
 	.short	26214
 	.short	13158
 	.short	26214
-	.short	13158
+	.short	13110
 	.short	26214
-	.short	13158
+	.short	13110
 	.short	26214
-	.short	13158
-	.short	17476
-	.short	13124
-	.short	17476
-	.short	13124
+	.short	9011
+	.short	26214
 	.short	17203
-	.short	13108
-	.short	16931
-	.short	12836
-	.short	17475
-	.short	13380
-	.short	17475
-	.short	13380
-	.short	17475
-	.short	13380
-	.short	17475
-	.short	13380
-	.short	13107
-	.short	13107
-	.short	8739
-	.short	12834
-	.short	13107
 	.short	17476
-	.short	8755
+	.short	17203
+	.short	17476
+	.short	17203
+	.short	13107
+	.short	17459
+	.short	8739
+	.short	13106
+	.short	17474
+	.short	12836
+	.short	17476
 	.short	13380
-	.short	17459
+	.short	17476
+	.short	9284
+	.short	17476
+	.short	17476
+	.short	17476
+	.short	17476
+	.short	17476
+	.short	17476
+	.short	17475
+	.short	17476
+	.short	17475
+	.short	13380
+	.short	17475
 	.short	13124
-	.short	17459
+	.short	17475
 	.short	13124
-	.short	17459
+	.short	17475
 	.short	13108
-	.short	17459
+	.short	17474
 	.short	13108
-	.short	17459
+	.short	17476
 	.short	13108
-	.short	17459
+	.short	17476
 	.short	13108
 	.short	13108
 	.short	17203
@@ -4137,50 +4137,50 @@ startTiles:
 	.short	17476
 	.short	17476
 	.short	26211
-	.short	13158
+	.short	17203
 	.short	26211
-	.short	13158
+	.short	17203
 	.short	26163
-	.short	13158
+	.short	13106
 	.short	26163
-	.short	13158
+	.short	13110
 	.short	25395
-	.short	13158
+	.short	13094
 	.short	13107
-	.short	13107
+	.short	8806
 	.short	8738
 	.short	8738
 	.short	17476
 	.short	17476
+	.short	17476
+	.short	13107
+	.short	17476
+	.short	13090
+	.short	17476
+	.short	13124
+	.short	17476
+	.short	13124
 	.short	17475
-	.short	13380
-	.short	17475
-	.short	13380
-	.short	17475
-	.short	13380
-	.short	17475
-	.short	13380
-	.short	17475
-	.short	13380
+	.short	13124
+	.short	13107
+	.short	9011
+	.short	8738
+	.short	8738
+	.short	17476
+	.short	17476
 	.short	17203
 	.short	13108
-	.short	16930
-	.short	8740
-	.short	17476
-	.short	17476
-	.short	17459
+	.short	16931
 	.short	13108
-	.short	17459
-	.short	13108
-	.short	17459
+	.short	17475
 	.short	13092
-	.short	17459
+	.short	17475
 	.short	13124
-	.short	17459
+	.short	17475
 	.short	12868
-	.short	13107
+	.short	17474
 	.short	9284
-	.short	8738
+	.short	17476
 	.short	17476
 	.short	17476
 	.short	17476

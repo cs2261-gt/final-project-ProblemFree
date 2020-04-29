@@ -6,6 +6,19 @@
 #include "character.h"
 #include "room.h"
 #include "combat.h"
+
+#include "sound.h"
+
+#include "startmusic.h"
+#include "backgroundmusic.h"
+#include "bossmusic.h"
+#include "winsound.h"
+#include "losemusic.h"
+#include "pausesound.h"
+#include "attacksound.h"
+#include "dodgesound.h"
+#include "hitsound.h"
+
 #include "start.h"
 #include "guideScreen.h"
 #include "charcreatebg.h"
@@ -120,6 +133,9 @@ void initialize() {
 
     buttons = BUTTONS;
 
+    setupSounds();
+	setupInterrupts();
+
     goToStart();
 }
 
@@ -150,6 +166,9 @@ void start() {
 
     // Lock the framerate to 60 fps
     waitForVBlank();
+
+    // Handle Start Music
+    playSoundA(startmusic, STARTMUSICLEN, 1);
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
@@ -200,6 +219,8 @@ void guide() {
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
 
+    playSoundA(startmusic, STARTMUSICLEN, 1);
+
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
         goToCharCreation();
@@ -237,9 +258,14 @@ void charCreation() {
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
 
+    playSoundA(startmusic, STARTMUSICLEN, 1);
+
     // State transitions
-    if (BUTTON_PRESSED(BUTTON_START))
+    if (BUTTON_PRESSED(BUTTON_START)) {
+        // Stop Music Before Transitioning
+        stopSound();
         goToGame();
+    }
 
 }
 
@@ -273,11 +299,14 @@ void game() {
 
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
+
+    playSoundA(backgroundmusic, BACKGROUNDMUSICLEN, 1);
     
     REG_BG2HOFF = hOff / 2;
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
+        pauseSound();
         goToPause();
     }
     
@@ -306,11 +335,16 @@ void pause() {
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
 
+    // Play Pause Jingle
+    playSoundB(pausesound, PAUSESOUNDLEN, 0);
+
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
+        unpauseSound();
         goToGame();
     }
     else if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        stopSound();
         goToStart();
     }
 }
@@ -345,11 +379,19 @@ void combat() {
     drawCombat();
 
     hOff++;
-
+    
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
 
     REG_BG2HOFF = hOff / 2;
+
+    
+    // Handle Boss Music or Normal Music Depending on Enemy
+    if (enemyChar.enemyid == BEHOLDER || enemyChar.enemyid == DRAGON || enemyChar.enemyid == WIZARD || enemyChar.enemyid == MINDFLAYER || enemyChar.enemyid == GOBLINQUEENMIMI) {
+        playSoundA(bossmusic, BOSSMUSICLEN, 1);
+    } else {
+        playSoundA(backgroundmusic, BACKGROUNDMUSICLEN, 1);
+    }
 }
 
 void goToCombatPause() {
@@ -370,11 +412,15 @@ void combatPause() {
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
 
+    playSoundB(pausesound, PAUSESOUNDLEN, 0);
+
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
+        unpauseSound();
         goToCombat(&enemyChar);
     }
     else if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        stopSound();
         goToStart();
     }
 }
@@ -399,6 +445,8 @@ void win() {
     // Lock the framerate to 60 fps
     hideSprites();
     waitForVBlank();
+
+    playSoundB(winsound, WINSOUNDLEN, 0);
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START))
@@ -427,7 +475,11 @@ void lose() {
     hideSprites();
     waitForVBlank();
 
+    stopSound();
+    playSoundA(losemusic, LOSEMUSICLEN, 1);
+
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START))
+        stopSound();
         goToStart();
 }

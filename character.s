@@ -364,6 +364,9 @@ checkDeath:
 	ldr	r3, .L87+8
 	mov	lr, pc
 	bx	r3
+	ldr	r3, .L87+12
+	mov	lr, pc
+	bx	r3
 	pop	{r4, lr}
 	bx	lr
 .L86:
@@ -380,6 +383,7 @@ checkDeath:
 .L87:
 	.word	player
 	.word	backpack
+	.word	stopSound
 	.word	goToLose
 	.size	checkDeath, .-checkDeath
 	.align	2
@@ -501,8 +505,8 @@ initEnemies:
 	mov	r1, #0
 	add	r0, sp, #2560
 	mov	r4, #10
-	mov	r7, #12
 	mov	r8, #8
+	mov	r7, #12
 	mov	r9, #16
 	mov	lr, pc
 	bx	r5
@@ -522,12 +526,12 @@ initEnemies:
 	mov	lr, pc
 	bx	r5
 	mov	r3, #1
-	mov	lr, #15
+	mov	ip, #15
 	str	r3, [sp, #136]
 	mov	r3, #6
-	str	lr, [sp, #140]
-	str	lr, [sp, #144]
 	mov	r2, fp
+	str	ip, [sp, #140]
+	str	ip, [sp, #144]
 	str	r3, [sp, #164]
 	add	r1, sp, fp
 	str	r9, [sp, #148]
@@ -555,28 +559,28 @@ initEnemies:
 	mov	lr, pc
 	bx	r5
 	mov	ip, #18
-	mov	lr, #6
 	mov	r3, #3
+	mov	lr, #6
 	str	ip, [sp, #396]
 	str	ip, [sp, #400]
+	str	r3, [sp, #392]
 	mov	r2, fp
 	str	r10, [sp, #404]
 	str	r10, [sp, #412]
 	str	lr, [sp, #416]
 	str	lr, [sp, #420]
-	str	r3, [sp, #392]
 	add	r1, sp, #384
 	str	r9, [sp, #408]
 	add	r0, r6, #384
 	mov	lr, pc
 	bx	r5
+	mov	lr, #4
+	str	lr, [sp, #520]
 	mov	lr, #20
-	mov	r3, #4
-	str	lr, [sp, #524]
-	str	lr, [sp, #528]
 	mov	r2, fp
 	str	r10, [sp, #532]
-	str	r3, [sp, #520]
+	str	lr, [sp, #524]
+	str	lr, [sp, #528]
 	add	r1, sp, #512
 	str	r7, [sp, #536]
 	str	r7, [sp, #540]
@@ -585,13 +589,13 @@ initEnemies:
 	add	r0, r6, #512
 	mov	lr, pc
 	bx	r5
-	mov	ip, #25
-	mov	r3, #5
-	str	ip, [sp, #652]
-	str	ip, [sp, #656]
+	mov	lr, #25
 	mov	ip, #18
-	mov	r2, fp
+	mov	r3, #5
+	str	lr, [sp, #652]
+	str	lr, [sp, #656]
 	str	ip, [sp, #668]
+	mov	r2, fp
 	str	r3, [sp, #648]
 	add	r1, sp, #640
 	str	r8, [sp, #660]
@@ -615,8 +619,8 @@ initEnemies:
 	add	r0, r6, #768
 	mov	lr, pc
 	bx	r5
-	mov	lr, #6
 	mov	ip, #18
+	mov	lr, #6
 	mov	r3, #7
 	str	lr, [sp, #924]
 	str	ip, [sp, #916]
@@ -673,12 +677,12 @@ initEnemies:
 	add	r0, r6, #1280
 	mov	lr, pc
 	bx	r5
-	mov	ip, #4
+	mov	lr, #4
 	mov	r3, #40
-	str	ip, [sp, #1444]
-	mov	ip, #11
+	str	lr, [sp, #1444]
+	mov	lr, #11
 	str	r3, [sp, #1420]
-	str	ip, [sp, #1416]
+	str	lr, [sp, #1416]
 	str	r3, [sp, #1424]
 	mov	r2, fp
 	add	r1, sp, #1408
@@ -702,9 +706,7 @@ initEnemies:
 	add	r0, r6, #1536
 	mov	lr, pc
 	bx	r5
-	mov	r3, #18
 	mov	ip, #35
-	str	r3, [sp, #1692]
 	mov	r3, #13
 	str	ip, [sp, #1676]
 	str	r3, [sp, #1672]
@@ -713,16 +715,17 @@ initEnemies:
 	add	r1, sp, #1664
 	str	r8, [sp, #1684]
 	str	r7, [sp, #1688]
+	str	r9, [sp, #1692]
 	str	r7, [sp, #1696]
-	str	r7, [sp, #1700]
+	str	r4, [sp, #1700]
 	add	r0, r6, #1664
 	mov	lr, pc
 	bx	r5
 	mov	lr, #20
 	mov	r2, fp
-	str	r10, [sp, #1800]
 	str	lr, [sp, #1804]
 	str	lr, [sp, #1808]
+	str	r10, [sp, #1800]
 	add	r1, sp, #1792
 	str	r9, [sp, #1812]
 	str	r9, [sp, #1816]
@@ -732,14 +735,14 @@ initEnemies:
 	add	r0, r6, #1792
 	mov	lr, pc
 	bx	r5
-	mov	lr, #15
-	mov	ip, #6
+	mov	ip, #15
+	mov	r3, #6
 	mov	r2, fp
-	str	ip, [sp, #1956]
 	str	r10, [sp, #1948]
-	str	lr, [sp, #1928]
-	str	lr, [sp, #1932]
-	str	lr, [sp, #1936]
+	str	ip, [sp, #1928]
+	str	r3, [sp, #1956]
+	str	ip, [sp, #1932]
+	str	ip, [sp, #1936]
 	add	r1, sp, #1920
 	str	r8, [sp, #1940]
 	str	r4, [sp, #1944]
@@ -748,13 +751,13 @@ initEnemies:
 	mov	lr, pc
 	bx	r5
 	mov	lr, #20
-	mov	r3, #18
-	str	lr, [sp, #2068]
-	str	r3, [sp, #2076]
-	mov	lr, #13
 	mov	r3, #60
+	mov	ip, #18
+	str	lr, [sp, #2068]
+	mov	lr, #13
 	mov	r2, fp
 	str	lr, [sp, #2080]
+	str	ip, [sp, #2076]
 	str	r3, [sp, #2060]
 	str	r3, [sp, #2064]
 	add	r1, sp, #2048
@@ -781,14 +784,14 @@ initEnemies:
 	add	r0, r6, #2176
 	mov	lr, pc
 	bx	r5
-	mov	lr, #20
+	mov	r3, #11
 	mov	ip, #50
+	mov	lr, #20
+	str	r3, [sp, #2336]
 	mov	r3, #18
-	str	lr, [sp, #2324]
-	mov	lr, #11
 	mov	r2, fp
+	str	lr, [sp, #2324]
 	str	r10, [sp, #2332]
-	str	lr, [sp, #2336]
 	str	r3, [sp, #2312]
 	str	ip, [sp, #2316]
 	str	ip, [sp, #2320]
@@ -1427,4 +1430,6 @@ strDiceRoll:
 	.comm	abomination,128,4
 	.comm	backpack,600,4
 	.comm	player,128,4
+	.comm	soundB,32,4
+	.comm	soundA,32,4
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

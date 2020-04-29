@@ -7,6 +7,12 @@
 #include "room.h"
 #include "combat.h"
 
+#include "sound.h"
+
+#include "attacksound.h"
+#include "dodgesound.h"
+#include "hitsound.h"
+
 // Variables
 CHARACTER enemyChar;
 int turn;
@@ -33,6 +39,7 @@ void updateCombat() {
     if (enemyChar.hpCurr <= 0) {
         enemyChar.active = 0;
         if (dungeon[currRoom].adjective == BOSS) {
+            stopSound();
             goToWin();
         }
         else {
@@ -68,6 +75,7 @@ void updateCombat() {
                 }
             }
             else if (BUTTON_PRESSED(BUTTON_START)) {
+                pauseSound();
                 goToCombatPause();
             }
             else if (BUTTON_PRESSED(BUTTON_L)) {
@@ -227,11 +235,17 @@ void drawCombat() {
     }
 }
 
-// Handle all possible attack combos (player to mob, boss to player, dragon boss to player, and moc to player), give players and bosses advantage
+// Handle all possible attack combos (player to mob, boss to player, dragon boss to player, and mob to player), give players and bosses advantage
 void attack(CHARACTER * source, CHARACTER  * target) {
+    // Play Attack Sound
+    playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
     // Handle player to mob attacks
     if (source->playerclass == MAGE) {
+        // Play Sound for hit if hit succeeds, play sound for miss if not
         if ((rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance) {
+            playSoundB(hitsound, HITSOUNDLEN, 0);
+
             int damage = rollDmg(player.dmg, statMod(source, INTEL));
             // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
@@ -239,9 +253,13 @@ void attack(CHARACTER * source, CHARACTER  * target) {
             } else {
                 target->hpCurr -= damage;
             }
+        } else {
+            playSoundB(dodgesound, DODGESOUNDLEN, 0);
         }
     } else if (source->playerclass == ROGUE) {
         if ((rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance) {
+            playSoundB(hitsound, HITSOUNDLEN, 0);
+
             int damage = rollDmg(player.dmg, statMod(source, DEX));
             // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
@@ -249,9 +267,13 @@ void attack(CHARACTER * source, CHARACTER  * target) {
             } else {
                 target->hpCurr -= damage;
             }
+        } else {
+            playSoundB(dodgesound, DODGESOUNDLEN, 0);
         }
     } else if (source->playerclass == FIGHTER) {
         if ((rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance) {
+            playSoundB(hitsound, HITSOUNDLEN, 0);
+
             int damage = rollDmg(player.dmg, statMod(source, STR));
             // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
@@ -259,37 +281,51 @@ void attack(CHARACTER * source, CHARACTER  * target) {
             } else {
                 target->hpCurr -= damage;
             }
+        } else {
+            playSoundB(dodgesound, DODGESOUNDLEN, 0);
         }
     } 
     // Handle Boss attacks
     else if (source->enemyid == BEHOLDER || source->enemyid == DRAGON || source->enemyid == WIZARD || source->enemyid == MINDFLAYER || source->enemyid == GOBLINQUEENMIMI) {
         if (((rand() % 20) + 1 + 2) >= statEquipped(target, AC) + target->stance)  {
-            int damage = rollDmg(source->dmg, 3);
+            playSoundB(hitsound, HITSOUNDLEN, 0);
+            
+            int damage = rollDmg(source->dmg, 2);
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
                 target->hpCurr -= damage;
             }
+        } else {
+            playSoundB(dodgesound, DODGESOUNDLEN, 0);
         }
     } else if (source->enemyid == DRAGON) {
         if (((rand() % 20) + 1 + 3) >= statEquipped(target, AC) + target->stance) {
+            playSoundB(hitsound, HITSOUNDLEN, 0);
+
             int damage = rollDmg(source->dmg, 3);
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
                 target->hpCurr -= damage;
             }
+        } else {
+            playSoundB(dodgesound, DODGESOUNDLEN, 0);
         }
     }
     // Handle general mob attacks
     else {
         if (((rand() % 20) + 1 + 0) >= statEquipped(target, AC) + target->stance) {
-            int damage = rollDmg(source->dmg, 1);
+            int damage = rollDmg(source->dmg, 0);
+            playSoundB(hitsound, HITSOUNDLEN, 0);
+
             if (target->hpCurr - damage <= 0) {
                 target->hpCurr = 0;
             } else {
                 target->hpCurr -= damage;
             }
+        } else {
+            playSoundB(dodgesound, DODGESOUNDLEN, 0);
         }
     }
 }

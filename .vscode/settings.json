@@ -2,7 +2,9 @@
     "files.associations": {
         "character.h": "c",
         "item.h": "c",
-        "charcreateinstructions.h": "c"
+        "charcreateinstructions.h": "c",
+        "winsound.h": "c",
+        "backgroundmusic.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

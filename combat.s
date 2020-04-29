@@ -129,29 +129,35 @@ attack:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, r9, r10, lr}
-	ldr	r6, [r0]
-	cmp	r6, #2
 	mov	r5, r0
 	mov	r4, r1
+	mov	r2, #0
+	ldr	r1, .L32
+	ldr	r0, .L32+4
+	ldr	r7, .L32+8
+	mov	lr, pc
+	bx	r7
+	ldr	r6, [r5]
+	cmp	r6, #2
 	beq	.L28
 	cmp	r6, #3
 	beq	.L29
 	cmp	r6, #1
 	beq	.L30
-	ldr	r3, [r0, #8]
+	ldr	r3, [r5, #8]
 	sub	r3, r3, #16
 	cmp	r3, #4
-	ldr	r7, .L32
-	bhi	.L24
+	ldr	r8, .L32+12
+	bhi	.L23
 	mov	lr, pc
-	bx	r7
+	bx	r8
 	mov	r6, r0
 	mov	r1, #4
-	ldr	r3, .L32+4
+	ldr	r3, .L32+16
 	mov	r0, r4
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L32+8
+	ldr	r3, .L32+20
 	smull	r1, r2, r3, r6
 	asr	r3, r6, #31
 	rsb	r3, r3, r2, asr #3
@@ -161,20 +167,38 @@ attack:
 	add	r0, r0, r2
 	add	r6, r6, #3
 	cmp	r6, r0
-	bge	.L31
-.L15:
-	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
-	bx	lr
-.L24:
+	blt	.L17
+	mov	r2, #0
+	ldr	r1, .L32
+	ldr	r0, .L32+24
 	mov	lr, pc
 	bx	r7
+	ldr	r5, [r5, #36]
+	mov	lr, pc
+	bx	r8
+	ldr	r3, .L32+28
+	mov	r1, r5
+	mov	lr, pc
+	bx	r3
+	ldr	r3, [r4, #16]
+	add	r1, r1, #3
+	sub	r1, r3, r1
+	cmp	r1, #0
+	ble	.L21
+.L25:
+	str	r1, [r4, #16]
+	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
+	bx	lr
+.L23:
+	mov	lr, pc
+	bx	r8
 	mov	r6, r0
 	mov	r1, #4
-	ldr	r3, .L32+4
+	ldr	r3, .L32+16
 	mov	r0, r4
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L32+8
+	ldr	r3, .L32+20
 	smull	r1, r2, r3, r6
 	asr	r3, r6, #31
 	rsb	r3, r3, r2, asr #3
@@ -184,34 +208,42 @@ attack:
 	add	r0, r0, r2
 	add	r6, r6, #1
 	cmp	r6, r0
-	blt	.L15
-	ldr	r5, [r5, #36]
+	blt	.L17
+	ldr	r6, [r5, #36]
+	mov	lr, pc
+	bx	r8
+	mov	r5, r0
+	mov	r2, #0
+	ldr	r1, .L32
+	ldr	r0, .L32+24
 	mov	lr, pc
 	bx	r7
-	ldr	r3, .L32+12
-	mov	r1, r5
+	ldr	r3, .L32+28
+	mov	r0, r5
+	mov	r1, r6
 	mov	lr, pc
 	bx	r3
 	ldr	r3, [r4, #16]
-	add	r1, r1, #2
+	add	r1, r1, #1
 	sub	r1, r3, r1
 	cmp	r1, #0
-	ble	.L22
-.L26:
-	str	r1, [r4, #16]
+	bgt	.L25
+.L21:
+	mov	r3, #0
+	str	r3, [r4, #16]
 	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
 	bx	lr
 .L28:
-	ldr	r7, .L32
+	ldr	r8, .L32+12
 	mov	lr, pc
-	bx	r7
+	bx	r8
 	mov	r6, r0
 	mov	r1, #3
 	mov	r0, r5
-	ldr	r8, .L32+16
+	ldr	r9, .L32+32
 	mov	lr, pc
-	bx	r8
-	ldr	r3, .L32+8
+	bx	r9
+	ldr	r3, .L32+20
 	smull	r1, r2, r3, r6
 	asr	r3, r6, #31
 	rsb	r3, r3, r2, asr #3
@@ -223,17 +255,33 @@ attack:
 	add	r6, r6, r0
 	add	r3, r3, r2
 	cmp	r6, r3
-	blt	.L15
-	ldr	r3, .L32+20
-	mov	r1, #3
-	mov	r0, r5
-	ldr	r6, [r3, #36]
-	mov	lr, pc
-	bx	r8
-	mov	r5, r0
+	bge	.L31
+.L17:
+	mov	r2, #0
+	ldr	r1, .L32+36
+	ldr	r0, .L32+40
 	mov	lr, pc
 	bx	r7
-	ldr	r3, .L32+12
+	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
+	bx	lr
+.L31:
+	ldr	r1, .L32
+	ldr	r0, .L32+24
+	mov	r2, #0
+	mov	lr, pc
+	bx	r7
+	mov	r0, r5
+	mov	r1, #3
+	ldr	r3, .L32+44
+.L27:
+	ldr	r6, [r3, #36]
+	mov	lr, pc
+	bx	r9
+	mov	r5, r0
+	mov	lr, pc
+	bx	r8
+.L26:
+	ldr	r3, .L32+28
 	mov	r1, r6
 	mov	lr, pc
 	bx	r3
@@ -242,37 +290,19 @@ attack:
 	add	r1, r1, r5
 	sub	r1, r3, r1
 	cmp	r1, #0
-	bgt	.L26
-.L22:
-	mov	r3, #0
-	str	r3, [r4, #16]
-	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
-	bx	lr
-.L31:
-	ldr	r5, [r5, #36]
-	mov	lr, pc
-	bx	r7
-	ldr	r3, .L32+12
-	mov	r1, r5
-	mov	lr, pc
-	bx	r3
-	ldr	r3, [r4, #16]
-	add	r1, r1, #4
-	sub	r1, r3, r1
-	cmp	r1, #0
-	bgt	.L26
-	b	.L22
+	bgt	.L25
+	b	.L21
 .L29:
-	ldr	r7, .L32
+	ldr	r8, .L32+12
 	mov	lr, pc
-	bx	r7
+	bx	r8
 	mov	r6, r0
 	mov	r1, #2
 	mov	r0, r5
-	ldr	r8, .L32+16
+	ldr	r9, .L32+32
 	mov	lr, pc
-	bx	r8
-	ldr	r3, .L32+8
+	bx	r9
+	ldr	r3, .L32+20
 	smull	r1, r2, r3, r6
 	asr	r3, r6, #31
 	rsb	r3, r3, r2, asr #3
@@ -284,80 +314,68 @@ attack:
 	add	r6, r6, r0
 	add	r3, r3, r2
 	cmp	r6, r3
-	blt	.L15
-	ldr	r3, .L32+20
-	mov	r1, #2
-	mov	r0, r5
-	ldr	r6, [r3, #36]
-	mov	lr, pc
-	bx	r8
-	mov	r5, r0
+	blt	.L17
+	ldr	r1, .L32
+	ldr	r0, .L32+24
+	mov	r2, #0
 	mov	lr, pc
 	bx	r7
-	ldr	r3, .L32+12
-	mov	r1, r6
-	mov	lr, pc
-	bx	r3
-	ldr	r2, [r4, #16]
-	add	r1, r1, #1
-	add	r3, r1, r5
-	sub	r3, r2, r3
-	cmp	r3, #0
-	ble	.L22
-.L27:
-	str	r3, [r4, #16]
-	b	.L15
-.L30:
-	ldr	r8, .L32
-	mov	lr, pc
-	bx	r8
-	mov	r7, r0
-	mov	r1, r6
 	mov	r0, r5
-	ldr	r9, .L32+16
+	mov	r1, #2
+	ldr	r3, .L32+44
+	b	.L27
+.L30:
+	ldr	r9, .L32+12
 	mov	lr, pc
 	bx	r9
-	ldr	r3, .L32+8
-	smull	r1, r2, r3, r7
-	asr	r3, r7, #31
+	mov	r8, r0
+	mov	r1, r6
+	mov	r0, r5
+	ldr	r10, .L32+32
+	mov	lr, pc
+	bx	r10
+	ldr	r3, .L32+20
+	smull	r1, r2, r3, r8
+	asr	r3, r8, #31
 	rsb	r3, r3, r2, asr #3
 	add	r3, r3, r3, lsl #2
-	sub	r7, r7, r3, lsl #2
+	sub	r8, r8, r3, lsl #2
 	ldr	r2, [r4, #40]
 	ldr	r3, [r4, #32]
-	add	r7, r7, #1
-	add	r7, r7, r0
+	add	r8, r8, #1
+	add	r8, r8, r0
 	add	r3, r3, r2
-	cmp	r7, r3
-	blt	.L15
-	ldr	r3, .L32+20
+	cmp	r8, r3
+	blt	.L17
+	mov	r2, #0
+	ldr	r1, .L32
+	ldr	r0, .L32+24
+	mov	lr, pc
+	bx	r7
+	ldr	r3, .L32+44
 	mov	r1, r6
 	mov	r0, r5
 	ldr	r6, [r3, #36]
 	mov	lr, pc
-	bx	r9
+	bx	r10
 	mov	r5, r0
 	mov	lr, pc
-	bx	r8
-	ldr	r3, .L32+12
-	mov	r1, r6
-	mov	lr, pc
-	bx	r3
-	ldr	r2, [r4, #16]
-	add	r3, r1, #1
-	add	r3, r3, r5
-	sub	r3, r2, r3
-	cmp	r3, #0
-	bgt	.L27
-	b	.L22
+	bx	r9
+	b	.L26
 .L33:
 	.align	2
 .L32:
+	.word	22180
+	.word	attacksound
+	.word	playSoundB
 	.word	rand
 	.word	statEquipped
 	.word	1717986919
+	.word	hitsound
 	.word	__aeabi_idivmod
 	.word	statMod
+	.word	22050
+	.word	dodgesound
 	.word	player
 	.size	attack, .-attack
 	.align	2
@@ -471,6 +489,9 @@ updateCombat:
 	ldr	r3, .L94+48
 	mov	lr, pc
 	bx	r3
+	ldr	r3, .L94+52
+	mov	lr, pc
+	bx	r3
 	add	sp, sp, #8
 	@ sp needed
 	pop	{r4, r5, r6, lr}
@@ -520,7 +541,10 @@ updateCombat:
 	streq	r2, [r3, #16]
 	b	.L34
 .L93:
-	ldr	r3, .L94+52
+	ldr	r3, .L94+56
+	mov	lr, pc
+	bx	r3
+	ldr	r3, .L94+60
 	mov	lr, pc
 	bx	r3
 	b	.L34
@@ -543,7 +567,7 @@ updateCombat:
 	b	.L34
 .L52:
 	ldr	r2, [r4, #12]
-	ldr	r1, .L94+56
+	ldr	r1, .L94+64
 	smull	r0, r1, r2, r1
 	ldr	r0, [r4, #16]
 	asr	r2, r2, #31
@@ -562,7 +586,7 @@ updateCombat:
 	b	.L34
 .L53:
 	ldr	r1, [r4, #12]
-	ldr	r2, .L94+60
+	ldr	r2, .L94+68
 	smull	r0, r2, r1, r2
 	ldr	r0, [r4, #16]
 	sub	r2, r2, r1, asr #31
@@ -586,7 +610,7 @@ updateCombat:
 	b	.L57
 .L55:
 	ldr	r2, [r4, #12]
-	ldr	r1, .L94+56
+	ldr	r1, .L94+64
 	smull	r0, r1, r2, r1
 	ldr	r0, [r4, #16]
 	asr	r2, r2, #31
@@ -623,7 +647,9 @@ updateCombat:
 	.word	player
 	.word	rand
 	.word	1374389535
+	.word	stopSound
 	.word	goToWin
+	.word	pauseSound
 	.word	goToCombatPause
 	.word	1717986919
 	.word	1431655766
@@ -660,4 +686,6 @@ rollDmg:
 	.size	rollDmg, .-rollDmg
 	.comm	turn,4,4
 	.comm	enemyChar,128,4
+	.comm	soundB,32,4
+	.comm	soundA,32,4
 	.ident	"GCC: (devkitARM release 53) 9.1.0"
