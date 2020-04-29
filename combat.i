@@ -1498,7 +1498,7 @@ extern int weaponSlider;
 
 
 
-enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE,
+enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE, SHAPESHIFTER,
         BEHOLDER, DRAGON, WIZARD, MINDFLAYER, GOBLINQUEENMIMI};
 
 
@@ -1518,6 +1518,7 @@ extern CHARACTER skeleton;
 extern CHARACTER troll;
 extern CHARACTER vampire;
 extern CHARACTER zombie;
+extern CHARACTER shapeshifter;
 
 
 
@@ -1533,12 +1534,16 @@ extern CHARACTER goblinqeeenmimi;
 
 
 
-extern CHARACTER enemyList [16 + 5];
+extern CHARACTER enemyList [17 + 5];
 
 
 
 
 enum {PHYSICAL, MAGICAL};
+
+
+extern int anitimer;
+extern int anicounter;
 
 
 
@@ -1653,6 +1658,14 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
+
+void pauseSoundA();
+void unpauseSoundA();
+void stopSoundA();
+
+void pauseSoundB();
+void unpauseSoundB();
+void stopSoundB();
 # 11 "combat.c" 2
 
 # 1 "attacksound.h" 1
@@ -1695,9 +1708,17 @@ void initCombat(CHARACTER * enemy) {
     enemyChar.dmg = enemy->dmg;
     enemyChar.active = 1;
     turn = 0;
+    anitimer = 0;
+    anicounter = rand() % (17 - 1);
 }
 
 void updateCombat() {
+
+
+    anitimer++;
+    if (anitimer == 600) {
+        anicounter = rand() % (17 - 1);
+    }
 
 
     if (enemyChar.hpCurr <= 0) {
@@ -1739,7 +1760,8 @@ void updateCombat() {
                 }
             }
             else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-                pauseSound();
+                pauseSoundA();
+                stopSoundB();
                 goToCombatPause();
             }
             else if ((!(~(oldButtons)&((1<<9))) && (~buttons & ((1<<9))))) {
@@ -1765,6 +1787,8 @@ void updateCombat() {
                         turn = 0;
                     } else {
 
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1774,6 +1798,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1786,6 +1813,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1795,6 +1825,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1807,6 +1840,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1816,6 +1852,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1828,6 +1867,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1837,6 +1879,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1849,6 +1894,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1858,6 +1906,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1870,6 +1921,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1879,6 +1933,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+
+                        playSoundB(attacksound, 22180, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -1902,13 +1959,13 @@ void drawCombat() {
 
 void attack(CHARACTER * source, CHARACTER * target) {
 
-    playSoundB(attacksound, 22180, 0);
-
-
     if (source->playerclass == MAGE) {
 
         if ((rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance) {
             playSoundB(hitsound, 22180, 0);
+
+            anitimer = 0;
+            anicounter = rand() % (17 - 1);
 
             int damage = rollDmg(player.dmg, statMod(source, INTEL));
 
@@ -1924,6 +1981,9 @@ void attack(CHARACTER * source, CHARACTER * target) {
         if ((rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance) {
             playSoundB(hitsound, 22180, 0);
 
+            anitimer = 0;
+            anicounter = rand() % (17 - 1);
+
             int damage = rollDmg(player.dmg, statMod(source, DEX));
 
             if (target->hpCurr - damage <= 0) {
@@ -1937,6 +1997,9 @@ void attack(CHARACTER * source, CHARACTER * target) {
     } else if (source->playerclass == FIGHTER) {
         if ((rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance) {
             playSoundB(hitsound, 22180, 0);
+
+            anitimer = 0;
+            anicounter = rand() % (17 - 1);
 
             int damage = rollDmg(player.dmg, statMod(source, STR));
 

@@ -7,6 +7,12 @@
 #include "room.h"
 #include "combat.h"
 
+#include "sound.h"
+
+#include "attacksound.h"
+#include "dodgesound.h"
+#include "hitsound.h"
+
 #include "palette.h"
 
 #include "alchemybg.h"
@@ -175,6 +181,8 @@ void placeTrap(int i) {
 }
 
 void placeEnemy(int i) {
+    // // Always shapeshifters
+    // int decider = (MOBOPTIONS - 1);
     int decider = (rand() % MOBOPTIONS);
     dungeon[i].enemy.enemyid = enemyList[decider].enemyid;
     dungeon[i].enemy.intelligence = enemyList[decider].intelligence;
@@ -349,14 +357,17 @@ int checkSearch() {
 int checkTrap() {
     if (dungeon[currRoom].trap == MAGICAL) {
         if (intDiceRoll(&player) < dungeon[currRoom].trapSuccess) {
+            playSoundB(hitsound, HITSOUNDLEN, 0);
             damageChar(&player, 6); 
             return 1;
         }
     } else if (dungeon[currRoom].trap == PHYSICAL) {
         if (dexDiceRoll(&player) < dungeon[currRoom].trapSuccess) {
+            playSoundB(hitsound, HITSOUNDLEN, 0);
             damageChar(&player, 6); 
             return 1;
         }
     }
+    playSoundB(dodgesound, DODGESOUNDLEN, 0);
     return 0;
 }

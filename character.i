@@ -1498,7 +1498,7 @@ extern int weaponSlider;
 
 
 
-enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE,
+enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE, SHAPESHIFTER,
         BEHOLDER, DRAGON, WIZARD, MINDFLAYER, GOBLINQUEENMIMI};
 
 
@@ -1518,6 +1518,7 @@ extern CHARACTER skeleton;
 extern CHARACTER troll;
 extern CHARACTER vampire;
 extern CHARACTER zombie;
+extern CHARACTER shapeshifter;
 
 
 
@@ -1533,12 +1534,16 @@ extern CHARACTER goblinqeeenmimi;
 
 
 
-extern CHARACTER enemyList [16 + 5];
+extern CHARACTER enemyList [17 + 5];
 
 
 
 
 enum {PHYSICAL, MAGICAL};
+
+
+extern int anitimer;
+extern int anicounter;
 
 
 
@@ -1653,6 +1658,14 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
+
+void pauseSoundA();
+void unpauseSoundA();
+void stopSoundA();
+
+void pauseSoundB();
+void unpauseSoundB();
+void stopSoundB();
 # 11 "character.c" 2
 
 # 1 "spritesheet.h" 1
@@ -1665,6 +1678,9 @@ extern const unsigned short spritesheetPal[256];
 
 CHARACTER player;
 ITEM backpack [15];
+
+int anitimer;
+int anicounter;
 
 
 CHARACTER abomination;
@@ -1690,12 +1706,12 @@ CHARACTER wizard;
 CHARACTER mindflayer;
 CHARACTER slicethescreamlord;
 
-CHARACTER enemyList [16 + 5];
+CHARACTER enemyList [17 + 5];
 
 void initPlayer() {
     player.playerclass = MAGE;
     player.sex = MALE;
-    player.enemyid = 16 + 5;
+    player.enemyid = 17 + 5;
 
     player.weapon = itemList[ARCHWIZARDSTAFF];
     player.armor = itemList[HEROS];
@@ -1846,6 +1862,7 @@ void initEnemies() {
     CHARACTER troll = {.enemyid = TROLL, .hpMax = 35, .hpCurr = 35, .dmg = 10, .intelligence = 8, .dexterity = 12, .strength = 16, .ac = 12};
     CHARACTER vampire = {.enemyid = VAMPIRE, .hpMax = 20, .hpCurr = 20, .dmg = 10, .intelligence = 16, .dexterity = 16, .strength = 16, .ac = 10};
     CHARACTER zombie = {.enemyid = ZOMBIE, .hpMax = 15, .hpCurr = 15, .dmg = 6, .intelligence = 8, .dexterity = 10, .strength = 14, .ac = 8};
+    CHARACTER shapeshifter = {.enemyid = SHAPESHIFTER, .hpMax = 20, .hpCurr = 20, .dmg = 8, .intelligence = 14, .dexterity = 16, .strength = 14, .ac = 12};
 
     CHARACTER beholder = {.enemyid = BEHOLDER, .hpMax = 60, .hpCurr = 60, .dmg = 10, .intelligence = 20, .dexterity = 16, .strength = 18, .ac = 13};
     CHARACTER dragon = {.enemyid = DRAGON, .hpMax = 80, .hpCurr = 80, .dmg = 10, .intelligence = 20, .dexterity = 16, .strength = 20, .ac = 15};
@@ -1871,11 +1888,12 @@ void initEnemies() {
     enemyList[13] = troll;
     enemyList[14] = vampire;
     enemyList[15] = zombie;
-    enemyList[16] = beholder;
-    enemyList[17] = dragon;
-    enemyList[18] = wizard;
-    enemyList[19] = mindflayer;
-    enemyList[20] = goblinqueenmimi;
+    enemyList[16] = shapeshifter;
+    enemyList[17] = beholder;
+    enemyList[18] = dragon;
+    enemyList[19] = wizard;
+    enemyList[20] = mindflayer;
+    enemyList[21] = goblinqueenmimi;
 }
 
 
@@ -1932,6 +1950,9 @@ void drawEnemy(int enemyType, int col, int row) {
         break;
     case ZOMBIE:
         shadowOAM[2].attr2 = ((4)*32+(28));
+        break;
+    case SHAPESHIFTER:
+        drawEnemy(anicounter, col, row);
         break;
     case BEHOLDER:
         shadowOAM[2].attr2 = ((8)*32+(0));

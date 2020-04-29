@@ -398,6 +398,158 @@ stopSound:
 	.word	soundA
 	.word	soundB
 	.size	stopSound, .-stopSound
+	.align	2
+	.global	pauseSoundA
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	pauseSoundA, %function
+pauseSoundA:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	mov	r3, #0
+	ldr	r1, .L49
+	ldr	r2, .L49+4
+	str	r3, [r1, #12]
+	strh	r3, [r2, #2]	@ movhi
+	bx	lr
+.L50:
+	.align	2
+.L49:
+	.word	soundA
+	.word	67109120
+	.size	pauseSoundA, .-pauseSoundA
+	.align	2
+	.global	unpauseSoundA
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	unpauseSoundA, %function
+unpauseSoundA:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	mvn	ip, #1520
+	mov	r2, #128
+	mov	r0, #1
+	ldr	r3, .L52
+	ldr	r1, .L52+4
+	strh	ip, [r3]	@ movhi
+	str	r0, [r1, #12]
+	strh	r2, [r3, #2]	@ movhi
+	bx	lr
+.L53:
+	.align	2
+.L52:
+	.word	67109120
+	.word	soundA
+	.size	unpauseSoundA, .-unpauseSoundA
+	.align	2
+	.global	stopSoundA
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	stopSoundA, %function
+stopSoundA:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	mov	r3, #0
+	ldr	r2, .L55
+	ldr	r1, .L55+4
+	ldr	r0, [r2]
+	ldr	r2, .L55+8
+	str	r3, [r0, #20]
+	str	r3, [r1, #12]
+	strh	r3, [r2, #2]	@ movhi
+	bx	lr
+.L56:
+	.align	2
+.L55:
+	.word	dma
+	.word	soundA
+	.word	67109120
+	.size	stopSoundA, .-stopSoundA
+	.align	2
+	.global	pauseSoundB
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	pauseSoundB, %function
+pauseSoundB:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	mov	r3, #0
+	ldr	r1, .L58
+	ldr	r2, .L58+4
+	str	r3, [r1, #12]
+	strh	r3, [r2, #6]	@ movhi
+	bx	lr
+.L59:
+	.align	2
+.L58:
+	.word	soundB
+	.word	67109120
+	.size	pauseSoundB, .-pauseSoundB
+	.align	2
+	.global	unpauseSoundB
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	unpauseSoundB, %function
+unpauseSoundB:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	mvn	ip, #1520
+	mov	r2, #128
+	mov	r0, #1
+	ldr	r3, .L61
+	ldr	r1, .L61+4
+	strh	ip, [r3, #4]	@ movhi
+	str	r0, [r1, #12]
+	strh	r2, [r3, #6]	@ movhi
+	bx	lr
+.L62:
+	.align	2
+.L61:
+	.word	67109120
+	.word	soundB
+	.size	unpauseSoundB, .-unpauseSoundB
+	.align	2
+	.global	stopSoundB
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	stopSoundB, %function
+stopSoundB:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	mov	r3, #0
+	ldr	r2, .L64
+	ldr	r1, .L64+4
+	ldr	r0, [r2]
+	ldr	r2, .L64+8
+	str	r3, [r0, #32]
+	str	r3, [r1, #12]
+	strh	r3, [r2, #6]	@ movhi
+	bx	lr
+.L65:
+	.align	2
+.L64:
+	.word	dma
+	.word	soundB
+	.word	67109120
+	.size	stopSoundB, .-stopSoundB
 	.comm	soundB,32,4
 	.comm	soundA,32,4
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

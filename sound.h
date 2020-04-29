@@ -13,3 +13,11 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
+
+void pauseSoundA();
+void unpauseSoundA();
+void stopSoundA();
+
+void pauseSoundB();
+void unpauseSoundB();
+void stopSoundB();

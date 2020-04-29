@@ -158,11 +158,38 @@ void stopSound() {
     dma[2].cnt = 0;
     REG_TM1CNT = 0;
 
+}
 
+void pauseSoundA() {
+    soundA.isPlaying = 0;
+    REG_TM0CNT = 0;
+}
+void unpauseSoundA() {
+    int ticks = PROCESSOR_CYCLES_PER_SECOND / SOUND_FREQ;
 
+    soundA.isPlaying = 1;
+    REG_TM0D = -ticks;
+    REG_TM0CNT = TIMER_ON;
+}
+void stopSoundA() {
+    soundA.isPlaying = 0;
+    dma[1].cnt = 0;
+    REG_TM0CNT = 0;
+}
 
+void pauseSoundB() {
+    soundB.isPlaying = 0;
+    REG_TM1CNT = 0;
+}
+void unpauseSoundB() {
+    int ticks = PROCESSOR_CYCLES_PER_SECOND / SOUND_FREQ;
 
-
-
-
+    soundB.isPlaying = 1;
+    REG_TM1D = -ticks;
+    REG_TM1CNT = TIMER_ON;
+}
+void stopSoundB() {
+    soundB.isPlaying = 0;
+    dma[2].cnt = 0;
+    REG_TM1CNT = 0;
 }

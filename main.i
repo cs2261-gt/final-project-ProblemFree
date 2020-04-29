@@ -1498,7 +1498,7 @@ extern int weaponSlider;
 
 
 
-enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE,
+enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE, SHAPESHIFTER,
         BEHOLDER, DRAGON, WIZARD, MINDFLAYER, GOBLINQUEENMIMI};
 
 
@@ -1518,6 +1518,7 @@ extern CHARACTER skeleton;
 extern CHARACTER troll;
 extern CHARACTER vampire;
 extern CHARACTER zombie;
+extern CHARACTER shapeshifter;
 
 
 
@@ -1533,12 +1534,16 @@ extern CHARACTER goblinqeeenmimi;
 
 
 
-extern CHARACTER enemyList [16 + 5];
+extern CHARACTER enemyList [17 + 5];
 
 
 
 
 enum {PHYSICAL, MAGICAL};
+
+
+extern int anitimer;
+extern int anicounter;
 
 
 
@@ -1653,6 +1658,14 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
+
+void pauseSoundA();
+void unpauseSoundA();
+void stopSoundA();
+
+void pauseSoundB();
+void unpauseSoundB();
+void stopSoundB();
 # 11 "main.c" 2
 
 # 1 "startmusic.h" 1
@@ -1731,7 +1744,7 @@ extern const unsigned short startPal[256];
 # 23 "main.c" 2
 # 1 "guideScreen.h" 1
 # 22 "guideScreen.h"
-extern const unsigned short guideScreenTiles[4352];
+extern const unsigned short guideScreenTiles[4368];
 
 
 extern const unsigned short guideScreenMap[1024];
@@ -1953,6 +1966,9 @@ void goToStart() {
 
 
     seed = 0;
+
+
+    playSoundA(startmusic, 1296288, 1);
 }
 
 
@@ -1962,9 +1978,6 @@ void start() {
 
 
     waitForVBlank();
-
-
-    playSoundA(startmusic, 1296288, 1);
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
@@ -2001,7 +2014,7 @@ void start() {
 void goToGuide() {
     DMANow(3, palettePal, ((unsigned short *)0x5000000), 256);
     DMANow(3, guideScreenMap, &((screenblock *)0x6000000)[28], 2048 / 2);
-    DMANow(3, guideScreenTiles, &((charblock *)0x6000000)[0], 8704 / 2);
+    DMANow(3, guideScreenTiles, &((charblock *)0x6000000)[0], 8736 / 2);
 
     hideSprites();
     (*(volatile unsigned short*)0x400000A) = ((0)<<2) | ((28)<<8) | (1<<14) | (0<<7);
@@ -2014,8 +2027,6 @@ void goToGuide() {
 void guide() {
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
-
-    playSoundA(startmusic, 1296288, 1);
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
@@ -2054,13 +2065,12 @@ void charCreation() {
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
-    playSoundA(startmusic, 1296288, 1);
 
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
 
         stopSound();
         goToGame();
+    }
 
 }
 
@@ -2082,6 +2092,10 @@ void goToGame() {
     (*(volatile unsigned short*)0x400000C) = ((2)<<2) | ((32)<<8) | (1<<14) | (0<<7);
     (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8) | (1<<9) | (1<<10);
 
+    if (currRoom == 0) {
+        playSoundA(backgroundmusic, 2294208, 1);
+    }
+
     state = GAME;
 }
 
@@ -2095,13 +2109,12 @@ void game() {
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
-    playSoundA(backgroundmusic, 2294208, 1);
-
     (*(volatile unsigned short *)0x04000018) = hOff / 2;
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-        pauseSound();
+        pauseSoundA();
+        unpauseSoundB();
         goToPause();
     }
 
@@ -2121,6 +2134,7 @@ void goToPause() {
     waitForVBlank();
 
 
+    playSoundB(pausesound, 81792, 0);
 
     state = PAUSE;
 }
@@ -2131,11 +2145,9 @@ void pause() {
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
 
-    playSoundB(pausesound, 81792, 0);
-
-
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-        unpauseSound();
+        unpauseSoundA();
+        pauseSoundB();
         goToGame();
     }
     else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
@@ -2164,6 +2176,11 @@ void goToCombat(CHARACTER * enemy) {
     (*(volatile unsigned short*)0x400000C) = ((2)<<2) | ((26)<<8) | (1<<14) | (0<<7);
     (*(unsigned short *)0x4000000) = 0 | (1<<12) |(1<<8) | (1<<9) | (1<<10);
 
+
+    if (currRoom == 12 - 1) {
+        playSoundA(bossmusic, 2389824, 1);
+    }
+
     state = COMBAT;
 
 }
@@ -2179,14 +2196,6 @@ void combat() {
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
     (*(volatile unsigned short *)0x04000018) = hOff / 2;
-
-
-
-    if (enemyChar.enemyid == BEHOLDER || enemyChar.enemyid == DRAGON || enemyChar.enemyid == WIZARD || enemyChar.enemyid == MINDFLAYER || enemyChar.enemyid == GOBLINQUEENMIMI) {
-        playSoundA(bossmusic, 2389824, 1);
-    } else {
-        playSoundA(backgroundmusic, 2294208, 1);
-    }
 }
 
 void goToCombatPause() {
@@ -2198,6 +2207,8 @@ void goToCombatPause() {
 
     waitForVBlank();
 
+    playSoundB(pausesound, 81792, 0);
+
     state = COMBATPAUSE;
 }
 
@@ -2207,11 +2218,11 @@ void combatPause() {
     waitForVBlank();
     DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 512);
 
-    playSoundB(pausesound, 81792, 0);
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-        unpauseSound();
+        unpauseSoundA();
+        pauseSoundB();
         goToCombat(&enemyChar);
     }
     else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
@@ -2231,6 +2242,8 @@ void goToWin() {
 
     waitForVBlank();
 
+    playSoundB(winsound, 51264, 0);
+
     state = WIN;
 }
 
@@ -2241,11 +2254,10 @@ void win() {
     hideSprites();
     waitForVBlank();
 
-    playSoundB(winsound, 51264, 0);
 
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         goToStart();
+    }
 }
 
 
@@ -2259,6 +2271,7 @@ void goToLose() {
 
     waitForVBlank();
 
+    playSoundA(losemusic, 1598688, 1);
 
     state = LOSE;
 }
@@ -2270,11 +2283,9 @@ void lose() {
     hideSprites();
     waitForVBlank();
 
-    stopSound();
-    playSoundA(losemusic, 1598688, 1);
 
-
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3)))))
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         stopSound();
         goToStart();
+    }
 }

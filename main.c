@@ -157,6 +157,9 @@ void goToStart() {
 
     // Begin the seed randomization
     seed = 0;
+
+    // Handle Start Music
+    playSoundA(startmusic, STARTMUSICLEN, 1);
 }
 
 // Runs every frame of the start state
@@ -165,10 +168,7 @@ void start() {
     seed++;
 
     // Lock the framerate to 60 fps
-    waitForVBlank();
-
-    // Handle Start Music
-    playSoundA(startmusic, STARTMUSICLEN, 1);
+    waitForVBlank(); 
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
@@ -219,8 +219,6 @@ void guide() {
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
 
-    playSoundA(startmusic, STARTMUSICLEN, 1);
-
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
         goToCharCreation();
@@ -258,8 +256,6 @@ void charCreation() {
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
 
-    playSoundA(startmusic, STARTMUSICLEN, 1);
-
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
         // Stop Music Before Transitioning
@@ -287,6 +283,10 @@ void goToGame() {
     REG_BG2CNT = BG_CHARBLOCK(2) | BG_SCREENBLOCK(32) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE;
 
+    if (currRoom == 0) {
+        playSoundA(backgroundmusic, BACKGROUNDMUSICLEN, 1);
+    }
+
     state = GAME;
 }
 
@@ -299,14 +299,13 @@ void game() {
 
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
-
-    playSoundA(backgroundmusic, BACKGROUNDMUSICLEN, 1);
     
     REG_BG2HOFF = hOff / 2;
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
-        pauseSound();
+        pauseSoundA();
+        unpauseSoundB();
         goToPause();
     }
     
@@ -324,8 +323,9 @@ void goToPause() {
 
     //Wait for vertical blank and flip the page
     waitForVBlank();
-    
 
+    // Play Pause Jingle
+    playSoundB(pausesound, PAUSESOUNDLEN, 0);
 
     state = PAUSE;
 }
@@ -335,12 +335,10 @@ void pause() {
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
 
-    // Play Pause Jingle
-    playSoundB(pausesound, PAUSESOUNDLEN, 0);
-
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
-        unpauseSound();
+        unpauseSoundA();
+        pauseSoundB();
         goToGame();
     }
     else if (BUTTON_PRESSED(BUTTON_SELECT)) {
@@ -369,6 +367,11 @@ void goToCombat(CHARACTER * enemy) {
     REG_BG2CNT = BG_CHARBLOCK(2) | BG_SCREENBLOCK(26) | BG_SIZE_WIDE | BG_4BPP;
     REG_DISPCTL =   MODE0 | SPRITE_ENABLE |BG0_ENABLE | BG1_ENABLE | BG2_ENABLE;
 
+    // Handle Boss Music or Normal Music Depending on Enemy
+    if (currRoom == DUNGEONSIZE - 1) {
+        playSoundA(bossmusic, BOSSMUSICLEN, 1);
+    }
+
     state = COMBAT;
 
 }
@@ -384,14 +387,6 @@ void combat() {
     DMANow(3, shadowOAM, OAM, 512);
 
     REG_BG2HOFF = hOff / 2;
-
-    
-    // Handle Boss Music or Normal Music Depending on Enemy
-    if (enemyChar.enemyid == BEHOLDER || enemyChar.enemyid == DRAGON || enemyChar.enemyid == WIZARD || enemyChar.enemyid == MINDFLAYER || enemyChar.enemyid == GOBLINQUEENMIMI) {
-        playSoundA(bossmusic, BOSSMUSICLEN, 1);
-    } else {
-        playSoundA(backgroundmusic, BACKGROUNDMUSICLEN, 1);
-    }
 }
 
 void goToCombatPause() {
@@ -403,6 +398,8 @@ void goToCombatPause() {
 
     waitForVBlank();
 
+    playSoundB(pausesound, PAUSESOUNDLEN, 0);
+
     state = COMBATPAUSE;
 }
 
@@ -412,11 +409,11 @@ void combatPause() {
     waitForVBlank();
     DMANow(3, shadowOAM, OAM, 512);
 
-    playSoundB(pausesound, PAUSESOUNDLEN, 0);
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
-        unpauseSound();
+        unpauseSoundA();
+        pauseSoundB();
         goToCombat(&enemyChar);
     }
     else if (BUTTON_PRESSED(BUTTON_SELECT)) {
@@ -436,6 +433,8 @@ void goToWin() {
 
     waitForVBlank();
 
+    playSoundB(winsound, WINSOUNDLEN, 0);
+
     state = WIN;
 }
 
@@ -446,11 +445,10 @@ void win() {
     hideSprites();
     waitForVBlank();
 
-    playSoundB(winsound, WINSOUNDLEN, 0);
-
     // State transitions
-    if (BUTTON_PRESSED(BUTTON_START))
+    if (BUTTON_PRESSED(BUTTON_START)) {
         goToStart();
+    }
 }
 
 // Sets up the lose state
@@ -464,6 +462,7 @@ void goToLose() {
 
     waitForVBlank();
 
+    playSoundA(losemusic, LOSEMUSICLEN, 1);
 
     state = LOSE;
 }
@@ -475,11 +474,9 @@ void lose() {
     hideSprites();
     waitForVBlank();
 
-    stopSound();
-    playSoundA(losemusic, LOSEMUSICLEN, 1);
-
     // State transitions
-    if (BUTTON_PRESSED(BUTTON_START))
+    if (BUTTON_PRESSED(BUTTON_START)) {
         stopSound();
         goToStart();
+    }
 }

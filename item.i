@@ -1498,7 +1498,7 @@ extern int weaponSlider;
 
 
 
-enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE,
+enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE, SHAPESHIFTER,
         BEHOLDER, DRAGON, WIZARD, MINDFLAYER, GOBLINQUEENMIMI};
 
 
@@ -1518,6 +1518,7 @@ extern CHARACTER skeleton;
 extern CHARACTER troll;
 extern CHARACTER vampire;
 extern CHARACTER zombie;
+extern CHARACTER shapeshifter;
 
 
 
@@ -1533,12 +1534,16 @@ extern CHARACTER goblinqeeenmimi;
 
 
 
-extern CHARACTER enemyList [16 + 5];
+extern CHARACTER enemyList [17 + 5];
 
 
 
 
 enum {PHYSICAL, MAGICAL};
+
+
+extern int anitimer;
+extern int anicounter;
 
 
 

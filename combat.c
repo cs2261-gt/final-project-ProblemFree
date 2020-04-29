@@ -31,10 +31,18 @@ void initCombat(CHARACTER * enemy) {
     enemyChar.dmg = enemy->dmg;
     enemyChar.active = 1;
     turn = 0;
+    anitimer = 0;
+    anicounter = rand() % (MOBOPTIONS - 1);
 }
 
 void updateCombat() {
 
+    // Handle shapeshifter morphing
+    anitimer++;
+    if (anitimer == 600) {
+        anicounter = rand() % (MOBOPTIONS - 1);
+    }
+    
     // Check if combat is won, handle defeating boss
     if (enemyChar.hpCurr <= 0) {
         enemyChar.active = 0;
@@ -75,7 +83,8 @@ void updateCombat() {
                 }
             }
             else if (BUTTON_PRESSED(BUTTON_START)) {
-                pauseSound();
+                pauseSoundA();
+                stopSoundB();
                 goToCombatPause();
             }
             else if (BUTTON_PRESSED(BUTTON_L)) {
@@ -100,6 +109,8 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
 
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
@@ -110,6 +121,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -122,6 +136,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -131,6 +148,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -143,6 +163,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -152,6 +175,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -164,6 +190,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -173,6 +202,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -185,6 +217,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+                        
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -194,6 +229,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -206,6 +244,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -215,6 +256,9 @@ void updateCombat() {
                         enemyChar.stance = DEFENSE;
                         turn = 0;
                     } else {
+                        // Play Attack Sound
+                        playSoundB(attacksound, ATTACKSOUNDLEN, 0);
+
                         enemyChar.stance = OFFENSE;
                         attack(&enemyChar, &player);
                         turn = 0;
@@ -237,14 +281,14 @@ void drawCombat() {
 
 // Handle all possible attack combos (player to mob, boss to player, dragon boss to player, and mob to player), give players and bosses advantage
 void attack(CHARACTER * source, CHARACTER  * target) {
-    // Play Attack Sound
-    playSoundB(attacksound, ATTACKSOUNDLEN, 0);
-
     // Handle player to mob attacks
     if (source->playerclass == MAGE) {
         // Play Sound for hit if hit succeeds, play sound for miss if not
         if ((rand() % 20) + 1 + statMod(source, INTEL) >= target->ac + target->stance) {
             playSoundB(hitsound, HITSOUNDLEN, 0);
+
+            anitimer = 0;
+            anicounter = rand() % (MOBOPTIONS - 1);
 
             int damage = rollDmg(player.dmg, statMod(source, INTEL));
             // int damage = 1000;
@@ -260,6 +304,9 @@ void attack(CHARACTER * source, CHARACTER  * target) {
         if ((rand() % 20) + 1 + statMod(source, DEX) >= target->ac + target->stance) {
             playSoundB(hitsound, HITSOUNDLEN, 0);
 
+            anitimer = 0;
+            anicounter = rand() % (MOBOPTIONS - 1);
+
             int damage = rollDmg(player.dmg, statMod(source, DEX));
             // int damage = 1000;
             if (target->hpCurr - damage <= 0) {
@@ -273,6 +320,9 @@ void attack(CHARACTER * source, CHARACTER  * target) {
     } else if (source->playerclass == FIGHTER) {
         if ((rand() % 20) + 1 + statMod(source, STR) >= target->ac + target->stance) {
             playSoundB(hitsound, HITSOUNDLEN, 0);
+
+            anitimer = 0;
+            anicounter = rand() % (MOBOPTIONS - 1);
 
             int damage = rollDmg(player.dmg, statMod(source, STR));
             // int damage = 1000;

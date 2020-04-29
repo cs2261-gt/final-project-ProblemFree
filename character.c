@@ -13,7 +13,10 @@
 
 CHARACTER player;
 ITEM backpack [INVSIZE];
-// int weaponSlider = 209;
+
+int anitimer;
+int anicounter;
+
 
 CHARACTER abomination;
 CHARACTER apprentice;
@@ -194,6 +197,7 @@ void initEnemies() {
     CHARACTER troll =           {.enemyid = TROLL,          .hpMax = 35, .hpCurr = 35, .dmg = 10, .intelligence = 8, .dexterity = 12, .strength = 16, .ac = 12};
     CHARACTER vampire =         {.enemyid = VAMPIRE,        .hpMax = 20, .hpCurr = 20, .dmg = 10, .intelligence = 16, .dexterity = 16, .strength = 16, .ac = 10};
     CHARACTER zombie =          {.enemyid = ZOMBIE,         .hpMax = 15, .hpCurr = 15, .dmg = 6, .intelligence = 8, .dexterity = 10, .strength = 14, .ac = 8};
+    CHARACTER shapeshifter =    {.enemyid = SHAPESHIFTER,   .hpMax = 20, .hpCurr = 20, .dmg = 8, .intelligence = 14, .dexterity = 16, .strength = 14, .ac = 12};
 
     CHARACTER beholder =        {.enemyid = BEHOLDER,       .hpMax = 60, .hpCurr = 60, .dmg = 10, .intelligence = 20, .dexterity = 16, .strength = 18, .ac = 13};
     CHARACTER dragon =          {.enemyid = DRAGON,         .hpMax = 80, .hpCurr = 80, .dmg = 10, .intelligence = 20, .dexterity = 16, .strength = 20, .ac = 15};
@@ -219,11 +223,12 @@ void initEnemies() {
     enemyList[13] = troll;
     enemyList[14] = vampire;
     enemyList[15] = zombie;
-    enemyList[16] = beholder;
-    enemyList[17] = dragon;
-    enemyList[18] = wizard;
-    enemyList[19] = mindflayer;
-    enemyList[20] = goblinqueenmimi;
+    enemyList[16] = shapeshifter;
+    enemyList[17] = beholder;
+    enemyList[18] = dragon;
+    enemyList[19] = wizard;
+    enemyList[20] = mindflayer;
+    enemyList[21] = goblinqueenmimi;
 }
 
 // to export spritesheets: make sure the spritesheet is 256x256 at 16 colors at per sprite
@@ -280,6 +285,9 @@ void drawEnemy(int enemyType, int col, int row) {
         break;
     case ZOMBIE:
         shadowOAM[2].attr2 = ATTR2_TILEID(28, 4);
+        break;
+    case SHAPESHIFTER:
+        drawEnemy(anicounter, col, row);
         break;
     case BEHOLDER:
         shadowOAM[2].attr2 = ATTR2_TILEID(0, 8);

@@ -1498,7 +1498,7 @@ extern int weaponSlider;
 
 
 
-enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE,
+enum {ABOMINATION, APPRENTICE, CHIMERA, DROW, ELEMENTAL, GOLEM, GOBLIN, HOMUNCULUS, KOBOLD, MIMIC, ORC, SLIME, SKELETON, TROLL, VAMPIRE, ZOMBIE, SHAPESHIFTER,
         BEHOLDER, DRAGON, WIZARD, MINDFLAYER, GOBLINQUEENMIMI};
 
 
@@ -1518,6 +1518,7 @@ extern CHARACTER skeleton;
 extern CHARACTER troll;
 extern CHARACTER vampire;
 extern CHARACTER zombie;
+extern CHARACTER shapeshifter;
 
 
 
@@ -1533,12 +1534,16 @@ extern CHARACTER goblinqeeenmimi;
 
 
 
-extern CHARACTER enemyList [16 + 5];
+extern CHARACTER enemyList [17 + 5];
 
 
 
 
 enum {PHYSICAL, MAGICAL};
+
+
+extern int anitimer;
+extern int anicounter;
 
 
 
@@ -1637,10 +1642,58 @@ void attack(CHARACTER * source, CHARACTER * target);
 int rollDmg(int dice, int bonus);
 # 9 "room.c" 2
 
+# 1 "sound.h" 1
+SOUND soundA;
+SOUND soundB;
+
+
+
+void setupSounds();
+void playSoundA(const signed char* sound, int length, int loops);
+void playSoundB(const signed char* sound, int length, int loops);
+
+void setupInterrupts();
+void interruptHandler();
+
+void pauseSound();
+void unpauseSound();
+void stopSound();
+
+void pauseSoundA();
+void unpauseSoundA();
+void stopSoundA();
+
+void pauseSoundB();
+void unpauseSoundB();
+void stopSoundB();
+# 11 "room.c" 2
+
+# 1 "attacksound.h" 1
+
+
+
+
+extern const signed char attacksound[22180];
+# 13 "room.c" 2
+# 1 "dodgesound.h" 1
+
+
+
+
+extern const signed char dodgesound[22050];
+# 14 "room.c" 2
+# 1 "hitsound.h" 1
+
+
+
+
+extern const signed char hitsound[22180];
+# 15 "room.c" 2
+
 # 1 "palette.h" 1
 # 20 "palette.h"
 extern const unsigned short palettePal[256];
-# 11 "room.c" 2
+# 17 "room.c" 2
 
 # 1 "alchemybg.h" 1
 # 22 "alchemybg.h"
@@ -1651,7 +1704,7 @@ extern const unsigned short alchemybgMap[1024];
 
 
 extern const unsigned short alchemybgPal[256];
-# 13 "room.c" 2
+# 19 "room.c" 2
 # 1 "atriumbg.h" 1
 # 22 "atriumbg.h"
 extern const unsigned short atriumbgTiles[2176];
@@ -1661,7 +1714,7 @@ extern const unsigned short atriumbgMap[1024];
 
 
 extern const unsigned short atriumbgPal[256];
-# 14 "room.c" 2
+# 20 "room.c" 2
 # 1 "bedroombg.h" 1
 # 22 "bedroombg.h"
 extern const unsigned short bedroombgTiles[2688];
@@ -1671,7 +1724,7 @@ extern const unsigned short bedroombgMap[1024];
 
 
 extern const unsigned short bedroombgPal[256];
-# 15 "room.c" 2
+# 21 "room.c" 2
 # 1 "brewerybg.h" 1
 # 22 "brewerybg.h"
 extern const unsigned short brewerybgTiles[5072];
@@ -1681,7 +1734,7 @@ extern const unsigned short brewerybgMap[1024];
 
 
 extern const unsigned short brewerybgPal[256];
-# 16 "room.c" 2
+# 22 "room.c" 2
 # 1 "circlesbg.h" 1
 # 22 "circlesbg.h"
 extern const unsigned short circlesbgTiles[6128];
@@ -1691,7 +1744,7 @@ extern const unsigned short circlesbgMap[1024];
 
 
 extern const unsigned short circlesbgPal[256];
-# 17 "room.c" 2
+# 23 "room.c" 2
 # 1 "chessbg.h" 1
 # 22 "chessbg.h"
 extern const unsigned short chessbgTiles[3024];
@@ -1701,7 +1754,7 @@ extern const unsigned short chessbgMap[1024];
 
 
 extern const unsigned short chessbgPal[256];
-# 18 "room.c" 2
+# 24 "room.c" 2
 # 1 "teleporterbg.h" 1
 # 22 "teleporterbg.h"
 extern const unsigned short teleporterbgTiles[2576];
@@ -1711,7 +1764,7 @@ extern const unsigned short teleporterbgMap[1024];
 
 
 extern const unsigned short teleporterbgPal[256];
-# 19 "room.c" 2
+# 25 "room.c" 2
 # 1 "crystalbg.h" 1
 # 22 "crystalbg.h"
 extern const unsigned short crystalbgTiles[2064];
@@ -1721,7 +1774,7 @@ extern const unsigned short crystalbgMap[1024];
 
 
 extern const unsigned short crystalbgPal[256];
-# 20 "room.c" 2
+# 26 "room.c" 2
 # 1 "librarybg.h" 1
 # 22 "librarybg.h"
 extern const unsigned short librarybgTiles[4608];
@@ -1731,7 +1784,7 @@ extern const unsigned short librarybgMap[1024];
 
 
 extern const unsigned short librarybgPal[256];
-# 21 "room.c" 2
+# 27 "room.c" 2
 # 1 "menageriebg.h" 1
 # 22 "menageriebg.h"
 extern const unsigned short menageriebgTiles[3008];
@@ -1741,7 +1794,7 @@ extern const unsigned short menageriebgMap[1024];
 
 
 extern const unsigned short menageriebgPal[256];
-# 22 "room.c" 2
+# 28 "room.c" 2
 # 1 "treasurybg.h" 1
 # 22 "treasurybg.h"
 extern const unsigned short treasurybgTiles[2688];
@@ -1751,7 +1804,7 @@ extern const unsigned short treasurybgMap[1024];
 
 
 extern const unsigned short treasurybgPal[256];
-# 23 "room.c" 2
+# 29 "room.c" 2
 # 1 "golemfabbg.h" 1
 # 22 "golemfabbg.h"
 extern const unsigned short golemfabbgTiles[5168];
@@ -1761,7 +1814,7 @@ extern const unsigned short golemfabbgMap[1024];
 
 
 extern const unsigned short golemfabbgPal[256];
-# 24 "room.c" 2
+# 30 "room.c" 2
 # 1 "diningbg.h" 1
 # 22 "diningbg.h"
 extern const unsigned short diningbgTiles[2464];
@@ -1771,7 +1824,7 @@ extern const unsigned short diningbgMap[1024];
 
 
 extern const unsigned short diningbgPal[256];
-# 25 "room.c" 2
+# 31 "room.c" 2
 # 1 "observatorybg.h" 1
 # 22 "observatorybg.h"
 extern const unsigned short observatorybgTiles[2432];
@@ -1781,7 +1834,7 @@ extern const unsigned short observatorybgMap[1024];
 
 
 extern const unsigned short observatorybgPal[256];
-# 26 "room.c" 2
+# 32 "room.c" 2
 # 1 "prisonbg.h" 1
 # 22 "prisonbg.h"
 extern const unsigned short prisonbgTiles[4688];
@@ -1791,7 +1844,7 @@ extern const unsigned short prisonbgMap[1024];
 
 
 extern const unsigned short prisonbgPal[256];
-# 27 "room.c" 2
+# 33 "room.c" 2
 # 1 "gardenbg.h" 1
 # 22 "gardenbg.h"
 extern const unsigned short gardenbgTiles[6720];
@@ -1801,7 +1854,7 @@ extern const unsigned short gardenbgMap[1024];
 
 
 extern const unsigned short gardenbgPal[256];
-# 28 "room.c" 2
+# 34 "room.c" 2
 # 1 "entrancebg.h" 1
 # 22 "entrancebg.h"
 extern const unsigned short entrancebgTiles[5296];
@@ -1811,7 +1864,7 @@ extern const unsigned short entrancebgMap[1024];
 
 
 extern const unsigned short entrancebgPal[256];
-# 29 "room.c" 2
+# 35 "room.c" 2
 # 1 "bossroombg1.h" 1
 # 22 "bossroombg1.h"
 extern const unsigned short bossroombg1Tiles[208];
@@ -1821,7 +1874,7 @@ extern const unsigned short bossroombg1Map[1024];
 
 
 extern const unsigned short bossroombg1Pal[256];
-# 30 "room.c" 2
+# 36 "room.c" 2
 # 1 "bossroombg2.h" 1
 # 22 "bossroombg2.h"
 extern const unsigned short bossroombg2Tiles[4720];
@@ -1831,7 +1884,7 @@ extern const unsigned short bossroombg2Map[2048];
 
 
 extern const unsigned short bossroombg2Pal[256];
-# 31 "room.c" 2
+# 37 "room.c" 2
 
 ROOM dungeon[12];
 int goblinMode;
@@ -1868,7 +1921,7 @@ void initDungeon() {
         dungeon[12 - 1].enemy.hpCurr = enemyList[GOBLINQUEENMIMI].hpCurr;
         dungeon[12 - 1].enemy.dmg = enemyList[GOBLINQUEENMIMI].dmg;
     } else {
-        decider = (rand() % (5 - 1)) + 16;
+        decider = (rand() % (5 - 1)) + 17;
         dungeon[12 - 1].enemy.enemyid = enemyList[decider].enemyid;
         dungeon[12 - 1].enemy.intelligence = enemyList[decider].intelligence;
         dungeon[12 - 1].enemy.dexterity = enemyList[decider].dexterity;
@@ -1979,7 +2032,8 @@ void placeTrap(int i) {
 }
 
 void placeEnemy(int i) {
-    int decider = (rand() % 16);
+    int decider = (17 - 1);
+
     dungeon[i].enemy.enemyid = enemyList[decider].enemyid;
     dungeon[i].enemy.intelligence = enemyList[decider].intelligence;
     dungeon[i].enemy.dexterity = enemyList[decider].dexterity;
@@ -2021,7 +2075,7 @@ void placeGoblinoid(int i) {
         dungeon[i].enemy.dmg = enemyList[TROLL].dmg;
     }
 }
-# 228 "room.c"
+# 235 "room.c"
 void loadRoomData(int currentRoom) {
     switch (dungeon[currentRoom].roomType) {
         case ALCHEMYLAB:
@@ -2146,14 +2200,17 @@ int checkSearch() {
 int checkTrap() {
     if (dungeon[currRoom].trap == MAGICAL) {
         if (intDiceRoll(&player) < dungeon[currRoom].trapSuccess) {
+            playSoundB(hitsound, 22180, 0);
             damageChar(&player, 6);
             return 1;
         }
     } else if (dungeon[currRoom].trap == PHYSICAL) {
         if (dexDiceRoll(&player) < dungeon[currRoom].trapSuccess) {
+            playSoundB(hitsound, 22180, 0);
             damageChar(&player, 6);
             return 1;
         }
     }
+    playSoundB(dodgesound, 22050, 0);
     return 0;
 }
