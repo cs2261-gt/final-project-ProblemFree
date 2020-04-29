@@ -1803,14 +1803,14 @@ void updatePlayer() {
             player.playerclass = FIGHTER;
             player.intelligence = 10;
             player.dexterity = 12;
-            player.strength = 14;
+            player.strength = 16;
             player.hpMax = 75;
             player.hpCurr = 75;
             player.dmg = 10;
             player.ac = 14;
         } else if (player.playerclass == FIGHTER) {
             player.playerclass = ROGUE;
-            player.intelligence = 10;
+            player.intelligence = 12;
             player.dexterity = 16;
             player.strength = 12;
             player.hpMax = 65;
@@ -1820,7 +1820,7 @@ void updatePlayer() {
         } else if (player.playerclass == ROGUE) {
             player.playerclass = MAGE;
             player.intelligence = 18;
-            player.dexterity = 14;
+            player.dexterity = 12;
             player.strength = 8;
             player.hpMax = 50;
             player.hpCurr = 50;
@@ -1830,7 +1830,7 @@ void updatePlayer() {
     } else if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
         if (player.playerclass == MAGE) {
             player.playerclass = ROGUE;
-            player.intelligence = 10;
+            player.intelligence = 12;
             player.dexterity = 16;
             player.strength = 12;
             player.hpMax = 65;
@@ -1840,7 +1840,7 @@ void updatePlayer() {
         } else if (player.playerclass == FIGHTER) {
             player.playerclass = MAGE;
             player.intelligence = 18;
-            player.dexterity = 14;
+            player.dexterity = 12;
             player.strength = 8;
             player.hpMax = 50;
             player.hpCurr = 50;
