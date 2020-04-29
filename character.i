@@ -1801,36 +1801,60 @@ void updatePlayer() {
     if ((!(~(oldButtons)&((1<<5))) && (~buttons & ((1<<5))))) {
         if (player.playerclass == MAGE) {
             player.playerclass = FIGHTER;
-            player.intelligence = 8;
-            player.dexterity = 10;
-            player.strength = 12;
+            player.intelligence = 10;
+            player.dexterity = 12;
+            player.strength = 14;
+            player.hpMax = 75;
+            player.hpCurr = 75;
+            player.dmg = 10;
+            player.ac = 14;
         } else if (player.playerclass == FIGHTER) {
             player.playerclass = ROGUE;
             player.intelligence = 10;
-            player.dexterity = 12;
-            player.strength = 8;
+            player.dexterity = 16;
+            player.strength = 12;
+            player.hpMax = 65;
+            player.hpCurr = 65;
+            player.dmg = 6;
+            player.ac = 12;
         } else if (player.playerclass == ROGUE) {
             player.playerclass = MAGE;
-            player.intelligence = 12;
-            player.dexterity = 10;
+            player.intelligence = 18;
+            player.dexterity = 14;
             player.strength = 8;
+            player.hpMax = 60;
+            player.hpCurr = 60;
+            player.dmg = 8;
+            player.ac = 12;
         }
     } else if ((!(~(oldButtons)&((1<<4))) && (~buttons & ((1<<4))))) {
         if (player.playerclass == MAGE) {
             player.playerclass = ROGUE;
             player.intelligence = 10;
-            player.dexterity = 12;
-            player.strength = 8;
+            player.dexterity = 16;
+            player.strength = 12;
+            player.hpMax = 65;
+            player.hpCurr = 65;
+            player.dmg = 6;
+            player.ac = 12;
         } else if (player.playerclass == FIGHTER) {
             player.playerclass = MAGE;
-            player.intelligence = 12;
-            player.dexterity = 10;
+            player.intelligence = 18;
+            player.dexterity = 14;
             player.strength = 8;
+            player.hpMax = 60;
+            player.hpCurr = 60;
+            player.dmg = 8;
+            player.ac = 12;
         } else if (player.playerclass == ROGUE) {
             player.playerclass = FIGHTER;
-            player.intelligence = 8;
-            player.dexterity = 10;
-            player.strength = 12;
+            player.intelligence = 10;
+            player.dexterity = 12;
+            player.strength = 14;
+            player.hpMax = 75;
+            player.hpCurr = 75;
+            player.dmg = 10;
+            player.ac = 14;
         }
     } else if ((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
         player.sex = (player.sex == MALE ? FEMALE : MALE);

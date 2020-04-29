@@ -100,10 +100,10 @@ updatePlayer:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	@ link register save eliminated.
 	ldr	r3, .L42
 	ldrh	r3, [r3]
 	tst	r3, #32
+	push	{r4, lr}
 	beq	.L9
 	ldr	r2, .L42+4
 	ldrh	r2, [r2]
@@ -116,18 +116,23 @@ updatePlayer:
 	cmp	r2, #1
 	beq	.L14
 	cmp	r2, #3
-	bxne	lr
+	bne	.L8
 .L15:
-	mov	ip, #2
+	mov	r1, #8
+	mov	r2, #60
+	mov	r4, #2
+	mov	lr, #18
+	mov	ip, #14
 	mov	r0, #12
-	mov	r1, #10
-.L40:
-	mov	r2, #8
-	str	ip, [r3]
-	str	r0, [r3, #20]
-	str	r1, [r3, #24]
-	str	r2, [r3, #28]
-	bx	lr
+	str	r4, [r3]
+	str	lr, [r3, #20]
+	str	ip, [r3, #24]
+	str	r1, [r3, #28]
+	str	r1, [r3, #36]
+	str	r2, [r3, #12]
+	str	r2, [r3, #16]
+	str	r0, [r3, #32]
+	b	.L8
 .L9:
 	tst	r3, #16
 	beq	.L13
@@ -142,16 +147,22 @@ updatePlayer:
 	cmp	r2, #1
 	beq	.L15
 	cmp	r2, #3
-	bxne	lr
+	bne	.L8
 .L16:
-	mov	ip, #1
-	mov	r0, #8
-	mov	r1, #10
-	mov	r2, #12
-	str	ip, [r3]
+	mov	lr, #1
+	mov	r0, #10
+	mov	r1, #14
+	mov	r2, #75
+	mov	ip, #12
+	str	lr, [r3]
 	str	r0, [r3, #20]
-	str	r1, [r3, #24]
-	str	r2, [r3, #28]
+	str	r0, [r3, #36]
+	str	ip, [r3, #24]
+	str	r1, [r3, #28]
+	str	r1, [r3, #32]
+	str	r2, [r3, #12]
+	str	r2, [r3, #16]
+	pop	{r4, lr}
 	bx	lr
 .L13:
 	tst	r3, #64
@@ -160,13 +171,15 @@ updatePlayer:
 	ldr	r3, .L42+12
 	ldrh	r3, [r3, #48]
 	tst	r3, #128
-	bxne	lr
+	bne	.L8
 .L18:
 	ldr	r2, .L42+8
 	ldr	r3, [r2, #4]
 	rsbs	r3, r3, #1
 	movcc	r3, #0
 	str	r3, [r2, #4]
+.L8:
+	pop	{r4, lr}
 	bx	lr
 .L41:
 	ldr	r3, .L42+4
@@ -175,10 +188,22 @@ updatePlayer:
 	bne	.L17
 	b	.L18
 .L14:
-	mov	ip, #3
-	mov	r0, #10
+	mov	r4, #3
+	mov	lr, #10
 	mov	r1, #12
-	b	.L40
+	mov	r2, #65
+	mov	ip, #16
+	mov	r0, #6
+	str	r4, [r3]
+	str	lr, [r3, #20]
+	str	ip, [r3, #24]
+	str	r1, [r3, #28]
+	str	r1, [r3, #32]
+	str	r2, [r3, #12]
+	str	r2, [r3, #16]
+	str	r0, [r3, #36]
+	pop	{r4, lr}
+	bx	lr
 .L43:
 	.align	2
 .L42:
