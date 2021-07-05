@@ -288,17 +288,22 @@ void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned 
 // FLAG
 #define REG_IF *(volatile unsigned short*)0x4000202
 
-//
-#define REG_INTERRUPT *(unsigned int*)0x3007FFC
+// INTERRUPT HANDLER FUNCTION POINTER
+typedef void (*ihp)(void);
+// INTERRUPT HANDLER REG
+#define REG_INTERRUPT *((ihp*)0x03007FFC)
 // DISPLAY STATUS
 #define REG_DISPSTAT *(unsigned short*)0x4000004
 
 //interrupt constants for turning them on
 #define INT_VBLANK_ENABLE 1 << 3
 
-//interrupt constants for checking which type of interrupt happened
-#define INT_VBLANK 1 << 0
-#define INT_TM1 1<<4
+//interrupt constants for checking which type of interrupt happened 
+#define INT_VBLANK 1 << 0   
+#define INT_TM0 1<<3    
+#define INT_TM1 1<<4    
+#define INT_TM2 1<<5    
+#define INT_TM3 1<<6    
 #define INT_BUTTON 1 << 12
 
 // =================================== SOUND ====================================
@@ -340,7 +345,7 @@ void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned 
 
 
 typedef struct{
-    const unsigned char* data;
+    const signed char* data;
     int length;
     int frequency;
     int isPlaying;
